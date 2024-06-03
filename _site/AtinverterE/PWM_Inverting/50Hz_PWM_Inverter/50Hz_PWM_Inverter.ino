@@ -1,9 +1,8 @@
+int sin_i = 0; // Index for sinPWM array value
+int pwm_i = 0; // Index for PWM value
+int OK = 0; // Flag to toggle PWM between pins 5 and 6
 
-// ************************************************* Global Variables ************************************************* 
-int i=0;
-int x=0;
-int OK=0;
-int sinPWM[]={1,2,5,7,10,12,15,17,19,22,24,27,30,32,34,37,39,42,
+int sinPWM[] = {1,2,5,7,10,12,15,17,19,22,24,27,30,32,34,37,39,42,
 44,47,49,52,54,57,59,61,64,66,69,71,73,76,78,80,83,85,88,90,92,94,97,99,
 101,103,106,108,110,113,115,117,119,121,124,126,128,130,132,134,136,138,140,142,144,146,
 148,150,152,154,156,158,160,162,164,166,168,169,171,173,175,177,178,180,182,184,185,187,188,190,192,193,
@@ -23,47 +22,50 @@ void setup() {
   pinMode(9, OUTPUT);
   pinMode(10,OUTPUT);
   
-  cli();// stop interrupts
-  TCCR1A=0;//reset the value
-  TCCR1B=0;//reset the value
-  TCNT1=0;//reset the value
-  //0b allow me to write bits in binary
-  TCCR1A=0b10100001;//phase correct pwm mode on 8 bits
-  TCCR1B=0b00000001; //no prescaler
-  TCCR0A=0b1000010;//WGM01 bit is 1 to put timer 0 in ctc mode
-  TCCR0B=0;//reset the value
-  TCNT0=0;//reset the value
-  OCR0A=63;// compare match value
-  TCCR0B=0b00000010; // prescaler 8
+  cli(); // Disable interrupts
+
+  // Set up Timer/Counter1 (16 bit = 65,536)
+  TCCR1A = 0; // Reset control register A
+  TCCR1B = 0; // Reset control register B
+  TCNT1 = 0; // Reset the counter
+  TCCR1A = 0b10100001; // Phase correct pwm mode on 8 bits
+  TCCR1B = 0b00000001; // No prescaler
+
+  // Set up Timer/Counter0 (8 bit = 256)
+  TCCR0A = 0b1000010; // Reset control register A
+  TCCR0B = 0; // Reset control register B
+  TCNT0 = 0; // Reset the value
+  OCR0A = 63; // Compare match value to generate interrupts at the desired freq
+  TCCR0B = 0b00000010; // WGM12 bit is 1 and no prescaler, CTC Mode (Clear timer on compare match)
   
-  TIMSK0 |=(1 << OCIE0A);
+  TIMSK0 |=(1 << OCIE0A); // Enable compare match interrupts
   
-  sei();//enable interrupts
+  sei(); // Enable interrupts
 }
 
-ISR(TIMER0_COMPA_vect){// interrupt when timer 0 match with OCR0A value
+ISR(TIMER0_COMPA_vect){// Interrupt when timer 0 match with OCR0A value
   
-  if(i>313 && OK==0){// final value from vector for pin 9
-  i=0;// go to first value of vector
-  OK=1;//enable pin 10
+  if (sin_i > 313 && OK == 0){ // Final value from vector for pin 9
+  sin_i = 0; // Go to first value of vector
+  OK = 1; // Enable pin 10
   }
   
-  if(i>313 && OK==1){// final value from vector for pin 10
-  i=0;//go to firs value of vector
-  OK=0;//enable pin 9
+  if (sin_i > 313 && OK == 1) { // Final value from vector for pin 10
+  sin_i = 0; // Go to first value of vector
+  OK = 0; // Enable pin 9
   }
   
-  x=sinPWM[i];// x take the value from vector corresponding to position i(i is zero indexed)
-  i=i+1;// go to the next position
+  pwm_i = sinPWM[sin_i]; // pwm_i take the value from vector corresponding to position sin_i (sin_i is zero indexed)
+  sin_i = sin_i + 1; // Go to the next position
   
-  if(OK==0){
-  OCR1B=0;//make pin 10 0
-  OCR1A=x;//enable pin 9 to corresponding duty cycle
+  if (OK == 0) {
+  OCR1B = 0; // Make pin 10 zero
+  OCR1A = pwm_i; // Enable pin 9 to corresponding duty cycle
   }
   
-  if(OK==1){
-  OCR1A=0;//make pin 9 0
-  OCR1B=x;//enable pin 10 to corresponding duty cycle
+  if (OK == 1) {
+  OCR1A = 0; // Make pin 9 zero
+  OCR1B = pwm_i; // Enable pin 10 to corresponding duty cycle
   }
   
 }

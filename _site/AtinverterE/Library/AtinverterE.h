@@ -7,6 +7,7 @@
 #ifndef Atinverter_h
 #define Atinverter_h
 
+#include <stdexcept>
 
 // LED pins
 const int LED1R_PIN = 2; // Physical pin 4
@@ -26,4 +27,24 @@ const int I_AC_PIN = 17; // Physical pin 26
 
 // Reset Protection Circuit, enables the gate driver
 const int PRORESET_PIN = 17; // Physical pin 26
+
+class AtinverterE
+{
+	public: // Public access specifier means that the members can be accessed outside of the clase
+		AtinverterE(int freq) 
+		{
+			if (freq != 50 || freq != 60)
+			{
+				throw std::invalid_argument("Invalid frequency. Frequency must be 50 or 60 Hz.");
+			}
+			
+			frequency = freq;	// AtinverterE(int freq) : frequency(freq) {}
+		} // Constructor that defines what attributes it should have
+		
+		void setupPinMode();
+
+	private:
+		int frequency
+		
+};
 
