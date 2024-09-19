@@ -8,7 +8,6 @@
 #define Atinverter_h
 
 #include <stdexcept>
-
 // LED pins
 const int LED1R_PIN = 2; // Physical pin 4
 const int LED2R_PIN = 3; // Physical pin 5

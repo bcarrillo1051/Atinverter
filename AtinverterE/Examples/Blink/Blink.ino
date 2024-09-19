@@ -122,16 +122,16 @@ void loop() {
 
 void ledTest(int led) {
   digitalWrite(led, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(PERIOD);                       // wait for a second
+  delay(PERIOD);             // wait for a second
   digitalWrite(led, LOW);    // turn the LED off by making the voltage LOW
-  delay(PERIOD);                       // wait for a second
+  delay(PERIOD);             // wait for a second
 }
 
 void ledTest2(int ledr, int ledg) {
   digitalWrite(ledr, HIGH);   // turn the LED on (HIGH is the voltage level)
   digitalWrite(ledg, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(PERIOD);                       // wait for a second
+  delay(PERIOD);              // wait for a second
   digitalWrite(ledr, LOW);    // turn the LED off by making the voltage LOW
   digitalWrite(ledg, LOW);    // turn the LED off by making the voltage LOW
-  delay(PERIOD);                       // wait for a second
+  delay(PERIOD);               // wait for a second
 }
