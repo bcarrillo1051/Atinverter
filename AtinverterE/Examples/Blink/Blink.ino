@@ -1,10 +1,10 @@
 /*
   Blink
 
-  Blinks each AtverterE LED through each color (R, G, Y).
+  Blinks each AtinverterE LED through each color (R, G, Y).
 
-  modified 19 Sep 2022
-  by Daniel Gerber
+  modified 2 October 2024
+  by Bryan Carrillo
 */
 
 /*
@@ -26,20 +26,18 @@
 #include <TimerOne.h> // In Library Manager, search for "TimerOne"
 #include <MsTimer2.h> // In Library Manager, search for "MsTimer2"
 
-// pins for turning on the LEDs
+// LED pins
 const int LED1R_PIN = 2; // Physical pin 4
-const int LED1G_PIN = 6; // Physical pin 12
-const int LED2R_PIN = 5; // Physical pin 11
+const int LED1G_PIN = 3; // Physical pin 5
+const int LED2R_PIN = 4; // Physical pin 6
 const int LED2G_PIN = 7; // Physical pin 13
 
-// Atmega328p (Arduino Uno):
-// Pins 5 and 6: controlled by Timer 0 (8 MHz)
-// Pins 9 and 10: controlled by Timer 1 (16 MHz)
-// Pins 11 and 3: controlled by Timer 2 (8 MHz)
-const int PWM_PIN = 9; // Physical pin 15, timer 1
+// PWM pins
+const int PWM_PIN = 5; // Physical pin 11, timer 1
+const int PWM_PIN = 6; // Physical pin 12, timer 1
 
 // pin to reset the protection circuit, enabling the gate driver
-const int PRORESET_PIN = 4; // Physical pin 6
+const int PRORESET_PIN = 17; // Physical pin 26
 
 // pins for voltage and current sensing
 const int VH_PIN = 14; // physical pin 23, attenuated high side voltage
