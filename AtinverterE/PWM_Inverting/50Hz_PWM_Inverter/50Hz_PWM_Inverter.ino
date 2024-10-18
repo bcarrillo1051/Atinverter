@@ -1,3 +1,35 @@
+/****************************************************************************** 
+ * File:        50Hz_PWM_Inverter.c
+ * Author:      eprojectszone and Bryan Carrillo
+ * Date:        10-16-23
+ * Description: This program generates a 50Hz sinusoidal waveform using PWM. It
+ *              creates an array of discrete sinusoid samples and alternates
+ *              the PWM output between digital pins 9 and 10. Timer1 is used to
+ *              generate a phase-correct PWM signal with the calculated duty 
+ *              cycles based on the sinusoidal array. Timer0 is used to generate
+ *              interrupts at a frequency to update the PWM signal, ensuring
+ *              a smooth transition through the sinusoidal samples.
+ * 
+ * Version:     1.0
+ *              Initial version.
+ *
+ * Notes:       Two timers are used in this implementation:
+ *              - Timer1: Configured in phase-correct PWM mode to generate the 
+ *                PWM signal that controls the output voltage. It outputs the 
+ *                signal alternately on pins 9 and 10, based on the duty cycle 
+ *                values from the sinusoidal array.
+ * 
+ *              - Timer0: Configured in CTC mode to generate periodic interrupts. 
+ *                This interrupt controls the timing of when the PWM duty cycle 
+ *                is updated, ensuring the correct frequency and smooth sinusoidal 
+ *                output.
+ * 
+ *                For Timer1, the hardware PWM output for Channel A (corresponding 
+ *                to OCR1A) is mapped to pin 9 on the Arduino (digital pin 9). 
+ *                For PWM output pin 10, the channel B is OCR1B
+ *                This mapping is fixed by the MCU's internal architecture.
+ ******************************************************************************/
+
 int sin_i = 0; // Index for sinPWM array value
 int pwm_i = 0; // Index for PWM value
 int OK = 0; // Flag to toggle PWM between pins 5 and 6
@@ -43,7 +75,7 @@ void setup() {
   sei(); // Enable interrupts
 }
 
-ISR(TIMER0_COMPA_vect){// Interrupt when timer 0 match with OCR0A value
+ISR(TIMER0_COMPA_vect){ // Interrupt when timer 0 match with OCR0A value
   
   if (sin_i > 313 && OK == 0){ // Final value from vector for pin 9
   sin_i = 0; // Go to first value of vector
