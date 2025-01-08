@@ -1,9 +1,128 @@
 {"0": {
+    "doc": "Software",
+    "title": "Software",
+    "content": " ",
+    "url": "/AV2software.html",
+    
+    "relUrl": "/AV2software.html"
+  },"1": {
+    "doc": "Atinverter V1 Hardware",
+    "title": "Atinverter V1 Hardware",
+    "content": " ",
+    "url": "/a_v1_hw.html",
+    
+    "relUrl": "/a_v1_hw.html"
+  },"2": {
+    "doc": "Atinverter V2 Hardware",
+    "title": "Atinverter V2 Hardware",
+    "content": " ",
+    "url": "/a_v2_hw.html",
+    
+    "relUrl": "/a_v2_hw.html"
+  },"3": {
+    "doc": "Hardware",
+    "title": "Hardware",
+    "content": ". Atinverter Rev 1 Atinverter Rev 2 . ",
+    "url": "/hardware.html",
+    
+    "relUrl": "/hardware.html"
+  },"4": {
+    "doc": "Home",
+    "title": "Atinverter Documentation",
+    "content": "Explore the documentation to learn more about this open source power converter . Vision Hardware Software . ",
+    "url": "/home.html#atinverter-documentation",
+    
+    "relUrl": "/home.html#atinverter-documentation"
+  },"5": {
     "doc": "Home",
     "title": "Home",
-    "content": "Welcome to the Atinverter documentation! . ",
-    "url": "/",
+    "content": " ",
+    "url": "/home.html",
     
-    "relUrl": "/"
+    "relUrl": "/home.html"
+  },"6": {
+    "doc": "Scratchpad",
+    "title": "Testing",
+    "content": ". highlight . X2 . X^2^ . H20 . ",
+    "url": "/scratchpad.html#testing",
+    
+    "relUrl": "/scratchpad.html#testing"
+  },"7": {
+    "doc": "Scratchpad",
+    "title": "Italicizing and Bolding",
+    "content": "Lorem ipsum . Lorem ipsum . lorem ipsum . :smile: 😀 . ",
+    "url": "/scratchpad.html#italicizing-and-bolding",
+    
+    "relUrl": "/scratchpad.html#italicizing-and-bolding"
+  },"8": {
+    "doc": "Scratchpad",
+    "title": "Code blocks",
+    "content": "This is code . const a = 10; static var; . ",
+    "url": "/scratchpad.html#code-blocks",
+    
+    "relUrl": "/scratchpad.html#code-blocks"
+  },"9": {
+    "doc": "Scratchpad",
+    "title": "Creating a Link",
+    "content": "Relative link within the directories: This is a link External Link: Arduino Docs . ",
+    "url": "/scratchpad.html#creating-a-link",
+    
+    "relUrl": "/scratchpad.html#creating-a-link"
+  },"10": {
+    "doc": "Scratchpad",
+    "title": "Images",
+    "content": ". hey test . oh my . sheesh . ",
+    "url": "/scratchpad.html#images",
+    
+    "relUrl": "/scratchpad.html#images"
+  },"11": {
+    "doc": "Scratchpad",
+    "title": "Putting lines in between",
+    "content": "hi . there . ",
+    "url": "/scratchpad.html#putting-lines-in-between",
+    
+    "relUrl": "/scratchpad.html#putting-lines-in-between"
+  },"12": {
+    "doc": "Scratchpad",
+    "title": "Creating an ordered list of items",
+    "content": ". | bananas | apples | durian | . ",
+    "url": "/scratchpad.html#creating-an-ordered-list-of-items",
+    
+    "relUrl": "/scratchpad.html#creating-an-ordered-list-of-items"
+  },"13": {
+    "doc": "Scratchpad",
+    "title": "Creating an unordered list of items",
+    "content": ". | bananas | apples | durian . | cherries | . | . ",
+    "url": "/scratchpad.html#creating-an-unordered-list-of-items",
+    
+    "relUrl": "/scratchpad.html#creating-an-unordered-list-of-items"
+  },"14": {
+    "doc": "Scratchpad",
+    "title": "Tables",
+    "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . ",
+    "url": "/scratchpad.html#tables",
+    
+    "relUrl": "/scratchpad.html#tables"
+  },"15": {
+    "doc": "Scratchpad",
+    "title": "Scratchpad",
+    "content": " ",
+    "url": "/scratchpad.html",
+    
+    "relUrl": "/scratchpad.html"
+  },"16": {
+    "doc": "Software",
+    "title": "Software",
+    "content": ". A paragraph . ",
+    "url": "/software.html",
+    
+    "relUrl": "/software.html"
+  },"17": {
+    "doc": "Vision",
+    "title": "Vision",
+    "content": " ",
+    "url": "/vision.html",
+    
+    "relUrl": "/vision.html"
   }
 }
