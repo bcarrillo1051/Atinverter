@@ -52,8 +52,8 @@ diagram is interactive, allowing you to click and explore detailed information a
     linkStyle 1 stroke:grey, stroke-width:3px;
 
     %% Adding clickable links
-    click E "PWM_inverting" "PWM Inverting"
-    click F "PWM_inverting" "PWM Inverting"
+    click E "PWM_inverting.md" "PWM Inverting"
+    click F "PWM_inverting.md" "PWM Inverting"
 
 
 ```
