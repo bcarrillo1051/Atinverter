@@ -1,11 +1,12 @@
 ---
 title: Home
 layout: default
+
 nav_order: 1
 ---
 
 # **Atinverter Documentation**
-### Explore the documentation to learn more about this open source power converter
+### Explore the documentation to learn more about this open source power converter!
 
 <html>
 <head>

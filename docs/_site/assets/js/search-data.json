@@ -6,123 +6,165 @@
     
     "relUrl": "/AV2software.html"
   },"1": {
+    "doc": "PWM Inverting",
+    "title": "PWM Inverting",
+    "content": ". ",
+    "url": "/PWM_inverting.html",
+    
+    "relUrl": "/PWM_inverting.html"
+  },"2": {
+    "doc": "Atinverter V1 Hardware",
+    "title": "test",
+    "content": " ",
+    "url": "/a_v1_hw.html#test",
+    
+    "relUrl": "/a_v1_hw.html#test"
+  },"3": {
     "doc": "Atinverter V1 Hardware",
     "title": "Atinverter V1 Hardware",
     "content": " ",
     "url": "/a_v1_hw.html",
     
     "relUrl": "/a_v1_hw.html"
-  },"2": {
+  },"4": {
     "doc": "Atinverter V2 Hardware",
     "title": "Atinverter V2 Hardware",
     "content": " ",
     "url": "/a_v2_hw.html",
     
     "relUrl": "/a_v2_hw.html"
-  },"3": {
+  },"5": {
     "doc": "Hardware",
     "title": "Hardware",
     "content": ". Atinverter Rev 1 Atinverter Rev 2 . ",
     "url": "/hardware.html",
     
     "relUrl": "/hardware.html"
-  },"4": {
+  },"6": {
     "doc": "Home",
     "title": "Atinverter Documentation",
-    "content": "Explore the documentation to learn more about this open source power converter . Vision Hardware Software . ",
+    "content": "Explore the documentation to learn more about this open source power converter! . Vision Hardware Software . ",
     "url": "/home.html#atinverter-documentation",
     
     "relUrl": "/home.html#atinverter-documentation"
-  },"5": {
+  },"7": {
     "doc": "Home",
     "title": "Home",
     "content": " ",
     "url": "/home.html",
     
     "relUrl": "/home.html"
-  },"6": {
+  },"8": {
     "doc": "Scratchpad",
     "title": "Testing",
     "content": ". highlight . X2 . X^2^ . H20 . ",
     "url": "/scratchpad.html#testing",
     
     "relUrl": "/scratchpad.html#testing"
-  },"7": {
+  },"9": {
     "doc": "Scratchpad",
     "title": "Italicizing and Bolding",
     "content": "Lorem ipsum . Lorem ipsum . lorem ipsum . :smile: 😀 . ",
     "url": "/scratchpad.html#italicizing-and-bolding",
     
     "relUrl": "/scratchpad.html#italicizing-and-bolding"
-  },"8": {
+  },"10": {
     "doc": "Scratchpad",
-    "title": "Code blocks",
+    "title": "Code  blocks",
     "content": "This is code . const a = 10; static var; . ",
-    "url": "/scratchpad.html#code-blocks",
+    "url": "/scratchpad.html#code--blocks",
     
-    "relUrl": "/scratchpad.html#code-blocks"
-  },"9": {
+    "relUrl": "/scratchpad.html#code--blocks"
+  },"11": {
     "doc": "Scratchpad",
     "title": "Creating a Link",
     "content": "Relative link within the directories: This is a link External Link: Arduino Docs . ",
     "url": "/scratchpad.html#creating-a-link",
     
     "relUrl": "/scratchpad.html#creating-a-link"
-  },"10": {
+  },"12": {
     "doc": "Scratchpad",
     "title": "Images",
     "content": ". hey test . oh my . sheesh . ",
     "url": "/scratchpad.html#images",
     
     "relUrl": "/scratchpad.html#images"
-  },"11": {
+  },"13": {
     "doc": "Scratchpad",
     "title": "Putting lines in between",
     "content": "hi . there . ",
     "url": "/scratchpad.html#putting-lines-in-between",
     
     "relUrl": "/scratchpad.html#putting-lines-in-between"
-  },"12": {
+  },"14": {
     "doc": "Scratchpad",
     "title": "Creating an ordered list of items",
     "content": ". | bananas | apples | durian | . ",
     "url": "/scratchpad.html#creating-an-ordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-ordered-list-of-items"
-  },"13": {
+  },"15": {
     "doc": "Scratchpad",
     "title": "Creating an unordered list of items",
     "content": ". | bananas | apples | durian . | cherries | . | . ",
     "url": "/scratchpad.html#creating-an-unordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-unordered-list-of-items"
-  },"14": {
+  },"16": {
     "doc": "Scratchpad",
     "title": "Tables",
-    "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . ",
+    "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . graph TD; accTitle: the diamond pattern accDescr: a graph with four nodes: A points to B and C, while B and C both point to D A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; C--&gt;A; D--&gt;E; E--&gt;A; E--&gt;B; . flowchart LR User(circle) --tcp/80 --&gt; LoadBalancer&gt;random shape] --tcp/1337 ---&gt; Webserver{rhombus} . flowchart LR subgraph PublicInternet User end subgraph LoadBalancingZone LoadBalancer end subgraph WebserverZone WebserverA WebserverB end User --tcp/80 --&gt; LoadBalancer LoadBalancer --&gt; WebserverA LoadBalancer --&gt; WebserverB WebserverA --&gt; DatabaseserverA WebserverA -.-&gt; DatabaseserverB WebserverB --&gt; DatabaseserverA WebserverB -.-&gt; DatabaseserverB . pie title A piechart \"SliceA\" : 5 \"SliceB\" : 15 . sankey-beta day, sleep, 8 day, work, 8 day, fun, 2 . A paragraph . Another paragraph . The last paragraph . ",
     "url": "/scratchpad.html#tables",
     
     "relUrl": "/scratchpad.html#tables"
-  },"15": {
+  },"17": {
     "doc": "Scratchpad",
     "title": "Scratchpad",
     "content": " ",
     "url": "/scratchpad.html",
     
     "relUrl": "/scratchpad.html"
-  },"16": {
+  },"18": {
     "doc": "Software",
     "title": "Software",
-    "content": ". A paragraph . ",
+    "content": ". The Atinverter codebase is composed of various modules, each contributing to distinct functionalities. The following diagram showcases the available features of the Atinverter codebase. Each box in the diagram is interactive, allowing you to click and explore detailed information about specific features. %%{init: {'theme':'base'}}%% flowchart TB subgraph Future G(Rectification) end subgraph Capabilities D(Blink) E(PWM Inverting 50Hz) F(PWM Inverting 60Hz) end subgraph Main C(Main) end subgraph Library A(AtintverterE.cpp) B(AtinverterE.h) end Library--&gt;Main Capabilities--&gt;Main %% Change color of arrow heads %%{init: {'themeVariables': {'lineColor': 'grey'}}}%% %% Apply color to the arrows %% 0: 1st arrow (Library --&gt; Main) 1: 2nd arrow (Capabilities --&gt; Main) linkStyle 0 stroke:grey, stroke-width:3px; linkStyle 1 stroke:grey, stroke-width:3px; %% Adding clickable links click E \"/PWM_inverting\" \"PWM Inverting\" click F \"/PWM_inverting\" \"PWM Inverting\" . ",
     "url": "/software.html",
     
     "relUrl": "/software.html"
-  },"17": {
+  },"19": {
+    "doc": "To-Do",
+    "title": "TO-DO",
+    "content": ". | Write the complete code for AtinverterE.cpp and AtinverterE.h | Find out what other capabilities the inverter can have | Make modifications to Atinverter PCB accounting for surface mount mosfet drivers and proper arduino pin connections | Solder the board again | . ",
+    "url": "/todo.html#to-do",
+    
+    "relUrl": "/todo.html#to-do"
+  },"20": {
+    "doc": "To-Do",
+    "title": "To-Do",
+    "content": " ",
+    "url": "/todo.html",
+    
+    "relUrl": "/todo.html"
+  },"21": {
     "doc": "Vision",
     "title": "Vision",
     "content": " ",
     "url": "/vision.html",
     
     "relUrl": "/vision.html"
+  },"22": {
+    "doc": "Vision",
+    "title": "Microgrid Significance",
+    "content": "Electricity traverses through a large network of interconnected transmission or distribution systems known as the power grid. With the ever-growing demand for electricity and reliable power grid consumption, grid congestion has been a more prominent phenomenon. This occurs when the power grid is unable to deliver the required power to meet demand, particularly from urban area or high demand loads. To alleviate stress on the power grid, microgrids-smaller localized electrical systems-can be employed. A microgrid typically consists of distributed generators and loads as well as energy storage systems, and can operate either in grid-connected or islanded mode. ",
+    "url": "/vision.html#microgrid-significance",
+    
+    "relUrl": "/vision.html#microgrid-significance"
+  },"23": {
+    "doc": "Vision",
+    "title": "EV Inspired PDA Microgrid and Open Source Platforms",
+    "content": "As Electric Vehicle (EV) infrastructure continues to develop and gain wider global acceptance, there is growing motivation not only to utilize these systems for transportation but, more importantly, to harness their microgrid capabilities. To more clearly understand this concept, we can consider a power distribution architecture (PDA) for EVs that can: . | intelligently transact power with the grid, | provide important grid-forming and grid-supporting services | share power in a peer-to-peer fashion with other EVs | act as a standalone microgrid that can interface with external AC and DC sources and loads. | operate and communicate between various open source power converters | . ",
+    "url": "/vision.html#ev-inspired-pda-microgrid-and-open-source-platforms",
+    
+    "relUrl": "/vision.html#ev-inspired-pda-microgrid-and-open-source-platforms"
   }
 }

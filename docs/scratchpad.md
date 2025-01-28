@@ -28,7 +28,7 @@ H<sub>2</sub>0
 :smile:  
 😀
 
-## Code blocks
+## Code  blocks
 This is `code`
 
 ``` c
@@ -77,3 +77,70 @@ there
 - [ ] hello, this is a todo item
 - [ ] hello, this is another todo item
 - [x] goodbye, this item is done
+
+
+
+
+
+```mermaid
+graph TD;
+    accTitle: the diamond pattern
+    accDescr: a graph with four nodes: A points to B and C, while B and C both point to D
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+    C-->A;
+    D-->E;
+    E-->A;
+    E-->B;
+```
+
+```mermaid
+   flowchart LR
+        User(circle) --tcp/80 --> LoadBalancer>random shape] --tcp/1337 ---> Webserver{rhombus}
+```
+
+```mermaid
+   flowchart LR
+        subgraph PublicInternet
+            User
+        end
+        subgraph LoadBalancingZone
+            LoadBalancer
+        end
+        subgraph WebserverZone
+            WebserverA
+            WebserverB
+        end
+
+        User --tcp/80 --> LoadBalancer
+        LoadBalancer --> WebserverA
+        LoadBalancer --> WebserverB
+
+        WebserverA --> DatabaseserverA
+        WebserverA -.-> DatabaseserverB
+        WebserverB --> DatabaseserverA
+        WebserverB -.-> DatabaseserverB
+```
+
+```mermaid
+    pie 
+        title A piechart
+        "SliceA" : 5
+        "SliceB" : 15
+```
+
+```mermaid
+    sankey-beta
+        day, sleep, 8
+        day, work, 8
+        day, fun, 2
+```
+
+> {: .new }
+> > A paragraph
+> >
+> > Another paragraph
+> >
+> > The last paragraph
