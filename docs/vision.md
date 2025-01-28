@@ -19,4 +19,4 @@ As Electric Vehicle (EV) infrastructure continues to develop and gain wider glob
 4. act as a standalone microgrid that can interface with external AC and DC sources and loads.
 5. operate and communicate between various open source power converters
 
-![PDMA](/images/EV_PDA.png) 
+![PDMA](images/EV_PDA.png) 

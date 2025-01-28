@@ -7,7 +7,7 @@ nav_order: 4
 
 # Testing
 
-![Yoshi](/images/yoshi.jpg)
+![Yoshi](images/yoshi.jpg)
 
 <mark>highlight</mark>
 
