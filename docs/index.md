@@ -36,7 +36,7 @@ nav_order: 1
       <img src="images/vision.png" alt="Vision Icon">
       <br>
       <span class="fs-6">
-      <a href="/vision" class="btn btn-purple">Vision</a>
+      <a href="vision" class="btn btn-purple">Vision</a>
       </span>
     </div>
 
@@ -45,7 +45,7 @@ nav_order: 1
       <img src="images/hardware.png" alt="Hardware Icon">
       <br>
       <span class="fs-6">
-      <a href="/hardware" class="btn btn-blue">Hardware</a>
+      <a href="hardware" class="btn btn-blue">Hardware</a>
       </span>
     </div>
 
@@ -54,7 +54,7 @@ nav_order: 1
       <img src="images/software.png" alt="Software Icon">
       <br>
       <span class="fs-6">
-      <a href="/software" class="btn btn-green">Software</a>
+      <a href="software" class="btn btn-green">Software</a>
       </span>
     </div>
   </div>
