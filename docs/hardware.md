@@ -35,7 +35,7 @@ nav_order: 3
       <img src="images/a_v1_front_view.jpg" alt="Atinverter V1">
       <br>
       <span class="fs-6">
-      <a href="a_v1_hw.md" class="btn btn-purple">Atinverter Rev 1</a>
+      <a href="a_v1_hw" class="btn btn-purple">Atinverter Rev 1</a>
       </span>
     </div>
 
@@ -44,7 +44,7 @@ nav_order: 3
       <img src="images/coming_soon.png" alt="Atinverter V2">
       <br>
       <span class="fs-6">
-      <a href="a_v2_hw.md" class="btn btn-green">Atinverter Rev 2</a>
+      <a href="a_v2_hw" class="btn btn-green">Atinverter Rev 2</a>
       </span>
     </div>
   </div>
