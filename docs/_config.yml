@@ -30,11 +30,15 @@ search:
   # Focus the search input by pressing `ctrl + focus_shortcut_key` (or `cmd + focus_shortcut_key` on macOS)
   focus_shortcut_key: 'k'
 
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+
 # --- Mermaid Diagrams ---
 mermaid:
   # Version of mermaid library
   # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
-  version: "9.1.3"
+  version: "11.4.0"
 
 # --- Aux links ---
 # Aux links for the upper right navigation

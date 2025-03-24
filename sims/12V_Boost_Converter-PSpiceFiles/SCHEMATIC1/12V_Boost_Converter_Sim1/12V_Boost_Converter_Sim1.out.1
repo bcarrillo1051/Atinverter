@@ -1,0 +1,815 @@
+
+**** 02/17/25 23:51:18 ******* PSpice 17.4.0 (Nov 2018) ******* ID# 0 ********
+
+ ** Profile: "SCHEMATIC1-12V_Boost_Converter_Sim1"  [ C:\Users\carri\OneDrive\Desktop\Master's Thesis\AtInverter\sims\12V_Boost_Conve
+
+
+ ****     CIRCUIT DESCRIPTION
+
+
+******************************************************************************
+
+
+
+
+** Creating circuit file "12V_Boost_Converter_Sim1.cir" 
+** WARNING: THIS AUTOMATICALLY GENERATED FILE MAY BE OVERWRITTEN BY SUBSEQUENT SIMULATIONS
+
+*Libraries: 
+* Profile Libraries :
+* Local Libraries :
+* From [PSPICE NETLIST] section of C:\cds_spb_home\cdssetup\OrCAD_PSpiceTIPSpice_Install\17.4.0\PSpice.ini file:
+.lib "nom_pspti.lib" 
+.lib "nom.lib" 
+
+*Analysis directives: 
+.TRAN  0 1000ns 0 
+.OPTIONS ADVCONV
+.OPTIONS FILEMODELSEARCH
+.PROBE64 V(alias(*)) I(alias(*)) W(alias(*)) D(alias(*)) NOISE(alias(*)) 
+.INC "..\SCHEMATIC1.net" 
+
+
+
+**** INCLUDING SCHEMATIC1.net ****
+* source 12V_BOOST_CONVERTER
+X_U1         N00218 N00218 0 N00186 N00285 N00417 TLV61046A_TRANS PARAMS:
++  STEADY=0
+V_V1         N00218 0 5Vdc
+L_L1         N00218 N00417  12uH  
+C_C1         0 N00218  3u  TC=0,0 
+R_R1         N00186 N00285  1M TC=0,0 
+R_R2         0 N00186  71.5k TC=0,0 
+C_C2         0 N00285  10u  TC=0,0 
+I_I1         N00285 0 DC 0.06Adc  
+
+**** RESUMING 12V_Boost_Converter_Sim1.cir ****
+.END
+
+WARNING(ORPSIM-15256): <X_U1.X_U1_U2.T> not a subcircuit param
+
+WARNING(ORPSIM-15256): <X_U1.X_U1_U1.T> not a subcircuit param
+
+**** 02/17/25 23:51:18 ******* PSpice 17.4.0 (Nov 2018) ******* ID# 0 ********
+
+ ** Profile: "SCHEMATIC1-12V_Boost_Converter_Sim1"  [ C:\Users\carri\OneDrive\Desktop\Master's Thesis\AtInverter\sims\12V_Boost_Conve
+
+
+ ****     Diode MODEL PARAMETERS
+
+
+******************************************************************************
+
+
+
+
+               D_D1            
+          IS    1.000000E-15 
+           N     .1          
+          RS     .05         
+          TT   10.000000E-12 
+
+
+**** 02/17/25 23:51:18 ******* PSpice 17.4.0 (Nov 2018) ******* ID# 0 ********
+
+ ** Profile: "SCHEMATIC1-12V_Boost_Converter_Sim1"  [ C:\Users\carri\OneDrive\Desktop\Master's Thesis\AtInverter\sims\12V_Boost_Conve
+
+
+ ****     Voltage Controlled Switch MODEL PARAMETERS
+
+
+******************************************************************************
+
+
+
+
+               X_U1.X_LOOP_S2._LOOP_S2 
+         RON    1.000000E-03 
+        ROFF    1.000000E+09 
+         VON     .55         
+        VOFF     .45         
+
+
+               X_U1.X_LOOP_S1._LOOP_S1         X_U1.X_S2._S2   
+         RON    1.000000E-03                    1.000000E-03 
+        ROFF    1.000000E+09                   10.000000E+09 
+         VON     .55                             .8          
+        VOFF     .45                             .2          
+
+
+               X_U1.X_U4_S6._U4_S6 
+         RON     .01         
+        ROFF    1.000000E+09 
+         VON     .8          
+        VOFF     .2          
+
+
+               X_U1.X_U4_S3._U4_S3 
+         RON     .85         
+        ROFF    1.000000E+09 
+         VON     .51         
+        VOFF     .5          
+
+
+               X_U1.X_U4_S1._U4_S1 
+         RON     .45         
+        ROFF    1.000000E+09 
+         VON     .51         
+        VOFF     .5          
+
+
+               X_U1.X_U4_S2._U4_S2 
+         RON    1.000000E-03 
+        ROFF    1.000000E+09 
+         VON     .51         
+        VOFF     .5          
+
+
+               X_U1.X_U4_S5._U4_S5 
+         RON     .01         
+        ROFF    1.000000E+09 
+         VON     .8          
+        VOFF     .2          
+
+
+               X_U1.X_U4_S4._U4_S4 
+         RON     .01         
+        ROFF    1.000000E+09 
+         VON     .8          
+        VOFF     .2          
+
+
+**** 02/17/25 23:51:18 ******* PSpice 17.4.0 (Nov 2018) ******* ID# 0 ********
+
+ ** Profile: "SCHEMATIC1-12V_Boost_Converter_Sim1"  [ C:\Users\carri\OneDrive\Desktop\Master's Thesis\AtInverter\sims\12V_Boost_Conve
+
+
+ ****     INITIAL TRANSIENT SOLUTION       TEMPERATURE =   27.000 DEG C
+
+
+******************************************************************************
+
+
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(N00186)    4.8638 (N00218)    5.0000 (N00285)    4.8638 (N00417)    5.0000     
+
+(X_U1.VO)    4.9149                   (X_U1.OVP)    0.0000                      
+
+(X_U1.VREF) 6.020E-12                 (X_U1.U2_BG)     .8000                    
+
+(X_U1.U2_SS) 6.020E-12                (X_U1.EN_CTL)    1.0000                   
+
+(X_U1.FB_INT) 34.77E-06               (X_U1.GATE_N)    0.0000                   
+
+(X_U1.N65324) 521.1E-06               (X_U1.PRE_SS)    1.0000                   
+
+(X_U1.TESTER)    0.0000               (X_U1.INT_TEST)    0.0000                 
+
+(X_U1.ISENSE_N) 5.005E-09             (X_U1.ISENSE_P)     .0601                 
+
+(X_U1.START_SW)    0.0000             (X_U1.U1_EN_OK)    1.0000                 
+
+(X_U1.U4_SHORT)    0.0000             (X_U1.LOOP_COMP)     .1987                
+
+(X_U1.N17016622)    1.0000            (X_U1.U1_N00226)    1.7500                
+
+(X_U1.U1_N00637)    1.0000            (X_U1.U1_VIN_OK)    1.0000                
+
+(X_U1.U4_N00219)    0.0000            (X_U1.U4_N24146)    4.8639                
+
+(X_U1.U4_N24200)    4.8639            (X_U1.X_U1_U1.1)    1.0000                
+
+(X_U1.X_U1_U2.1)    1.0000            (X_U1.LOOP_ICTRL)     .1390               
+
+(X_U1.PFM_DETECT)    0.0000           (X_U1.U1_N073550)     .6000               
+
+(X_U1.U1_N075853)     .2000           (X_U1.LOOP_LSD_ON) 999.0E-06              
+
+(X_U1.LOOP_THRESH)     .5000          (X_U1.U2_VREF_INT) 6.020E-12              
+
+(X_U1.U4_P_SS_BAR)    0.0000          (X_U1.X_U4_U7.vyy)    4.8639              
+
+(X_U1.X_U4_U7.vzz)    4.8638          (X_U1.LOOP_COMP_IN)    4.9970             
+
+(X_U1.LOOP_ISW_LSD)    0.0000         (X_U1.LOOP_RES_LAT)    0.0000             
+
+(X_U1.LOOP_SET_LAT)    1.0000         (X_U1.U2_N16744571)    0.0000             
+
+(X_U1.U2_N16745403)    2.5000         (X_U1.U2_N16746214)     .0750             
+
+(X_U1.U2_N16747625)     .0250         (X_U1.U2_VREF_FEED)    2.4105             
+
+(X_U1.U4_N16750328)     .0601         (X_U1.U4_N16808424)    1.0000             
+
+(X_U1.U4_N16834224)    1.0000         (X_U1.U4_N16834226)    1.0000             
+
+(X_U1.U4_N16908596)    1.0000         (X_U1.U4_N16912393)    1.0000             
+
+(X_U1.U4_N16915680)    0.0000         (X_U1.U4_N16916644) 5.005E-09             
+
+(X_U1.U4_N16921664)    4.9149         (X_U1.U4_N16932864)    1.0000             
+
+(X_U1.U4_N16954620)    0.0000         (X_U1.U4_N16954870)    0.0000             
+
+(X_U1.U4_N16967912)    4.9000         (X_U1.U4_N16990504)    4.9289             
+
+(X_U1.U4_N16995902)    4.8639         (X_U1.U4_N17002565)    4.9000             
+
+(X_U1.U4_N17006595)    0.0000         (X_U1.U4_N17013619)    0.0000             
+
+(X_U1.U4_N17013637)    0.0000         (X_U1.U4_N17017257)    0.0000             
+
+(X_U1.U4_N17023435)    0.0000         (X_U1.X_U1_U1.INM1)   -3.2500             
+
+(X_U1.X_U1_U1.INP1)    0.0000         (X_U1.X_U1_U1.INP2)     .2000             
+
+(X_U1.X_U1_U2.INM1)   -4.0000         (X_U1.X_U1_U2.INP1)    0.0000             
+
+(X_U1.X_U1_U2.INP2)     .6000         (X_U1.X_U1_U3.YINT)    1.0000             
+
+(X_U1.X_U4_U4.YINT)    1.0000         (X_U1.X_U4_U5.YINT)    1.0000             
+
+(X_U1.LOOP_COMP_OUT)    0.0000        (X_U1.LOOP_GATE_BAR)    0.0000            
+
+(X_U1.U2_SS_CUR_SRC) 3.000E-09        (X_U1.U4_N169123991)    1.0000            
+
+(X_U1.U4_N169328701)    1.0000        (X_U1.U4_SHORT_EXIT)    0.0000            
+
+(X_U1.X_LOOP_U36.Q1)     .5005        (X_U1.X_LOOP_U36.S1)    1.0000            
+
+(X_U1.X_LOOP_U37.Q1)    0.0000        (X_U1.X_LOOP_U37.S1) 999.0E-06            
+
+(X_U1.LOOP_N16631329)     .1987       (X_U1.LOOP_N16633757)     .5000           
+
+(X_U1.LOOP_N16634513)     .5000       (X_U1.LOOP_N16635953)    0.0000           
+
+(X_U1.LOOP_N16639333) 999.0E-06       (X_U1.LOOP_N16641040)     .1390           
+
+(X_U1.LOOP_N16680180)    1.0000       (X_U1.LOOP_N16680856)    0.0000           
+
+(X_U1.LOOP_N16682120)    0.0000       (X_U1.LOOP_N16682818)-3.508E-30           
+
+(X_U1.LOOP_N16688292)    1.0000       (X_U1.LOOP_N16691966)    0.0000           
+
+(X_U1.LOOP_N16691990)-770.0E-30       (X_U1.LOOP_N16692190)    1.0000           
+
+(X_U1.LOOP_N16707117)    0.0000       (X_U1.LOOP_N16763763)    0.0000           
+
+(X_U1.LOOP_N16792356)    0.0000       (X_U1.LOOP_N16792841)    0.0000           
+
+(X_U1.LOOP_N16885502)    1.7000       (X_U1.LOOP_N16889941) 999.0E-06           
+
+(X_U1.LOOP_N16895502)     .2600       (X_U1.LOOP_N16912086)   29.0000           
+
+(X_U1.LOOP_N16913651)    0.0000       (X_U1.LOOP_N16917727)    0.0000           
+
+(X_U1.LOOP_N17027035)     .8200       (X_U1.U4_CUR_LIM_VAR)     .0950           
+
+(X_U1.U4_SHORT_PULSE)    0.0000       (X_U1.X_LOOP_U36.QB1)    0.0000           
+
+(X_U1.X_LOOP_U37.QB1)    1.0000       (X_U1.LOOP_EN_CTL_BAR)    0.0000          
+
+(X_U1.PFM_CONTROL_VFB)    4.8638      (X_U1.X_LOOP_U32.Yint)    0.0000          
+
+(X_U1.X_LOOP_U33.Yint)    0.0000      (X_U1.X_LOOP_U35.Yint)    0.0000          
+
+(X_U1.X_LOOP_U52.YINT)    0.0000      (X_U1.X_LOOP_U54.YINT)    1.0000          
+
+(X_U1.X_LOOP_U55.YINT)    1.0000      (X_U1.X_LOOP_U56.YINT)    0.0000          
+
+(X_U1.X_LOOP_U57.YINT)    0.0000      (X_U1.X_LOOP_U61.YINT)    1.0000          
+
+(X_U1.X_LOOP_U62.YINT)    0.0000      (X_U1.X_LOOP_U63.YINT)    0.0000          
+
+(X_U1.X_LOOP_U65.YINT)    0.0000      (X_U1.X_LOOP_U66.YINT)    0.0000          
+
+(X_U1.X_LOOP_U67.YINT)    0.0000      (X_U1.LOOP_INT_FB_TEST)    4.8638         
+
+(X_U1.LOOP_LSD_TON_MIN)    0.0000     (X_U1.LOOP_VAL_CUR_LIM)     .8200         
+
+(X_U1.X_LOOP_U48.YINT1)    1.0000     (X_U1.X_LOOP_U48.YINT2)    1.0000         
+
+(X_U1.X_LOOP_U48.YINT3)    0.0000     (X_U1.X_LOOP_U49.YINT1)    0.0000         
+
+(X_U1.X_LOOP_U49.YINT2)    0.0000     (X_U1.X_LOOP_U49.YINT3)    1.0000         
+
+(X_U1.X_LOOP_U60.YINT1)    0.0000     (X_U1.X_LOOP_U60.YINT2)    0.0000         
+
+(X_U1.X_LOOP_U60.YINT3)    0.0000     (X_U1.PFM_CONTROL_N00986)    0.0000       
+
+(X_U1.PFM_CONTROL_N13643)    0.0000   (X_U1.PFM_CONTROL_N15079)    0.0000       
+
+(X_U1.PFM_CONTROL_N16193)    0.0000   (X_U1.PFM_CONTROL_N16233)    0.0000       
+
+(X_U1.PFM_CONTROL_N17990)    1.0000   (X_U1.PFM_CONTROL_N18764)    0.0000       
+
+(X_U1.PFM_CONTROL_N20363)    0.0000   (X_U1.PFM_CONTROL_N20875)    0.0000       
+
+(X_U1.PFM_CONTROL_PFM_END)    0.0000  (X_U1.PFM_CONTROL_PFM_BEGIN)    0.0000    
+
+(X_U1.X_PFM_CONTROL_U119.Q1)    0.0000                                          
+
+(X_U1.X_PFM_CONTROL_U119.S1)    0.0000                                          
+
+(X_U1.X_LOOP_U36.X_NOR1.YINT)    1.0000                                         
+
+(X_U1.X_LOOP_U36.X_NOR2.YINT)    0.0000                                         
+
+(X_U1.X_LOOP_U37.X_NOR1.YINT)    0.0000                                         
+
+(X_U1.X_LOOP_U37.X_NOR2.YINT)    1.0000                                         
+
+(X_U1.X_PFM_CONTROL_U119.QB1)    1.0000                                         
+
+(X_U1.PFM_CONTROL_VFB_GT_VREF) 200.0E-06                                        
+
+(X_U1.PFM_CONTROL_VFB_LT_VREF)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U122.YINT)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U614.YINT)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U615.YINT)    0.0000                                        
+
+(X_U1.PFM_CONTROL_PFM_DETECT_BAR)    1.0000                                     
+
+(X_U1.X_PFM_CONTROL_U119.X_NOR1.YINT)    0.0000                                 
+
+(X_U1.X_PFM_CONTROL_U119.X_NOR2.YINT)    1.0000          
+
+
+
+
+    VOLTAGE SOURCE CURRENTS
+    NAME         CURRENT
+
+    V_V1        -6.007E-02
+    X_U1.V_LOOP_V8   2.000E-05
+    X_U1.V_LOOP_V9  -1.502E-12
+    X_U1.V_LOOP_V10  -2.000E-05
+    X_U1.V_U1_V4   0.000E+00
+    X_U1.V_U1_V5   0.000E+00
+    X_U1.V_U1_V3   0.000E+00
+    X_U1.V_U1_V2   0.000E+00
+    X_U1.V_U2_V2   4.473E+01
+    X_U1.V_U2_V1   2.387E-12
+    X_U1.V_U4_V8  -6.007E-02
+    X_U1.X_U4_H1.VH_U4_H1   5.005E-09
+    X_U1.X_U4_U7.V1   6.001E-05
+    X_U1.X_U4_H2.VH_U4_H2   6.007E-02
+
+    TOTAL POWER DISSIPATION  -3.05E+00  WATTS
+
+
+ERROR(ORPSIM-15138): Convergence problem in Transient Analysis at Time =  4.476E-09.
+         Time step =  129.5E-21, minimum allowable step size =  1.000E-18
+
+  These voltages failed to converge:
+
+    V(X_U1.X_U4_U7.vzz)       =     4.859V  \     4.867V
+
+  These supply currents failed to converge:
+
+    I(V_V1)                   =   -62.50mA  \   -58.59mA
+    I(X_U1.V_U2_V1)           =   914.12pA  \   457.11pA
+    I(X_U1.V_U4_V8)           =  -583.91nA  \  -291.92nA
+    I(X_U1.X_U4_U7.V1)        =    4.440mA  \   -3.365mA
+
+
+
+  Last node voltages tried were:
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(N00186)    4.8638 (N00218)    5.0000 (N00285)    4.8638 (N00417)     .0270     
+
+(X_U1.VO)    4.8638                   (X_U1.OVP)    0.0000                      
+
+(X_U1.VREF) 718.6E-09                 (X_U1.U2_BG)     .8000                    
+
+(X_U1.U2_SS) 718.6E-09                (X_U1.EN_CTL)    1.0000                   
+
+(X_U1.FB_INT) 34.77E-06               (X_U1.GATE_N)     .5102                   
+
+(X_U1.N65324) 521.1E-06               (X_U1.PRE_SS)    1.0000                   
+
+(X_U1.TESTER)    0.0000               (X_U1.INT_TEST)    0.0000                 
+
+(X_U1.ISENSE_N) 234.0E-06             (X_U1.ISENSE_P)     .0598                 
+
+(X_U1.START_SW)     .1397             (X_U1.U1_EN_OK)    1.0000                 
+
+(X_U1.U4_SHORT)    0.0000             (X_U1.LOOP_COMP)     .1987                
+
+(X_U1.N17016622)     .4118            (X_U1.U1_N00226)    1.7500                
+
+(X_U1.U1_N00637)    1.0000            (X_U1.U1_VIN_OK)    1.0000                
+
+(X_U1.U4_N00219)    0.0000            (X_U1.U4_N24146)    4.8638                
+
+(X_U1.U4_N24200)    4.8638            (X_U1.X_U1_U1.1)    1.0000                
+
+(X_U1.X_U1_U2.1)    1.0000            (X_U1.LOOP_ICTRL)     .1390               
+
+(X_U1.PFM_DETECT)    0.0000           (X_U1.U1_N073550)     .6000               
+
+(X_U1.U1_N075853)     .2000           (X_U1.LOOP_LSD_ON)     .8288              
+
+(X_U1.LOOP_THRESH)     .5000          (X_U1.U2_VREF_INT) 718.6E-09              
+
+(X_U1.U4_P_SS_BAR)    0.0000          (X_U1.X_U4_U7.vyy)    4.8638              
+
+(X_U1.X_U4_U7.vzz)    4.8594          (X_U1.LOOP_COMP_IN) 9.486E-12             
+
+(X_U1.LOOP_ISW_LSD)    0.0000         (X_U1.LOOP_RES_LAT)    0.0000             
+
+(X_U1.LOOP_SET_LAT)    1.0000         (X_U1.U2_N16744571)    0.0000             
+
+(X_U1.U2_N16745403)    2.5000         (X_U1.U2_N16746214)     .0750             
+
+(X_U1.U2_N16747625)     .0250         (X_U1.U2_VREF_FEED)     .1358             
+
+(X_U1.U4_N16750328)-328.7E-06         (X_U1.U4_N16808424)    1.0000             
+
+(X_U1.U4_N16834224)    1.0000         (X_U1.U4_N16834226)    1.0000             
+
+(X_U1.U4_N16908596)    1.0000         (X_U1.U4_N16912393)    1.0000             
+
+(X_U1.U4_N16915680)    0.0000         (X_U1.U4_N16916644)     .0601             
+
+(X_U1.U4_N16921664)    4.8638         (X_U1.U4_N16932864)    1.0000             
+
+(X_U1.U4_N16954620)    0.0000         (X_U1.U4_N16954870)    0.0000             
+
+(X_U1.U4_N16967912)    4.9000         (X_U1.U4_N16990504)    4.9289             
+
+(X_U1.U4_N16995902)    4.8639         (X_U1.U4_N17002565)    4.9000             
+
+(X_U1.U4_N17006595)    0.0000         (X_U1.U4_N17013619)    0.0000             
+
+(X_U1.U4_N17013637)    0.0000         (X_U1.U4_N17017257)    0.0000             
+
+(X_U1.U4_N17023435)    0.0000         (X_U1.X_U1_U1.INM1)   -3.2500             
+
+(X_U1.X_U1_U1.INP1)    0.0000         (X_U1.X_U1_U1.INP2)     .2000             
+
+(X_U1.X_U1_U2.INM1)   -4.0000         (X_U1.X_U1_U2.INP1)    0.0000             
+
+(X_U1.X_U1_U2.INP2)     .6000         (X_U1.X_U1_U3.YINT)    1.0000             
+
+(X_U1.X_U4_U4.YINT)    1.0000         (X_U1.X_U4_U5.YINT)    1.0000             
+
+(X_U1.LOOP_COMP_OUT)    0.0000        (X_U1.LOOP_GATE_BAR)    0.0000            
+
+(X_U1.U2_SS_CUR_SRC) 3.000E-09        (X_U1.U4_N169123991)    1.0000            
+
+(X_U1.U4_N169328701)    1.0000        (X_U1.U4_SHORT_EXIT)    0.0000            
+
+(X_U1.X_LOOP_U36.Q1)     .8942        (X_U1.X_LOOP_U36.S1)    1.0000            
+
+(X_U1.X_LOOP_U37.Q1)     .4078        (X_U1.X_LOOP_U37.S1)     .8288            
+
+(X_U1.LOOP_N16631329)     .1987       (X_U1.LOOP_N16633757) 279.9E-12           
+
+(X_U1.LOOP_N16634513)     .4997       (X_U1.LOOP_N16635953)     .9316           
+
+(X_U1.LOOP_N16639333)     .0190       (X_U1.LOOP_N16641040)     .1390           
+
+(X_U1.LOOP_N16680180)     .1258       (X_U1.LOOP_N16680856)    0.0000           
+
+(X_U1.LOOP_N16682120)    0.0000       (X_U1.LOOP_N16682818)-3.411E-30           
+
+(X_U1.LOOP_N16688292)     .2350       (X_U1.LOOP_N16691966)     .7551           
+
+(X_U1.LOOP_N16691990)     .6649       (X_U1.LOOP_N16692190)    1.0000           
+
+(X_U1.LOOP_N16707117)    0.0000       (X_U1.LOOP_N16763763) 6.027E-12           
+
+(X_U1.LOOP_N16792356)    0.0000       (X_U1.LOOP_N16792841)    0.0000           
+
+(X_U1.LOOP_N16885502)    1.7000       (X_U1.LOOP_N16889941)     .8288           
+
+(X_U1.LOOP_N16895502)     .2600       (X_U1.LOOP_N16912086)   29.0000           
+
+(X_U1.LOOP_N16913651)    0.0000       (X_U1.LOOP_N16917727)    0.0000           
+
+(X_U1.LOOP_N17027035)     .8200       (X_U1.U4_CUR_LIM_VAR)     .0950           
+
+(X_U1.U4_SHORT_PULSE)    0.0000       (X_U1.X_LOOP_U36.QB1)    0.0000           
+
+(X_U1.X_LOOP_U37.QB1)     .2546       (X_U1.LOOP_EN_CTL_BAR)    0.0000          
+
+(X_U1.PFM_CONTROL_VFB)    4.8638      (X_U1.X_LOOP_U32.Yint)    0.0000          
+
+(X_U1.X_LOOP_U33.Yint)    1.0000      (X_U1.X_LOOP_U35.Yint)    0.0000          
+
+(X_U1.X_LOOP_U52.YINT)    0.0000      (X_U1.X_LOOP_U54.YINT)    1.0000          
+
+(X_U1.X_LOOP_U55.YINT)    0.0000      (X_U1.X_LOOP_U56.YINT)    1.0000          
+
+(X_U1.X_LOOP_U57.YINT)    0.0000      (X_U1.X_LOOP_U61.YINT)    0.0000          
+
+(X_U1.X_LOOP_U62.YINT)    1.0000      (X_U1.X_LOOP_U63.YINT)    1.0000          
+
+(X_U1.X_LOOP_U65.YINT)    0.0000      (X_U1.X_LOOP_U66.YINT)    0.0000          
+
+(X_U1.X_LOOP_U67.YINT)    0.0000      (X_U1.LOOP_INT_FB_TEST)    4.8638         
+
+(X_U1.LOOP_LSD_TON_MIN)     .9367     (X_U1.LOOP_VAL_CUR_LIM)     .8200         
+
+(X_U1.X_LOOP_U48.YINT1)    0.0000     (X_U1.X_LOOP_U48.YINT2)     .9466         
+
+(X_U1.X_LOOP_U48.YINT3)    0.0000     (X_U1.X_LOOP_U49.YINT1)    1.0000         
+
+(X_U1.X_LOOP_U49.YINT2)     .0998     (X_U1.X_LOOP_U49.YINT3)    1.0000         
+
+(X_U1.X_LOOP_U60.YINT1)    1.0000     (X_U1.X_LOOP_U60.YINT2)     .0578         
+
+(X_U1.X_LOOP_U60.YINT3)    0.0000     (X_U1.PFM_CONTROL_N00986)    0.0000       
+
+(X_U1.PFM_CONTROL_N13643)    0.0000   (X_U1.PFM_CONTROL_N15079)    0.0000       
+
+(X_U1.PFM_CONTROL_N16193)    0.0000   (X_U1.PFM_CONTROL_N16233)    0.0000       
+
+(X_U1.PFM_CONTROL_N17990)    1.0000   (X_U1.PFM_CONTROL_N18764)    0.0000       
+
+(X_U1.PFM_CONTROL_N20363)    0.0000   (X_U1.PFM_CONTROL_N20875)    0.0000       
+
+(X_U1.PFM_CONTROL_PFM_END)    0.0000  (X_U1.PFM_CONTROL_PFM_BEGIN)    0.0000    
+
+(X_U1.X_PFM_CONTROL_U119.Q1)    0.0000                                          
+
+(X_U1.X_PFM_CONTROL_U119.S1)    0.0000                                          
+
+(X_U1.X_LOOP_U36.X_NOR1.YINT)    1.0000                                         
+
+(X_U1.X_LOOP_U36.X_NOR2.YINT)    0.0000                                         
+
+(X_U1.X_LOOP_U37.X_NOR1.YINT)    1.0000                                         
+
+(X_U1.X_LOOP_U37.X_NOR2.YINT)    0.0000                                         
+
+(X_U1.X_PFM_CONTROL_U119.QB1)    1.0000                                         
+
+(X_U1.PFM_CONTROL_VFB_GT_VREF)     .3609                                        
+
+(X_U1.PFM_CONTROL_VFB_LT_VREF)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U122.YINT)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U614.YINT)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U615.YINT)    0.0000                                        
+
+(X_U1.PFM_CONTROL_PFM_DETECT_BAR)    1.0000                                     
+
+(X_U1.X_PFM_CONTROL_U119.X_NOR1.YINT)    0.0000                                 
+
+(X_U1.X_PFM_CONTROL_U119.X_NOR2.YINT)    1.0000          
+
+
+**** Interrupt ****
+**** Param: RELTOL = 0.001
+**** Param: ABSTOL = 1e-12
+**** Param: VNTOL = 1e-06
+**** Param: GMIN = 1e-12
+**** Param: TSTOP = 1e-06
+**** Param: TMAX = 0
+**** Param: ITL1 = 150
+**** Param: ITL2 = 20
+**** Param: ITL4 = 100
+**** Param: AutoConverge = 0
+**** Param: AutoConverge.ITL1 = 1000
+**** Param: AutoConverge.ITL2 = 1000
+**** Param: AutoConverge.ITL4 = 1000
+**** Param: AutoConverge.RELTOL = 0.05
+**** Param: AutoConverge.ABSTOL = 0.001
+**** Param: AutoConverge.VNTOL = 0.001
+**** Param: AutoConverge.PIVTOL = 1e-10
+**** Param: ADVCONV = 1
+**** Param: Current_Simulation = 3
+**** Param: METHOD = 0
+**** Param: TRTOL = 7
+**** Param: STEPGMIN = 0
+**** Param: GMINSTEPS = 0
+**** Param: ITL6 = 0
+**** Param: NOSTEPDEP = 0
+**** Param: PTRANSTEP = 0
+**** Param: GMINSRC = 0
+**** Param: PSEUDOTRAN = 0
+**** Param: NOSTEPSRC = 0
+
+ERROR(ORPSIM-15138): Convergence problem in Transient Analysis at Time =  4.476E-09.
+         Time step =  259.1E-21, minimum allowable step size =  1.000E-18
+
+  These voltages failed to converge:
+
+    V(X_U1.U4_N16750328)      =    3.578mV  \  -328.70uV
+
+  These supply currents failed to converge:
+
+    I(X_U1.E_LOOP_ABM1)       =   -1.587pA  \   373.63fA
+    I(V_V1)                   =   -61.52mA  \   -58.59mA
+    I(X_U1.X_U4_U7.V1)        =   541.13uA  \   -3.365mA
+    I(X_U1.X_U4_H2.VH_U4_H2)  =    3.578mA  \  -328.70uA
+    I(X_U1.X_U4_H2.H_U4_H2)   =    11.25mA  \    12.03mA
+
+
+
+  Last node voltages tried were:
+
+ NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE     NODE   VOLTAGE
+
+
+(N00186)    4.8638 (N00218)    5.0000 (N00285)    4.8638 (N00417)     .0270     
+
+(X_U1.VO)    4.8638                   (X_U1.OVP)    0.0000                      
+
+(X_U1.VREF) 718.6E-09                 (X_U1.U2_BG)     .8000                    
+
+(X_U1.U2_SS) 718.6E-09                (X_U1.EN_CTL)    1.0000                   
+
+(X_U1.FB_INT) 34.77E-06               (X_U1.GATE_N)     .5102                   
+
+(X_U1.N65324) 521.1E-06               (X_U1.PRE_SS)    1.0000                   
+
+(X_U1.TESTER)    0.0000               (X_U1.INT_TEST)    0.0000                 
+
+(X_U1.ISENSE_N) 234.0E-06             (X_U1.ISENSE_P)     .0598                 
+
+(X_U1.START_SW)     .1397             (X_U1.U1_EN_OK)    1.0000                 
+
+(X_U1.U4_SHORT)    0.0000             (X_U1.LOOP_COMP)     .1987                
+
+(X_U1.N17016622)     .4118            (X_U1.U1_N00226)    1.7500                
+
+(X_U1.U1_N00637)    1.0000            (X_U1.U1_VIN_OK)    1.0000                
+
+(X_U1.U4_N00219)    0.0000            (X_U1.U4_N24146)    4.8638                
+
+(X_U1.U4_N24200)    4.8638            (X_U1.X_U1_U1.1)    1.0000                
+
+(X_U1.X_U1_U2.1)    1.0000            (X_U1.LOOP_ICTRL)     .1390               
+
+(X_U1.PFM_DETECT)    0.0000           (X_U1.U1_N073550)     .6000               
+
+(X_U1.U1_N075853)     .2000           (X_U1.LOOP_LSD_ON)     .8288              
+
+(X_U1.LOOP_THRESH)     .5000          (X_U1.U2_VREF_INT) 718.6E-09              
+
+(X_U1.U4_P_SS_BAR)    0.0000          (X_U1.X_U4_U7.vyy)    4.8638              
+
+(X_U1.X_U4_U7.vzz)    4.8633          (X_U1.LOOP_COMP_IN) 9.489E-12             
+
+(X_U1.LOOP_ISW_LSD)    0.0000         (X_U1.LOOP_RES_LAT)    0.0000             
+
+(X_U1.LOOP_SET_LAT)    1.0000         (X_U1.U2_N16744571)    0.0000             
+
+(X_U1.U2_N16745403)    2.5000         (X_U1.U2_N16746214)     .0750             
+
+(X_U1.U2_N16747625)     .0250         (X_U1.U2_VREF_FEED)     .1358             
+
+(X_U1.U4_N16750328)     .0036         (X_U1.U4_N16808424)    1.0000             
+
+(X_U1.U4_N16834224)    1.0000         (X_U1.U4_N16834226)    1.0000             
+
+(X_U1.U4_N16908596)    1.0000         (X_U1.U4_N16912393)    1.0000             
+
+(X_U1.U4_N16915680)    0.0000         (X_U1.U4_N16916644)     .0601             
+
+(X_U1.U4_N16921664)    4.8638         (X_U1.U4_N16932864)    1.0000             
+
+(X_U1.U4_N16954620)    0.0000         (X_U1.U4_N16954870)    0.0000             
+
+(X_U1.U4_N16967912)    4.9000         (X_U1.U4_N16990504)    4.9289             
+
+(X_U1.U4_N16995902)    4.8639         (X_U1.U4_N17002565)    4.9000             
+
+(X_U1.U4_N17006595)    0.0000         (X_U1.U4_N17013619)    0.0000             
+
+(X_U1.U4_N17013637)    0.0000         (X_U1.U4_N17017257)    0.0000             
+
+(X_U1.U4_N17023435)    0.0000         (X_U1.X_U1_U1.INM1)   -3.2500             
+
+(X_U1.X_U1_U1.INP1)    0.0000         (X_U1.X_U1_U1.INP2)     .2000             
+
+(X_U1.X_U1_U2.INM1)   -4.0000         (X_U1.X_U1_U2.INP1)    0.0000             
+
+(X_U1.X_U1_U2.INP2)     .6000         (X_U1.X_U1_U3.YINT)    1.0000             
+
+(X_U1.X_U4_U4.YINT)    1.0000         (X_U1.X_U4_U5.YINT)    1.0000             
+
+(X_U1.LOOP_COMP_OUT)    0.0000        (X_U1.LOOP_GATE_BAR)    0.0000            
+
+(X_U1.U2_SS_CUR_SRC) 3.000E-09        (X_U1.U4_N169123991)    1.0000            
+
+(X_U1.U4_N169328701)    1.0000        (X_U1.U4_SHORT_EXIT)    0.0000            
+
+(X_U1.X_LOOP_U36.Q1)     .8942        (X_U1.X_LOOP_U36.S1)    1.0000            
+
+(X_U1.X_LOOP_U37.Q1)     .4078        (X_U1.X_LOOP_U37.S1)     .8288            
+
+(X_U1.LOOP_N16631329)     .1987       (X_U1.LOOP_N16633757) 279.9E-12           
+
+(X_U1.LOOP_N16634513)     .4997       (X_U1.LOOP_N16635953)     .9316           
+
+(X_U1.LOOP_N16639333)     .0190       (X_U1.LOOP_N16641040)     .1390           
+
+(X_U1.LOOP_N16680180)     .1258       (X_U1.LOOP_N16680856)    0.0000           
+
+(X_U1.LOOP_N16682120)    0.0000       (X_U1.LOOP_N16682818)-3.411E-30           
+
+(X_U1.LOOP_N16688292)     .2350       (X_U1.LOOP_N16691966)     .7551           
+
+(X_U1.LOOP_N16691990)     .6649       (X_U1.LOOP_N16692190)    1.0000           
+
+(X_U1.LOOP_N16707117)    0.0000       (X_U1.LOOP_N16763763) 23.06E-12           
+
+(X_U1.LOOP_N16792356)    0.0000       (X_U1.LOOP_N16792841)    0.0000           
+
+(X_U1.LOOP_N16885502)    1.7000       (X_U1.LOOP_N16889941)     .8288           
+
+(X_U1.LOOP_N16895502)     .2600       (X_U1.LOOP_N16912086)   29.0000           
+
+(X_U1.LOOP_N16913651)    0.0000       (X_U1.LOOP_N16917727)    0.0000           
+
+(X_U1.LOOP_N17027035)     .8200       (X_U1.U4_CUR_LIM_VAR)     .0950           
+
+(X_U1.U4_SHORT_PULSE)    0.0000       (X_U1.X_LOOP_U36.QB1)    0.0000           
+
+(X_U1.X_LOOP_U37.QB1)     .2546       (X_U1.LOOP_EN_CTL_BAR)    0.0000          
+
+(X_U1.PFM_CONTROL_VFB)    4.8638      (X_U1.X_LOOP_U32.Yint)    0.0000          
+
+(X_U1.X_LOOP_U33.Yint)    1.0000      (X_U1.X_LOOP_U35.Yint)    0.0000          
+
+(X_U1.X_LOOP_U52.YINT)    0.0000      (X_U1.X_LOOP_U54.YINT)    1.0000          
+
+(X_U1.X_LOOP_U55.YINT)    0.0000      (X_U1.X_LOOP_U56.YINT)    1.0000          
+
+(X_U1.X_LOOP_U57.YINT)    0.0000      (X_U1.X_LOOP_U61.YINT)    0.0000          
+
+(X_U1.X_LOOP_U62.YINT)    1.0000      (X_U1.X_LOOP_U63.YINT)    1.0000          
+
+(X_U1.X_LOOP_U65.YINT)    0.0000      (X_U1.X_LOOP_U66.YINT)    0.0000          
+
+(X_U1.X_LOOP_U67.YINT)    0.0000      (X_U1.LOOP_INT_FB_TEST)    4.8638         
+
+(X_U1.LOOP_LSD_TON_MIN)     .9367     (X_U1.LOOP_VAL_CUR_LIM)     .8200         
+
+(X_U1.X_LOOP_U48.YINT1)    0.0000     (X_U1.X_LOOP_U48.YINT2)     .9466         
+
+(X_U1.X_LOOP_U48.YINT3)    0.0000     (X_U1.X_LOOP_U49.YINT1)    1.0000         
+
+(X_U1.X_LOOP_U49.YINT2)     .0998     (X_U1.X_LOOP_U49.YINT3)    1.0000         
+
+(X_U1.X_LOOP_U60.YINT1)    1.0000     (X_U1.X_LOOP_U60.YINT2)     .0578         
+
+(X_U1.X_LOOP_U60.YINT3)    0.0000     (X_U1.PFM_CONTROL_N00986)    0.0000       
+
+(X_U1.PFM_CONTROL_N13643)    0.0000   (X_U1.PFM_CONTROL_N15079)    0.0000       
+
+(X_U1.PFM_CONTROL_N16193)    0.0000   (X_U1.PFM_CONTROL_N16233)    0.0000       
+
+(X_U1.PFM_CONTROL_N17990)    1.0000   (X_U1.PFM_CONTROL_N18764)    0.0000       
+
+(X_U1.PFM_CONTROL_N20363)    0.0000   (X_U1.PFM_CONTROL_N20875)    0.0000       
+
+(X_U1.PFM_CONTROL_PFM_END)    0.0000  (X_U1.PFM_CONTROL_PFM_BEGIN)    0.0000    
+
+(X_U1.X_PFM_CONTROL_U119.Q1)    0.0000                                          
+
+(X_U1.X_PFM_CONTROL_U119.S1)    0.0000                                          
+
+(X_U1.X_LOOP_U36.X_NOR1.YINT)    1.0000                                         
+
+(X_U1.X_LOOP_U36.X_NOR2.YINT)    0.0000                                         
+
+(X_U1.X_LOOP_U37.X_NOR1.YINT)    1.0000                                         
+
+(X_U1.X_LOOP_U37.X_NOR2.YINT)    0.0000                                         
+
+(X_U1.X_PFM_CONTROL_U119.QB1)    1.0000                                         
+
+(X_U1.PFM_CONTROL_VFB_GT_VREF)     .3609                                        
+
+(X_U1.PFM_CONTROL_VFB_LT_VREF)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U122.YINT)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U614.YINT)    0.0000                                        
+
+(X_U1.X_PFM_CONTROL_U615.YINT)    0.0000                                        
+
+(X_U1.PFM_CONTROL_PFM_DETECT_BAR)    1.0000                                     
+
+(X_U1.X_PFM_CONTROL_U119.X_NOR1.YINT)    0.0000                                 
+
+(X_U1.X_PFM_CONTROL_U119.X_NOR2.YINT)    1.0000          
+
+
+**** Interrupt ****

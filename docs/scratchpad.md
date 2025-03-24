@@ -9,6 +9,8 @@ nav_order: 4
 
 ![Yoshi](images/yoshi.jpg)
 
+This sentence uses `$` delimiters to show math inline: $\sqrt{3x-1}+(1+x)^2$
+
 <mark>highlight</mark>
 
 X<sup>2</sup>

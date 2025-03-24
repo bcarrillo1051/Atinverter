@@ -1,0 +1,44 @@
+#,Reference,Value,Footprint,Qty
+1,HeaderFTDI1,Conn_01x06_Male,Atinverter_v1_footprint_lib:FTDI_USB_TTL_Header,1
+2,JVcc1,Conn_02x03_Odd_Even,Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical,1
+3,L1,22uH,Atinverter_v1_footprint_lib:IND_BOURNS_SDR0403,1
+4,MCU1,ATmega328P-PU,Package_DIP:DIP-28_W7.62mm_Socket,1
+5,PiConnector1,Raspberry_Pi_2_3,Atinverter_v1_footprint_lib:Raspberry_Pi_Zero_and_Four,1
+6,Rfbb1,71.5kΩ,Resistor_SMD:R_0805_2012Metric,1
+7,Rfbt1,1MΩ,Resistor_SMD:R_0805_2012Metric,1
+8,RLEDa1,R_Array,Resistor_THT:R_Array_SIP8,1
+9,Rp1,33kΩ,Resistor_SMD:R_1206_3216Metric,1
+10,Rpu5,200kΩ,Resistor_SMD:R_1206_3216Metric,1
+11,Rs1,100Ω,Resistor_SMD:R_1206_3216Metric,1
+12,Rtune1,R_Potentiometer,Atinverter_v1_footprint_lib:TC33X-2-104E_BRN,1
+13,Rvs1,120kΩ,Resistor_SMD:R_1206_3216Metric,1
+14,T1,ZMPT101B,Atinverter_v1_footprint_lib:XFMR_ZMPT101B,1
+15,U1,LM358N,Atinverter_v1_footprint_lib:D8,1
+16,U2,74LVC1G32,Atinverter_v1_footprint_lib:DBV5,1
+17,U3,LM393,Atinverter_v1_footprint_lib:SO8_STM,1
+18,U4,LSF0102DCUR,Atinverter_v1_footprint_lib:DCU0008A_L,1
+19,U5,ADC122S021CIMM,Atinverter_v1_footprint_lib:MUA08A,1
+20,U10,TLV61046ADB,Package_TO_SOT_SMD:SOT-23-6,1
+21,U11,R-78HE5.0-0.3,Atinverter_v1_footprint_lib:R-78HE-0.3_SIP3_11.5X8.5X12.5_RCP,1
+22,Xtal16MHz1,16MHz,Crystal:Resonator-2Pin_W10.0mm_H5.0mm,1
+23,"AC_OUT1,DC_IN1",Screw_Terminal_01x02,Atinverter_v1_footprint_lib:Term_Block_1x2_P5mm,2
+24,"Cdec1,Cdec2",4.7uF,Capacitor_SMD:C_1206_3216Metric,2
+25,"Cfil1,Cfil2",22uF,Atinverter_v1_footprint_lib:CAP_BX_10x16_RUB,2
+26,"Clp1,Clp2",1nF,Capacitor_SMD:C_1206_3216Metric,2
+27,"Cosc1,Cosc2",22pF,Capacitor_SMD:C_1206_3216Metric,2
+28,"Dboot1,Dboot2",BAT46,Diode_SMD:D_SOD-123,2
+29,"LED1,LED2",LED,Atinverter_v1_footprint_lib:LED_3pin_P2.54mm,2
+30,"Lfil1,Lfil2",220uH,Atinverter_v1_footprint_lib:AIRD-02_ABR,2
+31,"RproPD1,RproPU1",R_Network05,Resistor_THT:R_Array_SIP6,2
+32,"U6,U7",TMCS1108A4BQDR,Atinverter_v1_footprint_lib:D0008A-IPC_A,2
+33,"U8,U9",IR2302,Atinverter_v1_footprint_lib:PG-DSO-8-910_INF,2
+34,"Cdec3,CDTR1,Cfil3",0.1uF,-- mixed values --,3
+35,"RcompP1,Rfb1,Rfb2",100kΩ,Resistor_SMD:R_1206_3216Metric,3
+36,"Cin1,Cin2,Csup1,Csup2",2.2uF,-- mixed values --,4
+37,"Q1,Q2,Q3,Q4",IRFB4020PBF,Package_TO_SOT_THT:TO-220-3_Vertical,4
+38,"Rdamp1,Rdamp2,Rdamp3,Rdamp4",8.2Ω,Resistor_SMD:R_1206_3216Metric,4
+39,"Rpu1,Rpu2,Rpu3,Rpu4",4.7kΩ,Resistor_SMD:R_1206_3216Metric,4
+40,"AC+1,AC-1,GND1,GND2,HeaderDC1",Conn_01x02_Pin,Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical,5
+41,"Cboot1,Cboot2,Ccoup1,Ccoup2,Cdec4,Cout1,Cout2",1uF,-- mixed values --,7
+42,"Rbias1,Rbias2,Rbias3,Rbias4,RDTR1,Rin1,Rin2,Rvs2",10kΩ,Resistor_SMD:R_1206_3216Metric,8
+43,"!CS1,!GateSD1,Amp_Out1,G_Q1,G_Q2,G_Q3,G_Q4,IAC1,IDC1,Load_s+1,MISO1,MOSI1,ProReset1,PWM+_1,PWM-1,PWMA1,PWMB1,P_AC+_1,P_AC-_1,SCL1,SCL2,SCLK1,SDA1,SDA2,S_AC+_1,S_AC-_1,VAC1,Vcc1,VDC1",Conn_01x01_Male,Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical,29

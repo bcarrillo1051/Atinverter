@@ -1,0 +1,107 @@
+(ExpressProject "12V_Boost_Converter"
+  (ProjectVersion "19981106")
+  (SoftwareVersion "17.4-2023 S009-[02/18/25]")
+  (ProjectType "Analog or A/D Mixed Mode")
+  (Folder "Design Resources"
+    (Folder "Library")
+    ("Allegro Netlist Directory" "allegro")
+    (DOCKED "TRUE")
+    (DOCKING_POSITION "59420")
+    (NoModify)
+    (File ".\12v_boost_converter.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (PSPICE_Regenerate_Netlist_Flag "FALSE"))
+  (Folder "Layout")
+  (Folder "Outputs"
+    (File ".\12v_boost_converter-pspicefiles\schematic1\schematic1.net"
+      (Type "Report")))
+  (Folder "PSpice Resources"
+    (Folder "Simulation Profiles"
+      (File.PSpice.{09528990-3187-11D2-BC7B-00A0C90CBF91}
+         ".\12v_boost_converter-pspicefiles\schematic1\12v_boost_converter_sim1.sim"
+        (DisplayName "SCHEMATIC1-12V_Boost_Converter_Sim1")
+        (Type "PSpice Profile"))
+      (ActiveProfile
+         ".\12v_boost_converter-pspicefiles\schematic1\12v_boost_converter_sim2.sim")
+      (File.PSpice.{09528990-3187-11D2-BC7B-00A0C90CBF91}
+         ".\12v_boost_converter-pspicefiles\schematic1\12v_boost_converter_sim2.sim"
+        (DisplayName "SCHEMATIC1-12V_Boost_Converter_Sim2")
+        (Type "PSpice Profile")))
+    (Folder "Model Libraries"
+      (Sort User))
+    (Folder "Stimulus Files"
+      (Sort User))
+    (Folder "Include Files"
+      (Sort User)))
+  (DefaultLibraryBrowseDirectory "library\PSpice")
+  (Folder "Logs")
+  (PartMRUSelector
+    (IDC
+      (FullPartName "IDC.Normal")
+      (LibraryName
+         "C:\CADENCE\PSPICETI\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (0
+      (LibraryName "C:\CADENCE\PSPICETI\TOOLS\CAPTURE\LIBRARY\CAPSYM.OLB")
+      (DeviceIndex "0"))
+    (R
+      (FullPartName "R.Normal")
+      (LibraryName
+         "C:\CADENCE\PSPICETI\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (R
+      (FullPartName "R.Normal")
+      (LibraryName
+         "C:\CADENCE\PSPICETI\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (C
+      (FullPartName "C.Normal")
+      (LibraryName
+         "C:\CADENCE\PSPICETI\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (L
+      (FullPartName "L.Normal")
+      (LibraryName
+         "C:\CADENCE\PSPICETI\TOOLS\CAPTURE\LIBRARY\PSPICE\ANALOG.OLB")
+      (DeviceIndex "0"))
+    (VDC
+      (FullPartName "VDC.Normal")
+      (LibraryName
+         "C:\CADENCE\PSPICETI\TOOLS\CAPTURE\LIBRARY\PSPICE\SOURCE.OLB")
+      (DeviceIndex "0"))
+    (TLV61046ADBV_TRANS
+      (FullPartName "TLV61046ADBVR.Normal")
+      (LibraryName
+         "C:\CDS_SPB_HOME\CDSSETUP\PSPTILIBDIR\TLV61046ADBV_TRANS.OLB")
+      (DeviceIndex "0")))
+  (MPSSessionName "carri")
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources"
+         "C:\Users\carri\OneDrive\Desktop\Master's Thesis\AtInverter\sims\12v_boost_converter.dsn")
+      (Path "Design Resources"
+         "C:\Users\carri\OneDrive\Desktop\Master's Thesis\AtInverter\sims\12v_boost_converter.dsn"
+         "SCHEMATIC1")
+      (Path "Outputs")
+      (Select "Outputs"
+         "C:\Users\carri\OneDrive\Desktop\Master's Thesis\AtInverter\sims\12v_boost_converter-pspicefiles\schematic1\schematic1.net"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -1 -1 0 153 0 747"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -1 -1 5 1665 24 765")
+        (Scroll "182 171")
+        (Zoom "200")
+        (Occurrence "/"))
+      (Path
+         "C:\USERS\CARRI\ONEDRIVE\DESKTOP\MASTER'S THESIS\ATINVERTER\SIMS\12V_BOOST_CONVERTER.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "PAGE1"))))
