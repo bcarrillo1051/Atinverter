@@ -13080,7 +13080,7 @@
 		)
 		(uuid "5bd4996d-25d3-4515-9290-659829654902")
 	)
-	(text "Raspberry Pi Model 3 B+"
+	(text "Raspberry Pi Model Zero, 2, 3, 4 "
 		(exclude_from_sim no)
 		(at 13.97 120.65 0)
 		(effects
