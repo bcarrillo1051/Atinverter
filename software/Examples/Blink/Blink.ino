@@ -1,11 +1,9 @@
 /****************************************************************************** 
  * File:        Blink.ino
  * Author:      Bryan Carrillo
- * Date:        2024-10-18
+ * Date:        2025-3-25
  * Description: Allows for blinking either a red or green LED
  *              Serves the purpose of testing MCU to verify control of GPIOs
- * Version:     1.0
- *              Initial version.
  *
  ******************************************************************************/
 #include "Atinverter.h"

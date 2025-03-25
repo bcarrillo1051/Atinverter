@@ -1,5 +1,5 @@
 /****************************************************************************** 
- * File:        50Hz_PWM_Inverter.c
+ * File:        60Hz_PWM_Inverter.c
  * Author:      eprojectszone and Bryan Carrillo
  * Date:        10-16-23
  * Description: This program generates a 60Hz sinusoidal waveform using PWM. It
