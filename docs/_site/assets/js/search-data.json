@@ -76,216 +76,244 @@
     
     "relUrl": "/hardware/ST_HW.html"
   },"11": {
+    "doc": "AC Output V/I Sensing",
+    "title": "AC Output V/I Sensing Considerations",
+    "content": "Understanding how to interface with the ADC122S021CIMM/NOPB using the SPI protocol and performing voltage and current sensing of the AC output. ",
+    "url": "/software/VI_AC_Output.html#ac-output-vi-sensing-considerations",
+    
+    "relUrl": "/software/VI_AC_Output.html#ac-output-vi-sensing-considerations"
+  },"12": {
+    "doc": "AC Output V/I Sensing",
+    "title": "⌚ Choosing the Appropriate SPI Clock Source",
+    "content": "We have to ensure that our SPI clock rate is suitable for the communication with the ADC. This means that the clock source cannot exceed the maximum sample rate (throughput) of the device. The table shown below provides the ranges of allow clock frequencies and how that maps to a given sample rate: . | Parameter | Max Clock Freq | Range | . | fsclk | Clock Frequency | 0.8MHz - 3.2MHz | . | fs | Sample Rate | 50ksps - 200ksps | . To better understand the relationship between the sample rate and the clock frequency, we can use the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] In our case, the available frequency from the ATMEGA328P is 16MHz, therefore to obtain the maximum allowable sample rate, we need a pre-scaler of 5 to obtain a $f_{SCLK} = 3.2MHz$, but unfortunately the microcontroller only has the following pre-scalers: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . ",
+    "url": "/software/VI_AC_Output.html#-choosing-the-appropriate-spi-clock-source",
+    
+    "relUrl": "/software/VI_AC_Output.html#-choosing-the-appropriate-spi-clock-source"
+  },"13": {
+    "doc": "AC Output V/I Sensing",
+    "title": "AC Output V/I Sensing",
+    "content": ". ",
+    "url": "/software/VI_AC_Output.html",
+    
+    "relUrl": "/software/VI_AC_Output.html"
+  },"14": {
     "doc": "Atinverter V1 Hardware",
     "title": "Atinverter V1 Hardware",
     "content": ". ",
     "url": "/hardware/a_v1_hw.html",
     
     "relUrl": "/hardware/a_v1_hw.html"
-  },"12": {
+  },"15": {
     "doc": "Atinverter V2 Hardware",
     "title": "Atinverter V2 Hardware",
     "content": ". graph TD; subgraph Power A[DC Bus] --&gt; |12V-48V| B[Buck Converter] A --&gt; B --&gt; |Regulated Power| D[Protection Circuit] end subgraph Sensors G[Voltage Sensor] --&gt; E H[Current Sensor] --&gt; E end . ",
     "url": "/hardware/a_v2_hw.html",
     
     "relUrl": "/hardware/a_v2_hw.html"
-  },"13": {
+  },"16": {
     "doc": "Atinverter Library Set Up",
     "title": "Atinverter Library Set Up",
     "content": "A quick guide to help your Arduino IDE recognize and use the Atinverter user-defined library. You might be thinking: . “Okay, I downloaded the software files from the GitHub repository — now what? Can I just open blink.ino and run the code?” . You’re super close! There’s just one important step that needs to happen first: we need to make sure the Arduino IDE knows where to find the Atinverter library files (Atinverter.cpp, Atinverter.h), or else you’ll run into the infamous: . fatal error: Atinverter.h: No such file or directory . ",
     "url": "/software/atinverter_lib.html",
     
     "relUrl": "/software/atinverter_lib.html"
-  },"14": {
+  },"17": {
     "doc": "Atinverter Library Set Up",
     "title": "📁 How Arduino Handles Libraries",
     "content": "The Arduino IDE looks for user-defined libraries in a specific directory on your computer. Simply placing .cpp or .h files next to your .ino isn’t enough — they must be installed or placed in the correct location. Here’s where those locations are: . 🔍 If you’re on Windows, it’ll be in: . C:\\Users&lt;YourUsername&gt;\\Documents\\Arduino\\libraries\\ . 🔍 If you’re on macOS or Linux, it’ll be in: . ~/Documents/Arduino/libraries/ . ",
     "url": "/software/atinverter_lib.html#-how-arduino-handles-libraries",
     
     "relUrl": "/software/atinverter_lib.html#-how-arduino-handles-libraries"
-  },"15": {
+  },"18": {
     "doc": "Atinverter Library Set Up",
     "title": "✅ What To Do",
     "content": ". | Locate the folder in the Atinverter repo named Library. It contains Atinverter.cpp and Atinverter.h . | Copy that folder into your Arduino libraries directory: C:\\Users&lt;YourUsername&gt;\\Documents\\Arduino\\libraries\\ . | Rename the folder from Library to: Atinverter . | . 📸 You should see something like this: . ",
     "url": "/software/atinverter_lib.html#-what-to-do",
     
     "relUrl": "/software/atinverter_lib.html#-what-to-do"
-  },"16": {
+  },"19": {
     "doc": "Atinverter Library Set Up",
     "title": "🚀 You’re Good to Go",
     "content": "Once the Atinverter library is in the right place: . | You can use it in any sketch with: #include \"Atinverter.h\" . | . ",
     "url": "/software/atinverter_lib.html#-youre-good-to-go",
     
     "relUrl": "/software/atinverter_lib.html#-youre-good-to-go"
-  },"17": {
+  },"20": {
     "doc": "Boost Converter",
     "title": "Programming the Output Voltage",
     "content": ". The output voltage of the boost converter is given by the following equation: . \\[R_{1} = \\left( \\frac{V_{OUT}}{V_{REF}} - 1 \\right) \\times R_{2}\\] Desire an output voltage of 12V, internal reference voltage is 795mV, choose R2, solve for R1. | $V_{OUT} = 12V$ | $V_{REF} = 795mV$ | $R_{2} = 71.5k\\Omega$ | . \\[R_{1} \\approx 1M\\Omega\\] ",
     "url": "/hardware/boost_conv.html#programming-the-output-voltage",
     
     "relUrl": "/hardware/boost_conv.html#programming-the-output-voltage"
-  },"18": {
+  },"21": {
     "doc": "Boost Converter",
     "title": "Inductor Selection",
     "content": ". To determine the inductor current (input current draw): . \\[I_{L(DC)} = \\frac{V_{OUT} \\times I_{OUT}}{V_{IN} \\times \\eta}\\] . | $V_{OUT}$ = 12V | $V_{IN}$ = 5V | $\\eta$ = 0.8 (80% recommended by datasheet) | $I_{OUT}$ = ? | . Need to find the load current that will be drawn. This boost converter is only driving the two IR2302 gate drivers for our PWM Inverter H-bridge design so if we find the current consumed by these drivers, we will effectively find the output load to drive. The current consumption of a gate driver is based upon the static and dynamic current consumption. As per the IR2302 datasheet, the max possible Quiescent Vcc supply current $I_{QCC}$ = 1.6mA. Therefore, $I_{static}$ = 1.6mA. The dynamic current consumed by the device can be found by the following relation between the total gate charge of the MOSFET and the switching frequency: . $I_{dynamic}​ = Q_{g} ​× f_{sw}$ . As per the IRFB4020PBF MOSFET datasheet, the maximum total gate charge is 29nC and the switching frequency of operation of the gate drivers is 31,372Hz. | $Q_{g} = 29nC$ | $f_{sw} = 31,372Hz$ | . Using these values, the dynamic current consumption of one MOSFET is: . $I_{dynamic}​ = 0.91mA$ . Considering that the PWM inverter topology is based on 4 MOSFETs with only 2 operating at any given time simultaneously, this means the total dynamic current is $2 \\times I_{dynamic}​ = 1.82mA$. Additionally, the quiescent current is dictated by two gate drivers so the total static current is $2 \\times I_{static}​ = 3.2mA$. $I_{LOAD}​ = I_{STATIC} ​+ I_{DYNAMIC}$ $I_{OUT}​ = 5.02mA$ . Now that we have the total load current $I_{OUT}$ = 5.02mA, then we can solve for the inductor current using the following values: . | $V_{OUT} = 12V$ | $V_{IN} = 5V$ | $I_{OUT} = 5.02mA$ | $\\eta$ = 0.8 (80% recommended by datasheet) | . \\[I_{L(DC)} = 15.06mA\\] The inductor ripple current is calculated with Equation 3 for an asynchronous boost converter in continuous conduction mode (CCM). \\[\\Delta I_{L(\\text{P-P})} = \\frac{V_{IN} \\times (V_{OUT} + 0.8V - V_{IN})}{L \\times f_{SW} \\times (V_{OUT} + 0.8V)}\\] where: . | ΔIL(P-P) is inductor ripple current | L is inductor value | f SW is switching frequency | VOUT is output voltage | VIN is input voltage | . ",
     "url": "/hardware/boost_conv.html#inductor-selection",
     
     "relUrl": "/hardware/boost_conv.html#inductor-selection"
-  },"19": {
+  },"22": {
     "doc": "Boost Converter",
     "title": "Boost Converter",
     "content": ". ",
     "url": "/hardware/boost_conv.html",
     
     "relUrl": "/hardware/boost_conv.html"
-  },"20": {
+  },"23": {
     "doc": "Buck Converter",
     "title": "Determining the DC/DC Converter Output Current Needed",
     "content": "Requirements . | Input Voltage: 12V-48V | Output Voltage: 5V | . ",
     "url": "/hardware/buck_conv.html#determining-the-dcdc-converter-output-current-needed",
     
     "relUrl": "/hardware/buck_conv.html#determining-the-dcdc-converter-output-current-needed"
-  },"21": {
+  },"24": {
     "doc": "Buck Converter",
     "title": "Determining the Required Input Current and PCB Trace Thickness for Switching Converters",
     "content": "Chip parameters . | Chip of Interest: R-78HE-0.3 | DC-DC switching converter, not linear regulator | Input Voltage Range: 6.5V - 48V | Output Voltage: 5V | Output Current: Up to 300mA | Efficiency: Up to 83% | . Power Conversion Equations . (1) \\(P_{\\text{out}} = P_{\\text{in}} + P_{\\text{losses}}\\) (2) \\(Efficiency = \\frac{P_{\\text{out}}}{P_{\\text{in}}}\\) (3) \\(P_{\\text{in}}= V_{\\text{in}} \\times I_{\\text{in}}\\) (4) \\(P_{\\text{out}}= V_{\\text{out}} \\times I_{\\text{out}}\\) . | Plugging in equation (3) into (2) and isolating for \\(I_{\\text{in}}\\) results in: | . \\[I_{\\text{in}} = \\frac{P_{\\text{out}}}{V_{\\text{in}} \\times \\text{Efficiency}}\\] Finding the Maximum Input Current . | Known: \\(V_{\\text{out_max}} = 5V, I_{\\text{out_max}} = 300mA\\) \\(P_{\\text{out_max}} = 5 \\times 300m = 1.5W\\) . | Two cases are considered since the efficiency of the converter changes with the input voltage. \\(V_{\\text{in_max}} = 72\\), Efficiency = 72% \\(I_{\\text{in}} = \\frac{1.5W}{72 \\times \\text{0.72}} = 0.029A\\) \\(V_{\\text{in_min}} = 6.5\\), Efficiency = 83% \\(I_{\\text{in}} = \\frac{1.5W}{6.5 \\times \\text{83}} = 0.278A\\) . | Therefore, the maximum input current is 278mA. This is consistent with the inverse relationship between voltage and current in a DC-DC converter. Although the input current (278mA) is lower than the output current (300mA), the input voltage (6.5V) is higher than the output voltage (5V). This behavior is typical of switching converters, which take advantage of the complementary relationship between input and output voltage and current. | However, to be conservative, let’s say the chip consumes 300mA which is the same as the output current. This is a standard technique that is employed to approximate the current drawn from the converter especially for higher efficiencies. We could have utilized this approach, but now we know how to solve for the max input current for any converter. | Using Digikey PCB Trace Width Calculator . | The maximum input current is 0.3A and we are designing for a 1 oz copper thickness . | . | A required trace width of 0.148mm (5.83mils) is obtained | . ",
     "url": "/hardware/buck_conv.html#determining-the-required-input-current-and-pcb-trace-thickness-for-switching-converters",
     
     "relUrl": "/hardware/buck_conv.html#determining-the-required-input-current-and-pcb-trace-thickness-for-switching-converters"
-  },"22": {
+  },"25": {
     "doc": "Buck Converter",
     "title": "Buck Converter",
     "content": " ",
     "url": "/hardware/buck_conv.html",
     
     "relUrl": "/hardware/buck_conv.html"
-  },"23": {
+  },"26": {
     "doc": "Hardware",
     "title": "Hardware",
     "content": ". Atinverter V1 Atinverter V2 . ",
     "url": "/hardware/hardware.html",
     
     "relUrl": "/hardware/hardware.html"
-  },"24": {
+  },"27": {
     "doc": "Home",
     "title": "Atinverter Documentation",
     "content": "Explore the documentation to learn more about this open source power converter! . Vision Hardware Software . ",
     "url": "/#atinverter-documentation",
     
     "relUrl": "/#atinverter-documentation"
-  },"25": {
+  },"28": {
     "doc": "Home",
     "title": "Home",
     "content": " ",
     "url": "/",
     
     "relUrl": "/"
-  },"26": {
+  },"29": {
     "doc": "Scratchpad",
     "title": "Testing",
     "content": ". This sentence uses $ delimiters to show math inline: $\\sqrt{3x-1}+(1+x)^2$ . highlight . X2 . X^2^ . H20 . ",
     "url": "/scratchpad.html#testing",
     
     "relUrl": "/scratchpad.html#testing"
-  },"27": {
+  },"30": {
     "doc": "Scratchpad",
     "title": "Italicizing and Bolding",
     "content": "Lorem ipsum . Lorem ipsum . lorem ipsum . :smile: 😀 . ",
     "url": "/scratchpad.html#italicizing-and-bolding",
     
     "relUrl": "/scratchpad.html#italicizing-and-bolding"
-  },"28": {
+  },"31": {
+    "doc": "Scratchpad",
+    "title": "Tables",
+    "content": "| head1 | head two | three |:————-|:——————|:——| ok | good swedish fish | nice | out of stock | good and plenty | nice | ok | good oreos | hmm | ok | good zoute drop | yumm | . ",
+    "url": "/scratchpad.html#tables",
+    
+    "relUrl": "/scratchpad.html#tables"
+  },"32": {
     "doc": "Scratchpad",
     "title": "Code  blocks",
     "content": "This is code . const a = 10; static var; . ",
     "url": "/scratchpad.html#code--blocks",
     
     "relUrl": "/scratchpad.html#code--blocks"
-  },"29": {
+  },"33": {
     "doc": "Scratchpad",
     "title": "Creating a Link",
     "content": "Relative link within the directories: This is a link External Link: Arduino Docs . ",
     "url": "/scratchpad.html#creating-a-link",
     
     "relUrl": "/scratchpad.html#creating-a-link"
-  },"30": {
+  },"34": {
     "doc": "Scratchpad",
     "title": "Images",
     "content": ". hey test . oh my . sheesh . ",
     "url": "/scratchpad.html#images",
     
     "relUrl": "/scratchpad.html#images"
-  },"31": {
+  },"35": {
     "doc": "Scratchpad",
     "title": "Putting lines in between",
     "content": "hi . there . ",
     "url": "/scratchpad.html#putting-lines-in-between",
     
     "relUrl": "/scratchpad.html#putting-lines-in-between"
-  },"32": {
+  },"36": {
     "doc": "Scratchpad",
     "title": "Creating an ordered list of items",
     "content": ". | bananas | apples | durian | . ",
     "url": "/scratchpad.html#creating-an-ordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-ordered-list-of-items"
-  },"33": {
+  },"37": {
     "doc": "Scratchpad",
     "title": "Creating an unordered list of items",
     "content": ". | bananas | apples | durian . | cherries | . | . ",
     "url": "/scratchpad.html#creating-an-unordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-unordered-list-of-items"
-  },"34": {
+  },"38": {
     "doc": "Scratchpad",
     "title": "Tables",
     "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . graph TD; accTitle: the diamond pattern accDescr: a graph with four nodes: A points to B and C, while B and C both point to D A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; C--&gt;A; D--&gt;E; E--&gt;A; E--&gt;B; . flowchart LR User(circle) --tcp/80 --&gt; LoadBalancer&gt;random shape] --tcp/1337 ---&gt; Webserver{rhombus} . flowchart LR subgraph PublicInternet User end subgraph LoadBalancingZone LoadBalancer end subgraph WebserverZone WebserverA WebserverB end User --tcp/80 --&gt; LoadBalancer LoadBalancer --&gt; WebserverA LoadBalancer --&gt; WebserverB WebserverA --&gt; DatabaseserverA WebserverA -.-&gt; DatabaseserverB WebserverB --&gt; DatabaseserverA WebserverB -.-&gt; DatabaseserverB . pie title A piechart \"SliceA\" : 5 \"SliceB\" : 15 . sankey-beta day, sleep, 8 day, work, 8 day, fun, 2 . A paragraph . Another paragraph . The last paragraph . ",
-    "url": "/scratchpad.html#tables",
+    "url": "/scratchpad.html#tables-1",
     
-    "relUrl": "/scratchpad.html#tables"
-  },"35": {
+    "relUrl": "/scratchpad.html#tables-1"
+  },"39": {
     "doc": "Scratchpad",
     "title": "Scratchpad",
     "content": " ",
     "url": "/scratchpad.html",
     
     "relUrl": "/scratchpad.html"
-  },"36": {
+  },"40": {
     "doc": "Software",
     "title": "Software",
     "content": ". The Atinverter codebase is composed of various modules, each contributing to distinct functionalities. The following diagram showcases the available features of the Atinverter codebase. Each box in the diagram is interactive, allowing you to click and explore detailed information about specific features. %%{init: {'theme':'base'}}%% flowchart TB subgraph Future G(Rectification) end subgraph Capabilities D(Blink) E(PWM Inverting 50Hz) F(PWM Inverting 60Hz) end subgraph Main C(Main) end subgraph Library A(AtintverterE.cpp) B(AtinverterE.h) end Library--&gt;Main Capabilities--&gt;Main %% Change color of arrow heads %%{init: {'themeVariables': {'lineColor': 'grey'}}}%% %% Apply color to the arrows %% 0: 1st arrow (Library --&gt; Main) 1: 2nd arrow (Capabilities --&gt; Main) linkStyle 0 stroke:grey, stroke-width:3px; linkStyle 1 stroke:grey, stroke-width:3px; %% Adding clickable links click E \"PWM_inverting\" \"PWM Inverting\" click F \"PWM_inverting\" \"PWM Inverting\" . ",
     "url": "/software/software.html",
     
     "relUrl": "/software/software.html"
-  },"37": {
+  },"41": {
     "doc": "To-Do",
     "title": "TO-DO",
     "content": ". | Write the complete code for AtinverterE.cpp and AtinverterE.h | Find out what other capabilities the inverter can have | Make modifications to Atinverter PCB accounting for surface mount mosfet drivers and proper arduino pin connections | Solder the board again | . ",
     "url": "/todo.html#to-do",
     
     "relUrl": "/todo.html#to-do"
-  },"38": {
+  },"42": {
     "doc": "To-Do",
     "title": "To-Do",
     "content": " ",
     "url": "/todo.html",
     
     "relUrl": "/todo.html"
-  },"39": {
+  },"43": {
     "doc": "Vision",
     "title": "Vision",
     "content": " ",
     "url": "/vision.html",
     
     "relUrl": "/vision.html"
-  },"40": {
+  },"44": {
     "doc": "Vision",
     "title": "Microgrid Significance",
     "content": "Electricity traverses through a large network of interconnected transmission or distribution systems known as the power grid. With the ever-growing demand for electricity and reliable power grid consumption, grid congestion has been a more prominent phenomenon. This occurs when the power grid is unable to deliver the required power to meet demand, particularly from urban area or high demand loads. To alleviate stress on the power grid, microgrids-smaller localized electrical systems-can be employed. A microgrid typically consists of distributed generators and loads as well as energy storage systems, and can operate either in grid-connected or islanded mode. ",
     "url": "/vision.html#microgrid-significance",
     
     "relUrl": "/vision.html#microgrid-significance"
-  },"41": {
+  },"45": {
     "doc": "Vision",
     "title": "EV Inspired PDA Microgrid and Open Source Platforms",
     "content": "As Electric Vehicle (EV) infrastructure continues to develop and gain wider global acceptance, there is growing motivation not only to utilize these systems for transportation but, more importantly, to harness their microgrid capabilities. To more clearly understand this concept, we can consider a power distribution architecture (PDA) for EVs that can: . | intelligently transact power with the grid, | provide important grid-forming and grid-supporting services | share power in a peer-to-peer fashion with other EVs | act as a standalone microgrid that can interface with external AC and DC sources and loads. | operate and communicate between various open source power converters | . ",

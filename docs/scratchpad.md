@@ -30,6 +30,14 @@ H<sub>2</sub>0
 :smile:  
 😀
 
+## Tables
+| head1        | head two          | three |
+|:-------------|:------------------|:------|
+| ok           | good swedish fish | nice  |
+| out of stock | good and plenty   | nice  |
+| ok           | good `oreos`      | hmm   |
+| ok           | good `zoute` drop | yumm  |
+
 ## Code  blocks
 This is `code`
 
