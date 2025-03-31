@@ -13,11 +13,27 @@
 Atinverter atinverter;
 
 void setup() {
+  // Initialize Serial Monitor
+  Serial.begin(9600);
+  Serial.println(F("Initialize Output AC Voltage Sensing."));
+
+  atinverter.startPWM(false); // 60Hz
   atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
 }
 
+unsigned long previousMillis = 0;
+const long interval = 20000; // 5 second interval
+
 void loop() {
-  int ADC_val = atinverter.readADC();
-  Serial.print(F("ADC Value : ")); Serial.print(ADC_val); // Print ADC from ADC
-  delay(1000);
+unsigned long currentMillis = millis();
+
+  // Check if 5 seconds have passed
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+
+    // Read ADC and print
+    int ADC_val = atinverter.readADC();
+    Serial.print(F("ADC Value : ")); Serial.println(ADC_val);
+    Serial.println();
+  }
 }

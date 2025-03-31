@@ -33,6 +33,12 @@ class Atinverter {
   public:
 	Atinverter(); // Constructor
 
+	// --- LED Pins ---
+	static const int LED1R_PIN = 2; // Red LED 1 | PD2
+	static const int LED1G_PIN = 3; // Green LED 1 | PD3
+	static const int LED2R_PIN = 4; // Red LED 2 | PD4
+	static const int LED2G_PIN = 7; // Green LED 2 | PD7
+
 	// --- Methods ---
 	void setUpPinMode(); // Sets appropriate pinMode() for each const pin
 	
@@ -55,12 +61,6 @@ class Atinverter {
   private:
 	// const = value is read-only and cannot be changed anywhere
 	// static = one shared value across all instances of the class
-
-	// --- LED Pins ---
-	static const int LED1R_PIN = 2; // Red LED 1 | PD2
-	static const int LED1G_PIN = 3; // Green LED 1 | PD3
-	static const int LED2R_PIN = 4; // Red LED 2 | PD4
-	static const int LED2G_PIN = 7; // Green LED 2 | PD7
 
 	// --- External ADC (ADC122S021CIMM/NOPB) Voltage and Current Sensing Pins ---
 	static const int VI_AC_CS_PIN = 10; // SPI chip select | PB2

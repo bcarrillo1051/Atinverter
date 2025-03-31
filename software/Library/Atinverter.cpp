@@ -124,7 +124,7 @@ void Atinverter::setUpSPI() {
 
   // Configure SPI
   SPI.begin(); // Configures SCK and MOSI to outputs, MISO to inputs
-  // SPI.setClockDivider(SPI_CLOCK_DIV4); // Prescaler of 4 = 16MHz/4 = 4MHz
+  // SPI.setClockDivider(SPI_CLOCK_DIV16); // Prescaler of 4 = 16MHz/4 = 4MHz
   SPI.setDataMode(SPI_MODE0); // CPOL = 0, CPHA = 0
   SPI.setBitOrder(MSBFIRST); // ADC uses MSB first
 }
@@ -134,7 +134,7 @@ int Atinverter::readADC(){
   
   // Begin SPI communication
   digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
-  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3)); // Configure SPI
+  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0)); // Configure SPI
   
   // First transfer - send control byte and receive 4 MSB bits of data
   uint16_t data = SPI.transfer(control_byte); // Send channel selection bits, also receive 4 MSB bits

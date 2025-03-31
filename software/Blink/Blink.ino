@@ -12,7 +12,7 @@ Atinverter atinverter; // Create an Atinverter object
 int PERIOD = 1000; // Set up duration of LED on or off (ms)
 
 void setup() {
-  atinverter.setupPinMode(); // Sets pins to inputs or outputs
+  atinverter.setUpPinMode(); // Sets pins to inputs or outputs
 }
 
 void loop() {
