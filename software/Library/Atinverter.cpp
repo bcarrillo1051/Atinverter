@@ -39,6 +39,8 @@ void Atinverter::setUpPinMode() {
 
 	// --- Gate Driver Pin ---
   pinMode(GATESD_PIN, OUTPUT);
+
+  pinMode(VI_AC_MISO_PIN, INPUT);
 }
 
 /** Senses the DC input voltage and provides a readout 
@@ -124,17 +126,18 @@ void Atinverter::setUpSPI() {
 
   // Configure SPI
   SPI.begin(); // Configures SCK and MOSI to outputs, MISO to inputs
-  // SPI.setClockDivider(SPI_CLOCK_DIV16); // Prescaler of 4 = 16MHz/4 = 4MHz
-  SPI.setDataMode(SPI_MODE0); // CPOL = 0, CPHA = 0
-  SPI.setBitOrder(MSBFIRST); // ADC uses MSB first
+  //SPI.setClockDivider(SPI_CLOCK_DIV4); // Prescaler of 4 = 16MHz/4 = 4MHz
+  //SPI.setDataMode(SPI_MODE0); // CPOL = 0, CPHA = 0
+  //SPI.setBitOrder(MSBFIRST); // ADC uses MSB first
 }
 
-int Atinverter::readADC(){
-  uint8_t control_byte = 0x00; // Select channel 1 (IN1)
+int Atinverter::readADC() {
+  uint8_t control_byte = 0x08; // Select channel 1 (IN1)
   
+  //noInterrupts(); // Pause interrupts only during SPI
   // Begin SPI communication
   digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
-  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE0)); // Configure SPI
+  SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0)); // Configure SPI
   
   // First transfer - send control byte and receive 4 MSB bits of data
   uint16_t data = SPI.transfer(control_byte); // Send channel selection bits, also receive 4 MSB bits
@@ -146,10 +149,29 @@ int Atinverter::readADC(){
   // End SPI communication
   digitalWrite(VI_AC_CS_PIN, HIGH); // SPI transfer ends with chip select high 
   SPI.endTransaction();
+  //interrupts(); // Re-enable interrupts
 
   data &= 0x0FFF; // Mask to keep only 12 bits (since the ADC is 12-bit)
   return data;
 }
+
+// int Atinverter::readADC(uint8_t channel)
+// {
+
+//   uint8_t chan = 0x08;
+//   if (channel != 0) chan = 0x00;
+
+//   digitalWrite(VI_AC_CS_PIN, LOW);
+//   SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
+//   //  uint16_t data = SPI.transfer(chan);
+//   uint16_t data = SPI.transfer(chan);
+//   data <<= 8;
+//   data += SPI.transfer(0);
+//   SPI.endTransaction();
+//   digitalWrite(VI_AC_CS_PIN, HIGH);
+//   data &= 0x0FFF;
+//   return data;
+// }
 
 // int Atinverter::readIac(){
 //   uint8_t channel = 0x08; // Select channel 2 (IN2)
@@ -239,7 +261,7 @@ void Atinverter::enablePWM() {
  * @brief Allows for turning off the PWM at run time  
  */
 void Atinverter::disablePWM() {
-  cli(); // Enable interrupts to resume PWM
+  cli(); // Disable interrupts to stop PWM
 }
 
 /**
@@ -269,7 +291,7 @@ void Atinverter::startPWM(bool is50HzMode) {
   TCCR1A = is50Hz ? 0b1000010 : 0; // Reset control register A
   TCCR1B = 0; // Reset control register B
   TCNT1 = 0; // Reset the counter
-  OCR1A = is50Hz ? 63 : 509; // Compare match value, 50Hz = 63, 60Hz = 509
+  OCR1A = is50Hz ? 624 : 509; // Compare match value, 50Hz = 63, 60Hz = 509
   TCCR1B = 0b00001001; // CTC Mode, No prescaler (clear timer on compare match)
 
   TIMSK1 |= (1 << OCIE1A); // Enable Timer1 compare match interrupts

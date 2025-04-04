@@ -6,34 +6,35 @@
  *              on the serial monitor. It is sensed using the ADC122S021.
  ******************************************************************************/
 #include "Atinverter.h"
-                                    // * 1000 to convert mV/A to V/A 
+#include "SPI.h"
+#include "ZMPT101B.h"
 
-#include <SPI.h>
+#define SENSITIVITY 1.0f
+
 // Atinverter class instance
 Atinverter atinverter;
+
+ZMPT101B voltageSensor(60.0);
 
 void setup() {
   // Initialize Serial Monitor
   Serial.begin(9600);
   Serial.println(F("Initialize Output AC Voltage Sensing."));
+  voltageSensor.setSensitivity(SENSITIVITY);
 
-  atinverter.startPWM(false); // 60Hz
+  //atinverter.startPWM(false); // 60Hz
   atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
 }
 
-unsigned long previousMillis = 0;
-const long interval = 20000; // 5 second interval
-
 void loop() {
-unsigned long currentMillis = millis();
-
-  // Check if 5 seconds have passed
-  if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
-
-    // Read ADC and print
-    int ADC_val = atinverter.readADC();
+    //atinverter.disablePWM();
+    //uint16_t ADC_val = atinverter.readADC(0x08);
+    uint16_t ADC_val = atinverter.readADC();
+    //atinverter.enablePWM();
     Serial.print(F("ADC Value : ")); Serial.println(ADC_val);
-    Serial.println();
-  }
+    
+    // read the voltage and then print via Serial.
+    float AC_val = voltageSensor.getRmsVoltage(1, ADC_val);
+    Serial.print(F("AC Value : ")); Serial.println(AC_val);Serial.println();
+    delay(500);
 }

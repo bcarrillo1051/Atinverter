@@ -6,7 +6,7 @@ nav_order: 1
 ---
 
 # **Atinverter Library Set Up**
-### A quick guide to help your Arduino IDE recognize and use the Atinverter user-defined library.
+### A guide to help your Arduino IDE recognize and use the Atinverter user-defined library
 ***
 
 You might be thinking:

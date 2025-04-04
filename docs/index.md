@@ -39,22 +39,20 @@ nav_order: 1
       <a href="vision" class="btn btn-purple">Vision</a>
       </span>
     </div>
-
     <!-- Hardware Image and Button -->
     <div class="image_button_container">
       <img src="images/hardware.png" alt="Hardware Icon">
       <br>
       <span class="fs-6">
-      <a href="hardware" class="btn btn-blue">Hardware</a>
+      <a href="hardware/hardware" class="btn btn-blue">Hardware</a>
       </span>
     </div>
-
     <!-- Software Image and Button -->
     <div class="image_button_container">
       <img src="images/software.png" alt="Software Icon">
       <br>
       <span class="fs-6">
-      <a href="software" class="btn btn-green">Software</a>
+      <a href="software/software" class="btn btn-green">Software</a>
       </span>
     </div>
   </div>

@@ -49,6 +49,7 @@ class Atinverter {
 
 	void setUpSPI(); // Sets up SPI protocol for external ADC
 	int readADC();
+	int Atinverter::readADC(uint8_t channel);
 
 	void set1LED(int led, int state); // Sets 1 LED to HIGH or LOW
 	void set2LED(int t_delay); // Cycles 4 LEDs

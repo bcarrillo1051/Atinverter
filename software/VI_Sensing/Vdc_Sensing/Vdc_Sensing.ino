@@ -19,10 +19,10 @@ void setup() {
 
 // Main loop: print both raw and averaged Vdc values
 void loop() {
-  float raw_Vdc = atinverter.read_Vdc();
+  float raw_Vdc = atinverter.readVdc();
   Serial.print(F("Raw Vdc : ")); Serial.print(raw_Vdc); Serial.println(F("V")); // Print unaveraged Vdc
 
-  float avg_Vdc = atinverter.read_avg_Vdc(raw_Vdc);
+  float avg_Vdc = atinverter.readAvgVdc(raw_Vdc);
   Serial.print(F("Avg Vdc : ")); Serial.print(avg_Vdc); Serial.println(F("V")); // Print averaged Vdc
 
   Serial.println();
