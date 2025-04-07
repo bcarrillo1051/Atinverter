@@ -5,9 +5,11 @@
 */
 
 #include "Atinverter.h"
-#include <Wire.h>
+#include "Wire.h"
+#include "ZMPT101B.h"
 
 Atinverter atinverter;
+ZMPT101B voltageSensor(60.0);
 
 // Variable initialization 
 const int ledPin = 3;
@@ -36,6 +38,9 @@ void setup() {
   // Initializes pins
   atinverter.setUpPinMode();
   Serial.println("Setup Done");
+
+  voltageSensor.setSensitivity(SENSITIVITY);
+  atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
 }
 
 // The function that completes when I2C communication 
@@ -70,7 +75,11 @@ void loop() {
   Serial.println(" ms")
 
   // Read the AC values from the SPI ADC
-
+  uint16_t ADC_val = atinverter.readADC();
+  // read the voltage and then print via Serial.
+  float AC_val = voltageSensor.getRmsVoltage(1, ADC_val);
+  Serial.print(F("AC Value : ")); Serial.println(AC_val);Serial.println();
+  delay(250);
 
   // Turns LED Off
   if (state == 0) {
@@ -85,6 +94,10 @@ void loop() {
     sixty_once = 0;
   }
   else if (state == 2) {
+    // Cycles proreset, needs to be a function
+    digitalWrite(PRORESET_PIN, HIGH);
+    delay(3000);
+    digitalWrite(PRORESET_PIN, LOW);
     fifty_once = 0;
     sixty_once = 0;
   }
