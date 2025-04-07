@@ -9,7 +9,7 @@
 #include "SPI.h"
 #include "ZMPT101B.h"
 
-#define SENSITIVITY 1.0f
+#define SENSITIVITY 37.81f
 
 // Atinverter class instance
 Atinverter atinverter;
@@ -22,19 +22,13 @@ void setup() {
   Serial.println(F("Initialize Output AC Voltage Sensing."));
   voltageSensor.setSensitivity(SENSITIVITY);
 
-  //atinverter.startPWM(false); // 60Hz
+  atinverter.startPWM(false); // 60Hz
   atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
+  atinverter.initTimer2Delay();
 }
 
 void loop() {
-    //atinverter.disablePWM();
-    //uint16_t ADC_val = atinverter.readADC(0x08);
-    uint16_t ADC_val = atinverter.readADC();
-    //atinverter.enablePWM();
-    Serial.print(F("ADC Value : ")); Serial.println(ADC_val);
-    
-    // read the voltage and then print via Serial.
-    float AC_val = voltageSensor.getRmsVoltage(1, ADC_val);
-    Serial.print(F("AC Value : ")); Serial.println(AC_val);Serial.println();
-    delay(500);
+    float Vac_RMS = voltageSensor.getRmsVoltage(20);
+    Serial.print(F("Vac(RMS): ")); Serial.print(Vac_RMS); Serial.println("V");
+    atinverter.delay2(2000);
 }

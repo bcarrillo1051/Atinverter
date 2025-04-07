@@ -11,13 +11,6 @@ The Atinverter codebase is composed of various modules, each contributing to dis
 The following diagram showcases the available features of the Atinverter codebase. Each box in the \
 diagram is interactive, allowing you to click and explore detailed information about specific features.
 
-.diagram-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-<div class="diagram-container">
 ```mermaid
    
    %%{init: {'theme':'base'}}%%
@@ -40,8 +33,8 @@ diagram is interactive, allowing you to click and explore detailed information a
     end
 
     subgraph Library
-       A(AtintverterE.cpp) 
-       B(AtinverterE.h)
+       A(Atintverter.cpp) 
+       B(Atinverter.h)
     end
 
 

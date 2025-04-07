@@ -64,17 +64,34 @@ color_scheme: dark
 # Callouts
 callouts_level: quiet # or loud
 callouts:
-  highlight:
+  highlight-red:
+    color: red
+  
+  highlight-greylt:
+    color: grey-lt
+
+  highlight-yellow:
     color: yellow
+
+  highlight-green:
+    color: green
+
+  highlight-blue:
+    color: blue
+
   important:
     title: Important
     color: blue
+
   new:
     title: New
     color: green
+
   note:
     title: Note
     color: purple
+    
   warning:
     title: Warning
     color: red
+  

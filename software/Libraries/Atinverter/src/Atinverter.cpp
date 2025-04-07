@@ -36,6 +36,7 @@ void Atinverter::setUpPinMode() {
 
   // --- Overvoltage and Reset Circuitry Reset Pin ---
   pinMode(PRORESET_PIN, OUTPUT);
+  digitalWrite(PRORESET_PIN, LOW);
 
 	// --- Gate Driver Pin ---
   pinMode(GATESD_PIN, OUTPUT);
@@ -132,12 +133,12 @@ void Atinverter::setUpSPI() {
 }
 
 int Atinverter::readADC() {
-  uint8_t control_byte = 0x08; // Select channel 1 (IN1)
+  uint8_t control_byte = 0x00; // Select channel 1 (IN1)
   
   //noInterrupts(); // Pause interrupts only during SPI
   // Begin SPI communication
   digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
-  SPI.beginTransaction(SPISettings(500000, MSBFIRST, SPI_MODE0)); // Configure SPI
+  SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure SPI
   
   // First transfer - send control byte and receive 4 MSB bits of data
   uint16_t data = SPI.transfer(control_byte); // Send channel selection bits, also receive 4 MSB bits
@@ -154,29 +155,6 @@ int Atinverter::readADC() {
   data &= 0x0FFF; // Mask to keep only 12 bits (since the ADC is 12-bit)
   return data;
 }
-
-// int Atinverter::readADC(uint8_t channel)
-// {
-
-//   uint8_t chan = 0x08;
-//   if (channel != 0) chan = 0x00;
-
-//   digitalWrite(VI_AC_CS_PIN, LOW);
-//   SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
-//   //  uint16_t data = SPI.transfer(chan);
-//   uint16_t data = SPI.transfer(chan);
-//   data <<= 8;
-//   data += SPI.transfer(0);
-//   SPI.endTransaction();
-//   digitalWrite(VI_AC_CS_PIN, HIGH);
-//   data &= 0x0FFF;
-//   return data;
-// }
-
-// int Atinverter::readIac(){
-//   uint8_t channel = 0x08; // Select channel 2 (IN2)
-//   return chan;
-// }
 
 /**
  * @brief Takes 1 of 4 available LEDs and the state to be applied
@@ -348,6 +326,48 @@ void Atinverter::pwmISR() {
     OCR0A = 0; // Ensure Pin 6 is OFF
     OCR0B = pwm_i; // Set PWM on Pin 5
   }
+}
+
+// --- Timer2-based Delay Variable ---
+volatile unsigned long Atinverter::timer2Millis = 0;
+
+// Initialize Timer2 for 1ms ticks
+void Atinverter::initTimer2Delay() {
+  cli(); // Disable interrupts during setup
+
+  // Reset Timer2 control registers
+  TCCR2A = 0;
+  TCCR2B = 0;
+  TCNT2  = 0;
+
+  // Set compare match register for 1ms interval
+  // f_cpu = 16 MHz, prescaler = 64 → 16,000,000 / 64 = 250,000 ticks/sec
+  // We want 1ms = 1000Hz → 250,000 / 1000 = 250
+  OCR2A = 249; // match at 250 ticks
+
+  TCCR2A |= (1 << WGM21); // CTC mode
+  TCCR2B |= (1 << CS22); // prescaler = 64
+  TIMSK2 = (1 << OCIE2A); // enable compare interrupt
+
+  sei(); // Enable interrupts
+}
+
+void Atinverter::delayWithTimer2(unsigned long ms) {
+  unsigned long start = timer2Millis;
+  while ((timer2Millis - start) < ms) {
+    // Do nothing, just wait
+    // But interrupts (like PWM ISR) still run!
+  }
+}
+
+// Returns the current millisecond value 
+unsigned long Atinverter::millis2() {
+  return timer2Millis;
+}
+
+// Timer2 compare match ISR
+ISR(TIMER2_COMPA_vect) {
+  Atinverter::timer2Millis++;
 }
 
 

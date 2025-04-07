@@ -49,7 +49,7 @@ class Atinverter {
 
 	void setUpSPI(); // Sets up SPI protocol for external ADC
 	int readADC();
-	int Atinverter::readADC(uint8_t channel);
+	int readADC(uint8_t channel);
 
 	void set1LED(int led, int state); // Sets 1 LED to HIGH or LOW
 	void set2LED(int t_delay); // Cycles 4 LEDs
@@ -58,6 +58,13 @@ class Atinverter {
 	void disablePWM(); // Stop PWM generation
 	void startPWM(bool is50HzMode); // Setup PWM and timers and start PWM generation
 	static void pwmISR(); // Interrupt Service Routine logic
+
+	void initTimer2Delay();
+	void delayWithTimer2(unsigned long ms);
+	unsigned long millis2();
+
+	// --- Timer2 increment ---
+	static volatile unsigned long timer2Millis;
 
   private:
 	// const = value is read-only and cannot be changed anywhere

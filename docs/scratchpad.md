@@ -7,6 +7,15 @@ nav_order: 4
 
 # Testing
 
+First Term
+: This is the definition of the first term.
+
+Second Term
+: This is one definition of the second term.
+: This is another definition of the second term.
+
+~~The world is flat.~~ We now know that the world is round.
+
 ![Yoshi](images/yoshi.jpg)
 
 This sentence uses `$` delimiters to show math inline: $\sqrt{3x-1}+(1+x)^2$
@@ -15,9 +24,60 @@ This sentence uses `$` delimiters to show math inline: $\sqrt{3x-1}+(1+x)^2$
 
 X<sup>2</sup>
 
-X^2^
+
+``Use `code` in your Markdown file.``
 
 H<sub>2</sub>0
+
+I need to highlight these <mark>very important words</mark>.
+
+## Callouts
+
+{: .warning }
+> A paragraph
+
+{: .new }
+> > A paragraph
+> >
+> > Another paragraph
+> >
+> > The last paragraph
+
+{: .highlight-yellow }
+Highlight yellow
+
+{: .highlight-blue }
+Highlight blue
+
+{: .highlight-green }
+Highlight green
+
+{: .highlight-red }
+Highlight red
+
+{: .highlight-greylt }
+Highlight greylt
+
+{: .highlight }
+Test 2
+
+{: .note }
+A paragraph
+
+{: .important }
+> A paragraph
+>
+> Another paragraph
+>
+> The last paragraph
+
+{: .new-title }
+> New title
+
+{: .new-title }
+> **"Why not simply use the `delay()` or `millis()` functions to accomplish this?"**
+
+
 
 ## Italicizing and Bolding
 
@@ -26,6 +86,10 @@ H<sub>2</sub>0
 **Lorem ipsum**
 
 ***lorem ipsum***
+
+Gone camping! :tent: Be back soon.
+
+That is so funny! :joy:
 
 :smile:  
 😀
