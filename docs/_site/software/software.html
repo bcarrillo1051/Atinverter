@@ -9,8 +9,8 @@
 
     subgraph Capabilities
        D(Blink)
-       E(PWM Inverting 50Hz)
-       F(PWM Inverting 60Hz)
+       E(PWM Generation 50Hz)
+       F(PWM Generation 60Hz)
 
     end
 
@@ -35,7 +35,7 @@
     linkStyle 0 stroke:grey, stroke-width:3px;
     linkStyle 1 stroke:grey, stroke-width:3px;
 
-    %% Adding clickable links
-    click E "PWM_inverting" "PWM Inverting"
-    click F "PWM_inverting" "PWM Inverting"
+    %% Adding clickable links, Syntax: Destination ref, hover label
+    click E "PWM_control" "PWM Generation"
+    click F "PWM_control" "PWM Generation"
 </code></pre><hr> <h2 class="text-delta">Table of contents</h2> <ul> <li> <a href="/software/library_setup.html">Atinverter Library Set Up</a> </li> <li> <a href="/software/library_UML.html">Atinverter UML Diagram</a> </li> <li> <a href="/software/VI_AC_Output.html">AC Output V/I Sensing</a> </li> <li> <a href="/software/PWM_control.html">PWM Control</a> </li> <li> <a href="/software/timer2_delay.html">Timer 2 Delay</a> </li> </ul> </main> </div> </div> <div class="search-overlay"></div> </div> <script type="module"> import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.0/dist/mermaid.esm.min.mjs'; var config = {} ; mermaid.initialize(config); mermaid.run({ querySelector: '.language-mermaid', }); </script> </body> </html>

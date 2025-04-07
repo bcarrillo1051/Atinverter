@@ -309,53 +309,74 @@
   },"44": {
     "doc": "Software",
     "title": "Software",
-    "content": ". The Atinverter codebase is composed of various modules, each contributing to distinct functionalities. The following diagram showcases the available features of the Atinverter codebase. Each box in the diagram is interactive, allowing you to click and explore detailed information about specific features. %%{init: {'theme':'base'}}%% flowchart TB subgraph Future G(Rectification) end subgraph Capabilities D(Blink) E(PWM Inverting 50Hz) F(PWM Inverting 60Hz) end subgraph Main C(Main) end subgraph Library A(Atintverter.cpp) B(Atinverter.h) end Library--&gt;Main Capabilities--&gt;Main %% Change color of arrow heads %%{init: {'themeVariables': {'lineColor': 'grey'}}}%% %% Apply color to the arrows %% 0: 1st arrow (Library --&gt; Main) 1: 2nd arrow (Capabilities --&gt; Main) linkStyle 0 stroke:grey, stroke-width:3px; linkStyle 1 stroke:grey, stroke-width:3px; %% Adding clickable links click E \"PWM_inverting\" \"PWM Inverting\" click F \"PWM_inverting\" \"PWM Inverting\" . ",
+    "content": ". The Atinverter codebase is composed of various modules, each contributing to distinct functionalities. The following diagram showcases the available features of the Atinverter codebase. Each box in the diagram is interactive, allowing you to click and explore detailed information about specific features. %%{init: {'theme':'base'}}%% flowchart TB subgraph Future G(Rectification) end subgraph Capabilities D(Blink) E(PWM Generation 50Hz) F(PWM Generation 60Hz) end subgraph Main C(Main) end subgraph Library A(Atintverter.cpp) B(Atinverter.h) end Library--&gt;Main Capabilities--&gt;Main %% Change color of arrow heads %%{init: {'themeVariables': {'lineColor': 'grey'}}}%% %% Apply color to the arrows %% 0: 1st arrow (Library --&gt; Main) 1: 2nd arrow (Capabilities --&gt; Main) linkStyle 0 stroke:grey, stroke-width:3px; linkStyle 1 stroke:grey, stroke-width:3px; %% Adding clickable links, Syntax: Destination ref, hover label click E \"PWM_control\" \"PWM Generation\" click F \"PWM_control\" \"PWM Generation\" . ",
     "url": "/software/software.html",
     
     "relUrl": "/software/software.html"
   },"45": {
     "doc": "Timer 2 Delay",
-    "title": "Timer 2 Delay",
-    "content": ". An interface is required to handle program delays for time-sensitive operations such as AC voltage sensing and serial communication, among other tasks. “Why not simply use the delay() or millis() functions to accomplish this?” . Although it sounds like that would be the most straightforward way to go about it, unfortunately the ATMEGA328P timer used for the implementation of these functions, namely, Timer0 is being used for the implementation of the PWM generation as specified in PWM Control . The delay2() method serves as an excellent substitute for the Arduino built-in delay() function. This because on the hardware constraints . ",
-    "url": "/software/timer2_delay.html#timer-2-delay",
+    "title": "⏱️ Timer 2 Delay",
+    "content": ". An interface is required to handle program delays for time-sensitive operations such as AC voltage sensing and serial communication, among other tasks. 💭 “Why not simply use the Arduino core functions delay(), millis(), or micros() to accomplish this?” . Although that might seem like the most straightforward approach, the ATMEGA328P Timer0 — used by these core functions — is also responsible for PWM generation in our hardware, as detailed in the PWM Control section. If we attempt to use the core delay functions (which reconfigure Timer0 registers), while simultaneously using Timer0 to handle PWM interrupts, we risk introducing conflicting register states, leading to erratic behavior or malfunctioning PWM output — not catastrophic, but definitely not ideal 😅. 💭 “Why don’t you create a software-based delay program with an incrementer?” . unsigned long counter = 0; while (counter &lt; SOME_VALUE) { counter++; } . To implement delay2() and millis2(), it’s not practical to rely on a simple software incrementer (e.g., counter++) inside a loop to create timing. This approach would require trial-and-error tuning of the maximum value to match a desired delay, which is inefficient, non-deterministic, and highly sensitive to compiler optimizations or clock speed changes. ",
+    "url": "/software/timer2_delay.html#%EF%B8%8F-timer-2-delay",
     
-    "relUrl": "/software/timer2_delay.html#timer-2-delay"
+    "relUrl": "/software/timer2_delay.html#️-timer-2-delay"
   },"46": {
+    "doc": "Timer 2 Delay",
+    "title": "💡 The Workaround",
+    "content": "To resolve this, we developed custom timing functions — delay2() and millis2() — based on Timer2 from the ATMEGA328P. These serve as effective substitutes for the Arduino core library timing functions, providing a millisecond-based timing mechanism that operates independently of Timer0. ",
+    "url": "/software/timer2_delay.html#-the-workaround",
+    
+    "relUrl": "/software/timer2_delay.html#-the-workaround"
+  },"47": {
+    "doc": "Timer 2 Delay",
+    "title": "🧠 Understanding the Timers on the ATMEGA328P",
+    "content": "The ATMEGA328P includes three timers, each with different bit widths: . | Timer0: 8-bit | Timer1: 16-bit | Timer2: 8-bit | . ❓ “What do the ‘bits’ actually mean?” . The number of bits determines how high a timer can count before it overflows and restarts. Think of it like a stopwatch: . | An 8-bit timer can count from 0 to 255 (that’s $2^8 - 1$) | A 16-bit timer can count all the way from 0 to 65,535 ($2^{16} - 1$) | . A higher bit-width means longer timing intervals or higher resolution is possible — but for a simple 1ms tick, even an 8-bit timer like Timer2 is more than sufficient. ",
+    "url": "/software/timer2_delay.html#-understanding-the-timers-on-the-atmega328p",
+    
+    "relUrl": "/software/timer2_delay.html#-understanding-the-timers-on-the-atmega328p"
+  },"48": {
+    "doc": "Timer 2 Delay",
+    "title": "⚙️ Timer2 Delay Initialization",
+    "content": "We need to use the handy timer2 first configure the timer 2 such that its interrupts will fire every 1ms. ❓ “Why trigger the interrupts every 1ms? Can’t you use other “ This is necessary because this will provide a 1:1 mapping of the between the timer counts and the effective millisecond time frame that we wish to delay by. // Reset Timer2 control registers TCCR2A = 0; TCCR2B = 0; TCNT2 = 0; . ",
+    "url": "/software/timer2_delay.html#%EF%B8%8F-timer2-delay-initialization",
+    
+    "relUrl": "/software/timer2_delay.html#️-timer2-delay-initialization"
+  },"49": {
     "doc": "Timer 2 Delay",
     "title": "Timer 2 Delay",
     "content": ". ",
     "url": "/software/timer2_delay.html",
     
     "relUrl": "/software/timer2_delay.html"
-  },"47": {
+  },"50": {
     "doc": "To-Do",
     "title": "TO-DO",
     "content": ". | Order NOR gate and verify that logic protection circuitry is operational | . ",
     "url": "/todo.html#to-do",
     
     "relUrl": "/todo.html#to-do"
-  },"48": {
+  },"51": {
     "doc": "To-Do",
     "title": "To-Do",
     "content": " ",
     "url": "/todo.html",
     
     "relUrl": "/todo.html"
-  },"49": {
+  },"52": {
     "doc": "Vision",
     "title": "Vision",
     "content": " ",
     "url": "/vision.html",
     
     "relUrl": "/vision.html"
-  },"50": {
+  },"53": {
     "doc": "Vision",
     "title": "Microgrid Significance",
     "content": "Electricity traverses through a large network of interconnected transmission or distribution systems known as the power grid. With the ever-growing demand for electricity and reliable power grid consumption, grid congestion has been a more prominent phenomenon. This occurs when the power grid is unable to deliver the required power to meet demand, particularly from urban area or high demand loads. To alleviate stress on the power grid, microgrids-smaller localized electrical systems-can be employed. A microgrid typically consists of distributed generators and loads as well as energy storage systems, and can operate either in grid-connected or islanded mode. ",
     "url": "/vision.html#microgrid-significance",
     
     "relUrl": "/vision.html#microgrid-significance"
-  },"51": {
+  },"54": {
     "doc": "Vision",
     "title": "EV Inspired PDA Microgrid and Open Source Platforms",
     "content": "As Electric Vehicle (EV) infrastructure continues to develop and gain wider global acceptance, there is growing motivation not only to utilize these systems for transportation but, more importantly, to harness their microgrid capabilities. To more clearly understand this concept, we can consider a power distribution architecture (PDA) for EVs that can: . | intelligently transact power with the grid, | provide important grid-forming and grid-supporting services | share power in a peer-to-peer fashion with other EVs | act as a standalone microgrid that can interface with external AC and DC sources and loads. | operate and communicate between various open source power converters | . ",

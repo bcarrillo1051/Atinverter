@@ -23,8 +23,8 @@ diagram is interactive, allowing you to click and explore detailed information a
 
     subgraph Capabilities
        D(Blink)
-       E(PWM Inverting 50Hz)
-       F(PWM Inverting 60Hz)
+       E(PWM Generation 50Hz)
+       F(PWM Generation 60Hz)
 
     end
 
@@ -49,7 +49,7 @@ diagram is interactive, allowing you to click and explore detailed information a
     linkStyle 0 stroke:grey, stroke-width:3px;
     linkStyle 1 stroke:grey, stroke-width:3px;
 
-    %% Adding clickable links
-    click E "PWM_inverting" "PWM Inverting"
-    click F "PWM_inverting" "PWM Inverting"
+    %% Adding clickable links, Syntax: Destination ref, hover label
+    click E "PWM_control" "PWM Generation"
+    click F "PWM_control" "PWM Generation"
 ```
