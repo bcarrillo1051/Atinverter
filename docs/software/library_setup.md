@@ -14,7 +14,7 @@ You might be thinking:
 {: .highlight-yellow }
 > “Okay, I downloaded the software files from the GitHub repository — now what? Can I just open some random file like `blink.ino` and run the code?”
 
-You're super close! There's just **one important step** that needs to happen first: we need to make sure the **Arduino IDE knows where to find the Atinverter library files** (`Atinverter.cpp`, `Atinverter.h`), or else you’ll run into the infamous:
+You're almost there! There is just **one important step** that needs to happen first; We need ensure that the **Arduino IDE knows where to find the Atinverter library files** (`Atinverter.cpp`, `Atinverter.h`), or else you’ll run into the notorious:
 
 {: .highlight-red }
 > `fatal error: Atinverter.h: No such file or directory`
@@ -23,9 +23,9 @@ You're super close! There's just **one important step** that needs to happen fir
 
 ## 📁 How Arduino Handles Libraries
 
-The Arduino IDE looks for **user-defined libraries** in a specific directory on your computer. Simply placing `.cpp` or `.h` files next to your `.ino` isn't enough — they must be placed in the correct location.
+The Arduino IDE looks for **user-defined libraries** in a specific directory on your computer. Simply placing `.cpp` or `.h` files in the same directory as `.ino` isn't enough.
 
-Here’s where those locations are:
+Here's where those locations are:
 
 🔍 If you're on Windows, it'll be in:
 
@@ -50,7 +50,7 @@ Here’s where those locations are:
 2. Copy the `Atinverter` folder to your Arduino `libraries` folder, located as described in \
 **How Arduino Handles Libraries**
 
-📸 You should see something like this in your Arduino `libraries` folder:
+📸 You should expect to see something like this in your Arduino `libraries` folder:
 
 ![User Defined Library Directory](../images/user_defined_lib.png)
 
@@ -58,8 +58,7 @@ Here’s where those locations are:
 
 ## 🚀 You're Good to Go
 
-Once the Atinverter library is in the right place:
-- You can use it in any sketch with:
-  ```cpp
-  #include "Atinverter.h"
-  ```
+Once the Atinverter library is in the right place, you can use it any sketch with:
+```cpp
+#include "Atinverter.h"
+```

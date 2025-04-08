@@ -8,16 +8,18 @@
 
 /**
  * @brief Constructor for the AtinverterE class.
- * Initializes any necessary components or variables.
+ *        Initializes any necessary components or variables.
  */
-Atinverter::Atinverter() { // Atinverter contructor
+Atinverter::Atinverter() // Atinverter contructor
+{
 }
 
 /**
- * @brief Sets the pin modes for the inverter.
- * This function sets the pin modes for all the necessary GPIO pins.
+ * @brief Sets the pin states for the inverter.
+ *        This function sets the pin modes for all the necessary GPIO pins.
  */
-void Atinverter::setUpPinMode() {
+void Atinverter::setUpPinMode()
+{
 	// --- LED Pins ---
   pinMode(LED1R_PIN, OUTPUT);
   pinMode(LED1G_PIN, OUTPUT);
@@ -39,106 +41,122 @@ void Atinverter::setUpPinMode() {
   digitalWrite(PRORESET_PIN, LOW);
 
 	// --- Gate Driver Pin ---
-  pinMode(GATESD_PIN, OUTPUT);
+  pinMode(GATESD_PIN, INPUT);
 
   pinMode(VI_AC_MISO_PIN, INPUT);
 }
 
-/** Senses the DC input voltage and provides a readout 
-  * on the serial monitor. The input voltage is sensed using
-  * a 120kΩ / 10kΩ voltage divider (Rvs1 and Rvs2).
-  * If your measured DC value seems off by a few tenths of a volt,
-  * use a multimeter to get the exact resistor values and update 
-  * them in Atinverter.cpp for better accuracy.
-*/
-
 /**
- * @brief Converts raw ADC value to instantaneous (unaveraged) Vdc using voltage divider formula
- * @return Measured DC voltage
+ * @brief Controls the state of a specified LED.
+ *
+ * @param LED   The pin number of the LED to control.
+ * @param state The desired state for the LED (HIGH to turn on, LOW to turn off).
  */
-float Atinverter::readVdc() {
-  int digital_val = analogRead(V_DC_PIN);  // Read raw ADC value
-  float Vdc_sense = (VREF * digital_val) / (ADC_MAX_VALUE); // Convert to sensed voltage
-  float Vdc = Vdc_sense * (Rvs1 + Rsv2) / Rsv2; // Scale to actual input voltage
-  return Vdc;
+void Atinverter::set1LED(int LED, int state)
+{
+  digitalWrite(LED, state); // Set LED to the specified state
 }
 
 /**
- * @brief Computes the 10 sample moving average using the measured Vdc value
- * @param Vdc unaveraged instantaneous DC voltage measured
- * @return Measured average DC voltage
+ * @brief Sequentially cycles through four LEDs, turning each on and off with a delay.
+ * 
+ * This function turns on each LED in order with a delay between each,
+ * then turns them off in reverse order, also with a delay.
+ *
+ * @param t_delay Delay time in milliseconds between each LED toggle.
  */
-float Atinverter::readAvgVdc(float Vdc) {
+void Atinverter::set2LED(int t_delay) {
+  digitalWrite(LED1G_PIN, HIGH); // Turn LED1 green on
+  delay(t_delay);
+  digitalWrite(LED1R_PIN, HIGH); // Turn LED1 red on
+  delay(t_delay);
+  digitalWrite(LED2G_PIN, HIGH); // Turn LED2 green on
+  delay(t_delay);
+  digitalWrite(LED2R_PIN, HIGH); // Turn LED2 red on
+  delay(t_delay);
 
-  readings[read_index] = Vdc; // Replace oldest reading with recent reading
-  total += readings[read_index]; // Add recent reading to total sum
+  digitalWrite(LED2R_PIN, LOW); // Turn LED2 red off
+  delay(t_delay);
+  digitalWrite(LED2G_PIN, LOW); // Turn LED2 green off
+  delay(t_delay);
+  digitalWrite(LED1R_PIN, LOW); // Turn LED1 red off
+  delay(t_delay);
+  digitalWrite(LED1G_PIN, LOW); // Turn LED1 green off
+  delay(t_delay);
+}
 
-  read_index++; // Increment index since we want to continue filling the circular buffer
-  read_index %= num_readings; // Ensure that read_index wraps back to 0 when it reaches num_readings
-
-  float average_Vdc = total / num_readings; // Calculate the moving average
-  total -= readings[read_index]; // Subtract recent reading from the total sum
-  
-  return average_Vdc;
+/**
+ * @brief Converts a raw ADC reading into an instantaneous (non-averaged) DC voltage.
+ * 
+ * Applies the voltage divider formula to convert the ADC value to the actual
+ * DC input voltage based on the known resistor values.
+ * 
+ * @return Instantaneous measured DC voltage (Vdc).
+ */
+float Atinverter::readVdc() 
+{
+  int digital_val = analogRead(V_DC_PIN);  // Read raw ADC value
+  float Vdc_sense = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to sensed voltage
+  float Vdc = Vdc_sense * (Rvs1 + Rsv2) / Rsv2; // Scale to actual input voltage
+  return Vdc;
 }
 
 /**
  * @brief Returns and prints the instantaneous (unaveraged) Idc
  * @return Measured DC current
  */
-float Atinverter::readIdc() {
+float Atinverter::readIdc()
+{
   int digital_val = analogRead(I_DC_PIN); // Read raw ADC value
-  float Vout = (VREF * digital_val) / (ADC_MAX_VALUE); // Convert to analog voltage
+  float Vout = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to analog voltage
 
   float Vout_0A = 0.5 * VREF; // Compute the zero current output voltage for TMCS1108A4BDR, see page 3 of datasheet
   
-  float Idc = (Vout - Vout_0A) / SENSOR_GAIN_MV_PER_A * 1000; // Use transfer function to compute Idc, see page 12 of datasheet 
+  float Idc = (Vout - Vout_0A) / SENSOR_GAIN_MV_PER_A * MV_TO_V; // Use transfer function to compute Idc, see page 12 of datasheet 
   return Idc;
 }
 
 /**
- * @brief Computes the 10 sample moving average using the measured Idc value
- * @param Idc unaveraged instantaneous DC voltage measured
- * @return Measured average DC current
+ * @brief Computes the moving average of a pre-defined sample count value for a given signal
+ * @param signal Unaveraged (instantaneous) measured signal
+ * @return Averaged signal
  */
-float Atinverter::readAvgIdc(float Idc) {
+float Atinverter::readAvg(float signal) {
 
-  readings[read_index] = Idc; // Replace oldest reading with recent reading
+  readings[read_index] = signal; // Replace oldest reading with recent reading
   total += readings[read_index]; // Add recent reading to total sum
 
   read_index++; // Increment index since we want to continue filling the circular buffer
-  read_index %= num_readings; // Ensure that read_index wraps back to 0 when it reaches num_readings
+  if (read_index >= num_readings){ // Ensure that read_index wraps back to 0 when it reaches num_readings
+    read_index = 0;
+  } 
 
-  float average_Idc = total / num_readings; // Calculate the moving average
+  float avg_signal = total / num_readings; // Calculate the moving average
   total -= readings[read_index]; // Subtract recent reading from the total sum
-
-  return average_Idc;
+  
+  return avg_signal;
 }
 
 /**
- * @brief Sets up the SPI protocol to interface between the
- * external ADC (ADC122S021CIMM/NOPB) and the ATMEGA328P to enable
- * voltage and current sensing of the AC output.
+ * @brief Sets up the SPI protocol between the ADC122S021 and the ATMEGA328P 
  */
 void Atinverter::setUpSPI() {
   // CS Handling
   pinMode(VI_AC_CS_PIN, OUTPUT); // Set CS to OUTPUT
   digitalWrite(VI_AC_CS_PIN, HIGH); // Ensure comms is not active
-
-  // Configure SPI
-  SPI.begin(); // Configures SCK and MOSI to outputs, MISO to inputs
-  //SPI.setClockDivider(SPI_CLOCK_DIV4); // Prescaler of 4 = 16MHz/4 = 4MHz
-  //SPI.setDataMode(SPI_MODE0); // CPOL = 0, CPHA = 0
-  //SPI.setBitOrder(MSBFIRST); // ADC uses MSB first
+  SPI.begin(); // Configures SCK and MOSI to outputs, MISO to input
 }
 
-int Atinverter::readADC() {
-  uint8_t control_byte = 0x00; // Select channel 1 (IN1)
+/**
+ * @brief Provides the ADC readout from the ADC122S021
+ * @param control_byte ADC channel selection, channel 1 = 0x00, channel 2 = 0x08
+ * @return int A 12-bit ADC value ranging from 0 to 4095.
+ */
+int Atinverter::readADC(uint8_t control_byte) {
   
-  //noInterrupts(); // Pause interrupts only during SPI
   // Begin SPI communication
   digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
-  SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure SPI
+  SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms
   
   // First transfer - send control byte and receive 4 MSB bits of data
   uint16_t data = SPI.transfer(control_byte); // Send channel selection bits, also receive 4 MSB bits
@@ -150,43 +168,9 @@ int Atinverter::readADC() {
   // End SPI communication
   digitalWrite(VI_AC_CS_PIN, HIGH); // SPI transfer ends with chip select high 
   SPI.endTransaction();
-  //interrupts(); // Re-enable interrupts
 
-  data &= 0x0FFF; // Mask to keep only 12 bits (since the ADC is 12-bit)
+  data &= 0x0FFF; // Mask to keep only the 12 LSBs (valid ADC data), discard upper 4 bits
   return data;
-}
-
-/**
- * @brief Takes 1 of 4 available LEDs and the state to be applied
- *        Sets the LED to the provided state
- */
-void Atinverter::set1LED(int LED, int state)
-{
-  digitalWrite(LED, state); // Set LED to state (HIGH or LOW)
-}
-
-/**
- * @brief Takes a delay time to cycle
- *        4 LEDs on and off
- */
-void Atinverter::set2LED(int t_delay) {
-  digitalWrite(LED1G_PIN, HIGH);   // Turn LED1 green on
-  delay(t_delay);                  // Wait delay time (ms)
-  digitalWrite(LED1R_PIN, HIGH);   // Turn LED1 red on
-  delay(t_delay);
-  digitalWrite(LED2G_PIN, HIGH);   // Turn LED2 green on
-  delay(t_delay);
-  digitalWrite(LED2R_PIN, HIGH);   // Turn LED2 red on
-  delay(t_delay);
-
-  digitalWrite(LED2R_PIN, LOW);    // Turn LED2 red off
-  delay(t_delay);
-  digitalWrite(LED2G_PIN, LOW);    // Turn LED2 green off
-  delay(t_delay);
-  digitalWrite(LED1R_PIN, LOW);    // Turn LED1 red off
-  delay(t_delay);
-  digitalWrite(LED1G_PIN, LOW);    // Turn LED1 green off
-  delay(t_delay);
 }
 
 // --- PWM ---
@@ -290,8 +274,8 @@ ISR(TIMER1_COMPA_vect) {
 /**
  * @brief PWM ISR Logic for Timer1 Compare Match Interrupts.
  * 
- * This function controls the PWM waveform generation using the values
- * stored in the sinPWM array. It alternates the output between pins 5 and 6,
+ * This method controls the PWM waveform generation using the values
+ * stored in the sinPWM50Hz or sinPWM60Hz array. It alternates the output between pins 5 and 6,
  * simulating a sinusoidal waveform using phase-correct PWM. 
  * 
  * - Pin 5 (OCR0B) and Pin 6 (OCR0A) are used as outputs.
@@ -329,13 +313,20 @@ void Atinverter::pwmISR() {
 }
 
 // --- Timer2-based Delay Variable ---
+// Used to implement a custom 1ms tick counter using Timer2.
+// This allows for non-`delay()` based timing separate from the default Arduino millis().
 volatile unsigned long Atinverter::timer2Millis = 0;
 
-// Initialize Timer2 for 1ms ticks
+/**
+ * @brief Initializes Timer2 to generate an interrupt every 1ms.
+ *        This sets up Timer2 in CTC mode with a 64 prescaler to produce a compare match
+ *        every 250 timer ticks (1ms at 16MHz). Each compare match triggers an interrupt
+ *        that increments the timer2Millis counter.
+ */
 void Atinverter::initTimer2Delay() {
-  cli(); // Disable interrupts during setup
+  cli(); // Disable interrupts
 
-  // Reset Timer2 control registers
+ // 1. Reset all timer-related registers
   TCCR2A = 0;
   TCCR2B = 0;
   TCNT2  = 0;
@@ -343,29 +334,47 @@ void Atinverter::initTimer2Delay() {
   // Set compare match register for 1ms interval
   // f_cpu = 16 MHz, prescaler = 64 → 16,000,000 / 64 = 250,000 ticks/sec
   // We want 1ms = 1000Hz → 250,000 / 1000 = 250
+
+  // 2. Set compare match value
   OCR2A = 249; // match at 250 ticks
 
-  TCCR2A |= (1 << WGM21); // CTC mode
-  TCCR2B |= (1 << CS22); // prescaler = 64
+  // 3. Configure mode
+  TCCR2A |= (1 << WGM21); // Set CTC mode
+  TCCR2B |= (1 << CS22); // Set prescaler = 64
+
+  // 4. Enable interrupt on compare match
   TIMSK2 = (1 << OCIE2A); // enable compare interrupt
 
-  sei(); // Enable interrupts
+  sei(); // Re-enable interrupts
 }
 
-void Atinverter::delayWithTimer2(unsigned long ms) {
+/**
+ * @brief Blocking delay function based on Timer2's millisecond counter.
+ *        Waits until the specified number of milliseconds has passed using the timer2Millis variable.
+ *        This function blocks execution and should be used sparingly in time-sensitive applications.
+ * @param ms Number of milliseconds to wait
+ */
+void Atinverter::delay2(unsigned long ms) {
   unsigned long start = timer2Millis;
   while ((timer2Millis - start) < ms) {
-    // Do nothing, just wait
-    // But interrupts (like PWM ISR) still run!
+    // Busy-wait loop until desired delay is reached
   }
 }
 
-// Returns the current millisecond value 
+/**
+ * @brief Returns the current millisecond count from Timer2. Useful for creating
+ *        non-blocking delays or timestamps independent of Arduino's millis().
+ * @return Current millisecond value from Timer2 counter
+ */
 unsigned long Atinverter::millis2() {
   return timer2Millis;
 }
 
-// Timer2 compare match ISR
+/**
+ * @brief Interrupt Service Routine (ISR) for Timer2 Compare Match A.
+ *        This ISR triggers every 1ms and increments the timer2Millis counter.
+ *        Acts as the heartbeat for delay2() and millis2() functions.
+ */
 ISR(TIMER2_COMPA_vect) {
   Atinverter::timer2Millis++;
 }

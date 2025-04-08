@@ -4,24 +4,23 @@
 	Released into the public domain (Open Source DC to AC Inverter)
 */
 
-#ifndef Atinverter_h
-#define Atinverter_h
+#ifndef ATINVERTER_H
+#define ATINVERTER_H
 
 #include "Arduino.h"
 #include <SPI.h>
 
-// --- For Idc_Sensing.ino ---
-// * 1000 to convert mV/A to V/A 
-#define SENSOR_GAIN_MV_PER_A 400.0  // Sensitivity for A4 variant (400 mV per A)
+// --- Current Sensor Parameters ---
+#define SENSOR_GAIN_MV_PER_A 400.0f // Sensitivity for A4 variant (400 mV per A)
+#define MV_TO_V 1000.0f
 
-// --- For Vdc_Sensing.ino ---
-// Constants for ADC conversion
-#define VREF 5.0 // Reference voltage for ADC (in volts)
-#define ADC_RESOLUTION_BITS 10
-#define ADC_MAX_VALUE ((1 << ADC_RESOLUTION_BITS) - 1) // 1023 for 10-bit ADC
+// --- ADC Parameters ---
+#define VREF 5.0 // Both chips powered with 5V 
+#define ADC_ATMEGA328P_MAX_VALUE 1023.0f // For ATMEGA328P (internal ADC)
+#define ADC_122S021_MAX_VALUE 4095.0f // For ADC122S021 (external SPI ADC)
 
-// --- For Vac_Sensing.ino ---
-#define ADC_SCALE 4095.0  // 12-bit ADC has a range of 0-4095
+// --- Moving Average Parameter ---
+#define MA_SAMPLES 10 // Default moving average sample count, adjust if needed
 
 /**
  * @class Atinverter
@@ -40,19 +39,17 @@ class Atinverter {
 	static const int LED2G_PIN = 7; // Green LED 2 | PD7
 
 	// --- Methods ---
-	void setUpPinMode(); // Sets appropriate pinMode() for each const pin
+	void setUpPinMode();
+
+	void set1LED(int led, int state);
+	void set2LED(int t_delay);
 	
 	float readVdc();
-	float readAvgVdc(float Vdc);
 	float readIdc();
-	float readAvgIdc(float Idc);
+	float readAvg(float signal);
 
 	void setUpSPI(); // Sets up SPI protocol for external ADC
-	int readADC();
-	int readADC(uint8_t channel);
-
-	void set1LED(int led, int state); // Sets 1 LED to HIGH or LOW
-	void set2LED(int t_delay); // Cycles 4 LEDs
+	int readADC(uint8_t control_byte);
 
 	void enablePWM(); // Start PWM generation
 	void disablePWM(); // Stop PWM generation
@@ -60,15 +57,13 @@ class Atinverter {
 	static void pwmISR(); // Interrupt Service Routine logic
 
 	void initTimer2Delay();
-	void delayWithTimer2(unsigned long ms);
+	void delay2(unsigned long ms);
 	unsigned long millis2();
 
 	// --- Timer2 increment ---
 	static volatile unsigned long timer2Millis;
 
   private:
-	// const = value is read-only and cannot be changed anywhere
-	// static = one shared value across all instances of the class
 
 	// --- External ADC (ADC122S021CIMM/NOPB) Voltage and Current Sensing Pins ---
 	static const int VI_AC_CS_PIN = 10; // SPI chip select | PB2
@@ -99,8 +94,8 @@ class Atinverter {
 	static const unsigned int Rsv2 = 9900; // Adjust this if needed as per measurement
 
 	// --- Parameters for Moving Average ---
-	static const int num_readings = 10; // Number of samples in moving average
-	float readings[num_readings]; // Circular buffer for Vdc samples
+	static const int num_readings = MA_SAMPLES; // Samples in moving average
+	float readings[MA_SAMPLES]; // Circular buffer for signal samples
 	int read_index = 0; // Current index in the buffer
 	float total = 0; // Running total of readings
 
