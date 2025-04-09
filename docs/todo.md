@@ -7,4 +7,5 @@ nav_order: 6
 # **TO-DO**
 
 
-- [ ] Order NOR gate and verify that logic protection circuitry is operational
+- [X] Order NOR gate and verify that logic protection circuitry is operational
+- [ ] Verify that schematic, PCB, and 3D model is not missing anything (run DRC again just in case)

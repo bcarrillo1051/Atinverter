@@ -37021,14 +37021,6 @@
 		(uuid "342d2100-e2ad-44ec-90f7-42c0dad68c48")
 	)
 	(segment
-		(start 69.596 118.8212)
-		(end 68.58 117.8052)
-		(width 0.15)
-		(layer "F.Cu")
-		(net 8)
-		(uuid "5c5dd6eb-7ac0-4230-8c79-d4ce19b8b14b")
-	)
-	(segment
 		(start 73.6854 121.0457)
 		(end 73.4314 120.7917)
 		(width 0.15)
