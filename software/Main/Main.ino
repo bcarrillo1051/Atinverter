@@ -18,11 +18,17 @@ int state = 0;
 int sixty_once = 0;
 int fifty_once = 0;
 int prev_state = 0;
+bool isFiftyHz = false;
 
-// float DC_volt = 5.23;
-// float DC_amp = 6.8;
-// float AC_volt = 35.21;
-// float AC_amp = 0.95;
+//Voltage and Current value initalization
+float DC_volt_avg = 0;
+float DC_amp_avg = 0;
+uint16_t ADC_volt;
+uint16_t ADC_amp;
+float AC_volt = 0;
+float AC_amp = 0;
+float round_AC_volt;
+float round_AC_amp;
 
 void setup() {
 
@@ -40,7 +46,8 @@ void setup() {
   atinverter.setUpPinMode();
   Serial.println("Setup Done");
 
-  voltageSensor.setSensitivity(SENSITIVITY);
+  adcSensorFifty.setSensitivity(SENSITIVITY);
+  adcSensorSixty.setSensitivity(SENSITIVITY);
   atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
 
   atinverter.startPWM(false);
@@ -57,8 +64,8 @@ void receiveEvent(int howMany) {
 // The function that completes when I2C communication 
 // data is requested from this device
 void requestEvent() {
-  Wire.write((byte*)&DC_volt, sizeof(DC_volt));
-  Wire.write((byte*)&DC_amp, sizeof(DC_amp));
+  Wire.write((byte*)&DC_volt_avg, sizeof(DC_volt_avg));
+  Wire.write((byte*)&DC_amp_avg, sizeof(DC_amp_avg));
   Wire.write((byte*)&AC_volt, sizeof(AC_volt));
   Wire.write((byte*)&AC_amp, sizeof(AC_amp));
 }
@@ -80,8 +87,27 @@ void loop() {
   // Read the AC values from the SPI ADC
   // 0x00 represents channel 0 on ADC -> AC voltage channel
   // 0x08 represents channel 1 on ADC -> AC current channel
-  uint16_t ADC_volt = atinverter.readADC(0x00);
-  uint16_t ADC_amp = atinverter.readADC(0x08);
+  ADC_volt = atinverter.readADC(0x00);
+  ADC_amp = atinverter.readADC(0x08);
+
+  if (isFiftyHz) {
+    // Get the converted average value of AC voltage and current
+    AC_volt = adcSensorFifty.getRmsVoltage(1, ADC_volt);
+    AC_amp = 5; // adcSensorFifty.getRmsCurrent(1, ADC_amp);
+
+    // Rounding the values to have 2 decimal places
+    round_AC_volt = round(AC_volt*100) / 100;
+    round_AC_amp = round(AC_amp*100) / 100;
+  }
+  else {
+    // Get the converted average value of AC voltage and current
+    AC_volt = adcSensorSixty.getRmsVoltage(1, ADC_volt);
+    AC_amp = 6; //adcSensorSixty.getRmsCurrent(1, ADC_amp);
+
+    // Rounding the values to have 2 decimal places
+    round_AC_volt = round(AC_volt*100) / 100;
+    round_AC_amp = round(AC_amp*100) / 100;
+  }
 
   // Turns LED Off
   if (state == 0) {
@@ -97,9 +123,7 @@ void loop() {
   }
   else if (state == 2) {
     // Cycles proreset, needs to be a function
-    digitalWrite(PRORESET_PIN, HIGH);
-    delay2(3000);
-    digitalWrite(PRORESET_PIN, LOW);
+    atinverter.powerCycleGates();
     fifty_once = 0;
     sixty_once = 0;
   }
@@ -118,13 +142,6 @@ void loop() {
       fifty_once = 1;
     }
     sixty_once = 0;
-    // Get the converted average value of AC voltage and current
-    float AC_volt = adcSensorSixty.getRmsVoltage(1, ADC_volt);
-    float AC_amp = adcSensorSixty.getRmsCurrent(1, ADC_amp);
-
-    // Rounding the values to have 2 decimal places
-    float round_AC_volt = round(AC_volt*100) / 100;
-    float round_AC_amp = round(AC_amp*100) / 100;
   } 
   // 60 Hz Sin Wave Output
   else if (state == 6) {
@@ -133,13 +150,6 @@ void loop() {
       sixty_once = 1;
     }
     fifty_once = 0;
-    // Get the converted average value of AC voltage and current
-    float AC_volt = adcSensorFifty.getRmsVoltage(1, ADC_volt);
-    float AC_amp = adcSensorFifty.getRmsCurrent(1, ADC_amp);
-
-    // Rounding the values to have 2 decimal places
-    float round_AC_volt = round(AC_volt*100) / 100;
-    float round_AC_amp = round(AC_amp*100) / 100;
   }
   else if (state == 7) {
     fifty_once = 0;
@@ -148,11 +158,12 @@ void loop() {
   else {
     Serial.println("Invalid State");
   }
+
+  Serial.print("DC Voltage: "); Serial.println(DC_volt_avg);
+  Serial.print("DC Current: "); Serial.println(DC_amp_avg);
+  Serial.print("AC Voltage: "); Serial.println(round_AC_volt);
+  Serial.print("AC Current: "); Serial.println(round_AC_amp);
+  Serial.println();
+  atinverter.delay2(10);
 }
 
-Serial.print(F("DC Voltage: ")); Serial.println(DC_volt_avg);
-  Serial.print(F("DC Current: ")); Serial.println(DC_amp_avg);
-  Serial.print(F("AC Voltage: ")); Serial.println(round_AC_volt);
-  Serial.print(F("AC Current: ")); Serial.println(round_AC_amp);
-  Serial.println();
-  delay2(10);
