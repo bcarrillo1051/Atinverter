@@ -153,6 +153,7 @@ void Atinverter::setUpSPI() {
  * @return int A 12-bit ADC value ranging from 0 to 4095.
  */
 int Atinverter::readADC(uint8_t control_byte) {
+
   
   // Begin SPI communication
   digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
@@ -380,3 +381,23 @@ ISR(TIMER2_COMPA_vect) {
 }
 
 
+// immediately triggers the gate shutdown
+void Atinverter::shutdownGates(int shutdownCode) {
+  _shutdownCode = shutdownCode;
+  digitalWrite(PRORESET_PIN, HIGH);
+  delay2(10000);
+}
+
+
+//
+void Atinverter::checkOverCurrent(float dcCurrent, float acCurrent) {
+  // Max DC current allowed of 16.6 amps
+  if (dcCurrentDC > MAX_DC_CURRENT || dcCurrent < -MAX_DC_CURRENT) {
+    shutdownGates(OVERCURRENT);
+  }
+  // Max AC current allowed of 16.6 amps
+  if (acCurrent > MAX_AC_CURRENT || acCurrent < -MAX_AC_CURRENT) {
+    shutdownGates(OVERCURRENT);
+  }
+
+}

@@ -22,6 +22,21 @@
 // --- Moving Average Parameter ---
 #define MA_SAMPLES 10 // Default moving average sample count, adjust if needed
 
+// --- Safety Parameters ---
+#define MAX_DC_CURRENT 16.66
+#define MAX_AC_CURRENT 16.66
+
+// shutdown error codes for convenience and bookkeeping. user-defined codes start at 4
+enum ShutdownCodes
+{
+  // is not shut down = -1
+  HARDWARE = 0,
+  SOFTWAREUNLABELED = 1,
+  OVERCURRENT = 2,
+  OVERTEMPERATURE = 3,
+  NUM_PRESETCODES
+};
+
 /**
  * @class Atinverter
  * @brief This class handles the control of the Atinverter, including pin setup
@@ -59,6 +74,9 @@ class Atinverter {
 	void initTimer2Delay();
 	void delay2(unsigned long ms);
 	unsigned long millis2();
+
+	void shutdownGates(int shutdownCode)
+	void checkOverCurrent(float dcCurrent, float acCurrent)
 
 	// --- Timer2 increment ---
 	static volatile unsigned long timer2Millis;
@@ -106,6 +124,8 @@ class Atinverter {
 	static int OK; // Flag to toggle between pins 5 and 6
 	static const int sin50HzPWM[312]; // Sinusoidal 50Hz array samples
 	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples 
+
+	char _shutdownCode = 0;
 };
 
 #endif

@@ -9,7 +9,8 @@
 #include "ZMPT101B.h"
 
 Atinverter atinverter;
-ZMPT101B voltageSensor(60.0);
+ZMPT101B adcSensorSixty(60.0);
+ZMPT101B adcSensorFifty(50.0);
 
 // Variable initialization 
 const int ledPin = 3;
@@ -18,10 +19,10 @@ int sixty_once = 0;
 int fifty_once = 0;
 int prev_state = 0;
 
-float DC_volt = 5.23;
-float DC_amp = 6.8;
-float AC_volt = 35.21;
-float AC_amp = 0.95;
+// float DC_volt = 5.23;
+// float DC_amp = 6.8;
+// float AC_volt = 35.21;
+// float AC_amp = 0.95;
 
 void setup() {
 
@@ -41,6 +42,8 @@ void setup() {
 
   voltageSensor.setSensitivity(SENSITIVITY);
   atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
+
+  atinverter.startPWM(false);
 }
 
 // The function that completes when I2C communication 
@@ -67,19 +70,18 @@ void loop() {
   }
 
   // Read all DC voltages and currents
-  unsigned long start = millis();
-  DC_volt = atinverter.readVdc();
-  DC_amp = atinverter.readIdc();
-  unsigned long time = millis() - start;
-  Serial.print(time)
-  Serial.println(" ms")
+  //unsigned long start = millis();
+  DC_volt_avg = atinverter.readAvg(atinverter.readVdc());
+  DC_amp_avg = atinverter.readAvg(atinverter.readIdc());
+  // unsigned long time = millis() - start;
+  // Serial.print(time)
+  // Serial.println(" ms")
 
   // Read the AC values from the SPI ADC
-  uint16_t ADC_val = atinverter.readADC();
-  // read the voltage and then print via Serial.
-  float AC_val = voltageSensor.getRmsVoltage(1, ADC_val);
-  Serial.print(F("AC Value : ")); Serial.println(AC_val);Serial.println();
-  delay(250);
+  // 0x00 represents channel 0 on ADC -> AC voltage channel
+  // 0x08 represents channel 1 on ADC -> AC current channel
+  uint16_t ADC_volt = atinverter.readADC(0x00);
+  uint16_t ADC_amp = atinverter.readADC(0x08);
 
   // Turns LED Off
   if (state == 0) {
@@ -96,7 +98,7 @@ void loop() {
   else if (state == 2) {
     // Cycles proreset, needs to be a function
     digitalWrite(PRORESET_PIN, HIGH);
-    delay(3000);
+    delay2(3000);
     digitalWrite(PRORESET_PIN, LOW);
     fifty_once = 0;
     sixty_once = 0;
@@ -116,6 +118,13 @@ void loop() {
       fifty_once = 1;
     }
     sixty_once = 0;
+    // Get the converted average value of AC voltage and current
+    float AC_volt = adcSensorSixty.getRmsVoltage(1, ADC_volt);
+    float AC_amp = adcSensorSixty.getRmsCurrent(1, ADC_amp);
+
+    // Rounding the values to have 2 decimal places
+    float round_AC_volt = round(AC_volt*100) / 100;
+    float round_AC_amp = round(AC_amp*100) / 100;
   } 
   // 60 Hz Sin Wave Output
   else if (state == 6) {
@@ -124,6 +133,13 @@ void loop() {
       sixty_once = 1;
     }
     fifty_once = 0;
+    // Get the converted average value of AC voltage and current
+    float AC_volt = adcSensorFifty.getRmsVoltage(1, ADC_volt);
+    float AC_amp = adcSensorFifty.getRmsCurrent(1, ADC_amp);
+
+    // Rounding the values to have 2 decimal places
+    float round_AC_volt = round(AC_volt*100) / 100;
+    float round_AC_amp = round(AC_amp*100) / 100;
   }
   else if (state == 7) {
     fifty_once = 0;
@@ -133,3 +149,10 @@ void loop() {
     Serial.println("Invalid State");
   }
 }
+
+Serial.print(F("DC Voltage: ")); Serial.println(DC_volt_avg);
+  Serial.print(F("DC Current: ")); Serial.println(DC_amp_avg);
+  Serial.print(F("AC Voltage: ")); Serial.println(round_AC_volt);
+  Serial.print(F("AC Current: ")); Serial.println(round_AC_amp);
+  Serial.println();
+  delay2(10);
