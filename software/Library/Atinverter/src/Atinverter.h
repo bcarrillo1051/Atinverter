@@ -43,33 +43,36 @@ class Atinverter {
 	static const int LED2G_PIN = 7; // Green LED 2 | PD7
 
 	// --- Methods ---
+
+	// Set-up Pins
 	void setUpPinMode();
 
+	// LED Blinking
 	void set1LED(int led, int state);
 	void set2LED(int t_delay);
 	
+	// DC Sensing
 	float getVdc();
 	float getIdc();
 	float getAvgDC(int signal_type, float signal);
 
+	// AC Sensing 
+	void setSensitivity(float value);
+	float getRmsVoltage(uint8_t loopCount = 1);
 	void setUpSPI(); // Sets up SPI protocol for external ADC
 	int getADC(uint8_t control_byte);
 
+	// PWM Generation
 	void enablePWM(); // Start PWM generation
 	void disablePWM(); // Stop PWM generation
 	void startPWM(bool is50HzMode); // Setup PWM and timers and start PWM generation
 	static void pwmISR(); // Interrupt Service Routine logic
 
+	// Timer 2 Delay 
 	void initTimer2Delay();
 	void delay2(unsigned long ms);
 	unsigned long millis2();
-
-	// --- Timer2 increment ---
 	static volatile unsigned long timer2Millis;
-
-	// --- AC Voltage Sensing ---
-	void setSensitivity(float value);
-	float getRmsVoltage(uint8_t loopCount = 1);
 
   private:
 

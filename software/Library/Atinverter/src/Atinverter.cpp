@@ -145,6 +145,61 @@ float Atinverter::getAvgDC(int signal_type, float signal_value) {
   return avg_signal;
 }
 
+// --- AC Voltage Sensing ---
+
+/// @brief Set sensitivity
+/// @param value Sensitivity value
+void Atinverter::setSensitivity(float value)
+{
+	sensitivity = value;
+}
+
+/// @brief Calculate zero point
+/// @return zero / center value
+int Atinverter::getZeroPoint()
+{
+	uint32_t Vsum = 0;
+	uint32_t measurements_count = 0;
+	uint32_t t_start = this->millis2();
+
+	while (this->millis2() - t_start < period) // Wait a full period
+	{
+		Vsum += this->getADC(0x00);
+		measurements_count++;
+	}
+
+	return Vsum / measurements_count;
+}
+
+/// @brief Calculate root mean square (RMS) of AC valtage
+/// @param loopCount Loop count to calculate
+/// @return root mean square (RMS) of AC valtage
+float Atinverter::getRmsVoltage(uint8_t loopCount)
+{
+	double readingVoltage = 0.0f;
+
+	for (uint8_t i = 0; i < loopCount; i++)
+	{
+		int zeroPoint = this->getZeroPoint();
+
+		int32_t Vnow = 0;
+		uint32_t Vsum = 0;
+		uint32_t measurements_count = 0;
+		uint32_t t_start = this->millis2();
+
+		while (this->millis2() - t_start < period)
+		{
+			Vnow = this->getADC(0x00) - zeroPoint;
+			Vsum += (Vnow * Vnow);
+			measurements_count++;
+		}
+
+		readingVoltage += sqrt(Vsum / measurements_count) / ADC_122S021_MAX_VALUE * VREF * sensitivity;
+	}
+
+	return readingVoltage / loopCount;
+}
+
 /**
  * @brief Sets up the SPI protocol between the ADC122S021 and the ATMEGA328P 
  */
@@ -381,60 +436,5 @@ unsigned long Atinverter::millis2() {
  */
 ISR(TIMER2_COMPA_vect) {
   Atinverter::timer2Millis++;
-}
-
-// --- AC Voltage Sensing ---
-
-/// @brief Set sensitivity
-/// @param value Sensitivity value
-void Atinverter::setSensitivity(float value)
-{
-	sensitivity = value;
-}
-
-/// @brief Calculate zero point
-/// @return zero / center value
-int Atinverter::getZeroPoint()
-{
-	uint32_t Vsum = 0;
-	uint32_t measurements_count = 0;
-	uint32_t t_start = this->millis2();
-
-	while (this->millis2() - t_start < period) // Wait a full period
-	{
-		Vsum += this->getADC(0x00);
-		measurements_count++;
-	}
-
-	return Vsum / measurements_count;
-}
-
-/// @brief Calculate root mean square (RMS) of AC valtage
-/// @param loopCount Loop count to calculate
-/// @return root mean square (RMS) of AC valtage
-float Atinverter::getRmsVoltage(uint8_t loopCount)
-{
-	double readingVoltage = 0.0f;
-
-	for (uint8_t i = 0; i < loopCount; i++)
-	{
-		int zeroPoint = this->getZeroPoint();
-
-		int32_t Vnow = 0;
-		uint32_t Vsum = 0;
-		uint32_t measurements_count = 0;
-		uint32_t t_start = this->millis2();
-
-		while (this->millis2() - t_start < period)
-		{
-			Vnow = this->getADC(0x00) - zeroPoint;
-			Vsum += (Vnow * Vnow);
-			measurements_count++;
-		}
-
-		readingVoltage += sqrt(Vsum / measurements_count) / ADC_122S021_MAX_VALUE * VREF * sensitivity;
-	}
-
-	return readingVoltage / loopCount;
 }
 
