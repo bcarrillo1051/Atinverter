@@ -10,8 +10,10 @@
  * @brief Constructor for the AtinverterE class.
  *        Initializes any necessary components or variables.
  */
-Atinverter::Atinverter() // Atinverter contructor
+// Initialize ZMPT101B with provided frequency using member initializer list
+Atinverter::Atinverter(float frequency)
 {
+  period = 1000 / frequency; // 60Hz = 16666 µs (or ~16.7 milliseconds)
 }
 
 /**

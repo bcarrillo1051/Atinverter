@@ -34,5 +34,6 @@ BUUUTTTT — that's theoretical! Needn to consider:
 - Need to consider proper heatsinking for the MOSFETs (18 A is at 25°C, derates with temp)
 - Ripple current through cap < 470mA
 - Safe design margin: do not run at 100% ratings
+- Consider switching trajectory
 
 Reasonably speaking somwhere up to 450W

@@ -33,15 +33,17 @@ mathjax: true
 # **PWM Control**
 ***
 
-The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave.
+The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. 
+
+
+
 
 How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. 
 
 In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be $$f_{sw} = 31,372Hz$$. The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave.
 
 
-
-The H-bridge is simply the stages that allows us to have complimentary switching where a switching control signal controls a power signal that is provided to the load. 
+The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. 
 
 The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains.
 

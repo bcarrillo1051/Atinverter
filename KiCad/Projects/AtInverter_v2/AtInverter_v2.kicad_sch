@@ -8653,6 +8653,10 @@
 		(uuid "681a1b74-3e19-4eb1-847f-eaa68d7e870a")
 	)
 	(no_connect
+		(at 55.88 153.67)
+		(uuid "74d6d198-afb3-4724-9209-1a09d62dd6fb")
+	)
+	(no_connect
 		(at 55.88 158.75)
 		(uuid "7cd9db39-014d-44c4-ba7d-c85e7cbfef73")
 	)
@@ -12576,16 +12580,6 @@
 	)
 	(wire
 		(pts
-			(xy 55.88 153.67) (xy 63.5 153.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f596dd78-1776-418e-9d5a-5d2a85b23355")
-	)
-	(wire
-		(pts
 			(xy 283.21 162.56) (xy 283.21 163.83)
 		)
 		(stroke
@@ -13153,7 +13147,7 @@
 		)
 		(uuid "7c38e809-4599-43a3-a808-560d94470df9")
 	)
-	(text "AC Output Voltage Sensing"
+	(text "AC Voltage Sensing"
 		(exclude_from_sim no)
 		(at 67.31 144.78 0)
 		(effects
@@ -13179,7 +13173,7 @@
 		)
 		(uuid "85dd4bc0-e797-48b6-afa9-06a4898e7285")
 	)
-	(text "FET HB Driver (B Side)"
+	(text "Gate Driver (B Side)"
 		(exclude_from_sim no)
 		(at 265.43 101.6 0)
 		(effects
@@ -13312,7 +13306,7 @@
 		)
 		(uuid "fe255747-db57-4cfd-959f-a676c8b358c5")
 	)
-	(text "FET HB Driver (A Side)"
+	(text "Gste Driver (A Side)"
 		(exclude_from_sim no)
 		(at 175.26 101.6 0)
 		(effects
@@ -13734,16 +13728,6 @@
 			(justify right bottom)
 		)
 		(uuid "7a777e39-6f97-4fac-bd8a-89816c736d6a")
-	)
-	(label "!RESET"
-		(at 63.5 153.67 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "7d5383fe-76e4-422d-87eb-24fa8b30c5ac")
 	)
 	(label "!RESET"
 		(at 54.61 67.31 180)
