@@ -87,11 +87,13 @@ void loop() {
     // Get the converted average value of AC voltage and current
     AC_volt = adcSensorFifty.getRmsVoltage(20);
     AC_amp = 5; // adcSensorFifty.getRmsCurrent(1, ADC_amp);
+    DC_volt_avg = 5;
   }
   if (isFiftyHz == false){
     // Get the converted average value of AC voltage and current
     AC_volt = adcSensorSixty.getRmsVoltage(20);
     AC_amp = 6; //adcSensorSixty.getRmsCurrent(1, ADC_amp);
+    DC_volt_avg = 6;
   }
 
   // Turns LED Off
@@ -105,7 +107,6 @@ void loop() {
     digitalWrite(ledPin, HIGH);
     fifty_once = 0;
     sixty_once = 0;
-     Serial.print("here 1");
   }
   else if (state == 2) {
     // Cycles proreset, needs to be a function
@@ -152,6 +153,6 @@ void loop() {
   Serial.print(F("AC Voltage: ")); Serial.print(AC_volt);
   Serial.print(F(" AC Current: ")); Serial.println(AC_amp);
   Serial.println();
-  atinverter.delay2(2000);
+  atinverter.delay2(1000);
 }
 
