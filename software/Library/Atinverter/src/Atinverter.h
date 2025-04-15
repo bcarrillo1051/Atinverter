@@ -143,7 +143,7 @@ class Atinverter {
 	static const int sin50HzPWM[312]; // Sinusoidal 50Hz array samples
 	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples 
 
-	char _shutdownCode = 0;
+	int _shutdownCode = 0;
 	uint32_t period;
 	float 	 sensitivity = DEFAULT_SENSITIVITY;
 	int getZeroPoint();

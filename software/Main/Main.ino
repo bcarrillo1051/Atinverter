@@ -6,11 +6,9 @@
 
 #include "Atinverter.h"
 #include "Wire.h"
-#include "ZMPT101B.h"
 
-Atinverter atinverter;
-ZMPT101B adcSensorSixty(60.0);
-ZMPT101B adcSensorFifty(50.0);
+Atinverter atinverter60(60);
+Atinverter atinverter50(50);
 
 // Variable initialization 
 const int ledPin = 3;
@@ -41,14 +39,14 @@ void setup() {
   digitalWrite(ledPin, LOW);
 
   // Initializes pins
-  atinverter.setUpPinMode();
-  atinverter.initTimer2Delay();
+  atinverter60.setUpPinMode();
+  atinverter60.initTimer2Delay();
 
-  adcSensorFifty.setSensitivity(SENSITIVITY);
-  adcSensorSixty.setSensitivity(SENSITIVITY);
+  atinverter60.setSensitivity(SENSITIVITY);
+  atinverter50.setSensitivity(SENSITIVITY);
   atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
 
-  atinverter.startPWM(false);
+  atinverter60.startPWM(false);
   Serial.println("Setup Done");
 }
 
@@ -77,22 +75,22 @@ void loop() {
 
   // Read all DC voltages and currents
   //unsigned long start = millis();
-  DC_volt_avg = atinverter.readAvg(atinverter.readVdc());
-  DC_amp_avg = atinverter.readAvg(atinverter.readIdc());
+  DC_volt_avg = atinverter60.readAvg(atinverter.readVdc());
+  DC_amp_avg = atinverter60.readAvg(atinverter.readIdc());
   // unsigned long time = millis() - start;
   // Serial.print(time)
   // Serial.println(" ms")
 
   if (isFiftyHz) {
     // Get the converted average value of AC voltage and current
-    AC_volt = adcSensorFifty.getRmsVoltage(20);
-    AC_amp = 5; // adcSensorFifty.getRmsCurrent(1, ADC_amp);
+    AC_volt = atinverter50.getRmsVoltage(20);
+    AC_amp = 5; // atinverter50.getRmsCurrent(1, ADC_amp);
     DC_volt_avg = 5;
   }
   if (isFiftyHz == false){
     // Get the converted average value of AC voltage and current
-    AC_volt = adcSensorSixty.getRmsVoltage(20);
-    AC_amp = 6; //adcSensorSixty.getRmsCurrent(1, ADC_amp);
+    AC_volt = atinverter60.getRmsVoltage(20);
+    AC_amp = 6; //atinverter60.getRmsCurrent(1, ADC_amp);
     DC_volt_avg = 6;
   }
 
@@ -110,7 +108,7 @@ void loop() {
   }
   else if (state == 2) {
     // Cycles proreset, needs to be a function
-    atinverter.powerCycleGates();
+    atinverter60.powerCycleGates();
     fifty_once = 0;
     sixty_once = 0;
   }
@@ -126,7 +124,7 @@ void loop() {
   else if (state == 5) {
     isFiftyHz = true;
     if (fifty_once == 0) {
-      atinverter.startPWM(isFiftyHz);
+      atinverter60.startPWM(isFiftyHz);
       fifty_once = 1;
     }
     sixty_once = 0;
@@ -135,7 +133,7 @@ void loop() {
   else if (state == 6) {
     isFiftyHz = false;
     if (sixty_once == 0) {
-      atinverter.startPWM(isFiftyHz);
+      atinverter60.startPWM(isFiftyHz);
       sixty_once = 1;
     }
     fifty_once = 0;
@@ -153,6 +151,6 @@ void loop() {
   Serial.print(F("AC Voltage: ")); Serial.print(AC_volt);
   Serial.print(F(" AC Current: ")); Serial.println(AC_amp);
   Serial.println();
-  atinverter.delay2(1000);
+  atinverter60.delay2(1000);
 }
 
