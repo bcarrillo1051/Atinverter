@@ -10,8 +10,9 @@
  * @brief Constructor for the AtinverterE class.
  *        Initializes any necessary components or variables.
  */
-Atinverter::Atinverter() // Atinverter contructor
+Atinverter::Atinverter(uint16_t frequency)
 {
+  period = 1000 / frequency; // 60Hz = 16666 µs (or ~16.7 milliseconds)
 }
 
 /**
@@ -93,7 +94,7 @@ void Atinverter::set2LED(int t_delay) {
  * 
  * @return Instantaneous measured DC voltage (Vdc).
  */
-float Atinverter::readVdc() 
+float Atinverter::getVdc() 
 {
   int digital_val = analogRead(V_DC_PIN);  // Read raw ADC value
   float Vdc_sense = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to sensed voltage
@@ -105,7 +106,7 @@ float Atinverter::readVdc()
  * @brief Returns and prints the instantaneous (unaveraged) Idc
  * @return Measured DC current
  */
-float Atinverter::readIdc()
+float Atinverter::getIdc()
 {
   int digital_val = analogRead(I_DC_PIN); // Read raw ADC value
   float Vout = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to analog voltage
@@ -118,12 +119,19 @@ float Atinverter::readIdc()
 
 /**
  * @brief Computes the moving average of a pre-defined sample count value for a given signal
- * @param signal Unaveraged (instantaneous) measured signal
+ * @param signal_type Vdc or Idc (0 or 1 respectively)
+ * @param signal_value Unaveraged (instantaneous) measured signal
  * @return Averaged signal
  */
-float Atinverter::readAvg(float signal) {
+float Atinverter::getAvgDC(int signal_type, float signal_value) {
+  const int num_readings = signal_type ? Idc_num_readings : Vdc_num_readings; 
+  
+  // Pointers to use correct buffer, read_index, and total depending on signal type
+  float* readings = signal_type ? Idc_readings : Vdc_readings; // Directly reference Idc or Vdc readings
+  int& read_index = signal_type ? Idc_read_index : Vdc_read_index; // Directly reference Idc or Vdc read_index
+  float& total = signal_type ? Idc_total : Vdc_total; // Directly reference Idc or Vdc total
 
-  readings[read_index] = signal; // Replace oldest reading with recent reading
+  readings[read_index] = signal_value; // Replace oldest reading with recent reading
   total += readings[read_index]; // Add recent reading to total sum
 
   read_index++; // Increment index since we want to continue filling the circular buffer
@@ -135,6 +143,61 @@ float Atinverter::readAvg(float signal) {
   total -= readings[read_index]; // Subtract recent reading from the total sum
   
   return avg_signal;
+}
+
+// --- AC Voltage Sensing ---
+
+/// @brief Set sensitivity
+/// @param value Sensitivity value
+void Atinverter::setSensitivity(float value)
+{
+	sensitivity = value;
+}
+
+/// @brief Calculate zero point
+/// @return zero / center value
+int Atinverter::getZeroPoint()
+{
+	uint32_t Vsum = 0;
+	uint32_t measurements_count = 0;
+	uint32_t t_start = this->millis2();
+
+	while (this->millis2() - t_start < period) // Wait a full period
+	{
+		Vsum += this->getADC(0x00);
+		measurements_count++;
+	}
+
+	return Vsum / measurements_count;
+}
+
+/// @brief Calculate root mean square (RMS) of AC valtage
+/// @param loopCount Loop count to calculate
+/// @return root mean square (RMS) of AC valtage
+float Atinverter::getRmsVoltage(uint8_t loopCount)
+{
+	double readingVoltage = 0.0f;
+
+	for (uint8_t i = 0; i < loopCount; i++)
+	{
+		int zeroPoint = this->getZeroPoint();
+
+		int32_t Vnow = 0;
+		uint32_t Vsum = 0;
+		uint32_t measurements_count = 0;
+		uint32_t t_start = this->millis2();
+
+		while (this->millis2() - t_start < period)
+		{
+			Vnow = this->getADC(0x00) - zeroPoint;
+			Vsum += (Vnow * Vnow);
+			measurements_count++;
+		}
+
+		readingVoltage += sqrt(Vsum / measurements_count) / ADC_122S021_MAX_VALUE * VREF * sensitivity;
+	}
+
+	return readingVoltage / loopCount;
 }
 
 /**
@@ -152,8 +215,7 @@ void Atinverter::setUpSPI() {
  * @param control_byte ADC channel selection, channel 1 = 0x00, channel 2 = 0x08
  * @return int A 12-bit ADC value ranging from 0 to 4095.
  */
-int Atinverter::readADC(uint8_t control_byte) {
-
+int Atinverter::getADC(uint8_t control_byte) {
   
   // Begin SPI communication
   digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
@@ -331,10 +393,6 @@ void Atinverter::initTimer2Delay() {
   TCCR2A = 0;
   TCCR2B = 0;
   TCNT2  = 0;
-
-  // Set compare match register for 1ms interval
-  // f_cpu = 16 MHz, prescaler = 64 → 16,000,000 / 64 = 250,000 ticks/sec
-  // We want 1ms = 1000Hz → 250,000 / 1000 = 250
 
   // 2. Set compare match value
   OCR2A = 249; // match at 250 ticks

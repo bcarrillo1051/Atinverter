@@ -15,7 +15,7 @@
 #define MV_TO_V 1000.0f
 
 // --- ADC Parameters ---
-#define VREF 5.0 // Both chips powered with 5V 
+#define VREF 5.0f // Both chips powered with 5V 
 #define ADC_ATMEGA328P_MAX_VALUE 1023.0f // For ATMEGA328P (internal ADC)
 #define ADC_122S021_MAX_VALUE 4095.0f // For ADC122S021 (external SPI ADC)
 
@@ -36,6 +36,9 @@ enum ShutdownCodes
   OVERTEMPERATURE = 3,
   NUM_PRESETCODES
 };
+// --- AC Voltage Sensing Parameters ---
+#define DEFAULT_FREQUENCY 50.0f
+#define DEFAULT_SENSITIVITY 500.0f
 
 /**
  * @class Atinverter
@@ -45,7 +48,7 @@ enum ShutdownCodes
 class Atinverter {
 
   public:
-	Atinverter(); // Constructor
+	Atinverter(uint16_t frequency = DEFAULT_FREQUENCY); // Constructor
 
 	// --- LED Pins ---
 	static const int LED1R_PIN = 2; // Red LED 1 | PD2
@@ -54,23 +57,32 @@ class Atinverter {
 	static const int LED2G_PIN = 7; // Green LED 2 | PD7
 
 	// --- Methods ---
+
+	// Set-up Pins
 	void setUpPinMode();
 
+	// LED Blinking
 	void set1LED(int led, int state);
 	void set2LED(int t_delay);
 	
-	float readVdc();
-	float readIdc();
-	float readAvg(float signal);
+	// DC Sensing
+	float getVdc();
+	float getIdc();
+	float getAvgDC(int signal_type, float signal);
 
+	// AC Sensing 
+	void setSensitivity(float value);
+	float getRmsVoltage(uint8_t loopCount = 1);
 	void setUpSPI(); // Sets up SPI protocol for external ADC
-	int readADC(uint8_t control_byte);
+	int getADC(uint8_t control_byte);
 
+	// PWM Generation
 	void enablePWM(); // Start PWM generation
 	void disablePWM(); // Stop PWM generation
 	void startPWM(bool is50HzMode); // Setup PWM and timers and start PWM generation
 	static void pwmISR(); // Interrupt Service Routine logic
 
+	// Timer 2 Delay 
 	void initTimer2Delay();
 	void delay2(unsigned long ms);
 	unsigned long millis2();
@@ -111,11 +123,17 @@ class Atinverter {
 	static const unsigned long Rvs1 = 120000; // Adjust this if needed as per measurement
 	static const unsigned int Rsv2 = 9900; // Adjust this if needed as per measurement
 
-	// --- Parameters for Moving Average ---
-	static const int num_readings = MA_SAMPLES; // Samples in moving average
-	float readings[MA_SAMPLES]; // Circular buffer for signal samples
-	int read_index = 0; // Current index in the buffer
-	float total = 0; // Running total of readings
+	// --- Parameters for Vdc Moving Average ---
+	static const int Vdc_num_readings = MA_SAMPLES; // Vdc samples in moving average
+	float Vdc_readings[MA_SAMPLES]; // Circular buffer for signal samples
+	int Vdc_read_index = 0; // Current index in the Vdc buffer
+	float Vdc_total = 0; // Running total of Vdc readings
+
+	// --- Parameters for Idc Moving Average ---
+	static const int Idc_num_readings = MA_SAMPLES; // Samples in moving average
+	float Idc_readings[MA_SAMPLES]; // Circular buffer for signal samples
+	int Idc_read_index = 0; // Current index in the Idc buffer
+	float Idc_total = 0; // Running total of Idc readings
 
 	// --- Parameters for PWM ---
 	static bool is50Hz; // Frequency mode: true for 50Hz, false for 60Hz
@@ -126,6 +144,9 @@ class Atinverter {
 	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples 
 
 	char _shutdownCode = 0;
+	uint32_t period;
+	float 	 sensitivity = DEFAULT_SENSITIVITY;
+	int getZeroPoint();
 };
 
 #endif

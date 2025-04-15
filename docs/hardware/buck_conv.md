@@ -64,6 +64,6 @@ $$I_{\text{in}} = \frac{1.5W}{6.5 \times \text{83}} = 0.278A$$<br>
 
 - The maximum input current is 0.3A and we are designing for a 1 oz copper thickness
 
-![R-78HE-0.3_PCB_trace_width_calc](images/R-78HE-0.3_PCB_trace_width_calc.png)
+![R-78HE-0.3_PCB_trace_width_calc](../images/R-78HE-0.3_PCB_trace_width_calc.png)
 
 - A required trace width of 0.148mm (5.83mils) is obtained

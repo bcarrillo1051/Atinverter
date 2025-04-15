@@ -214,6 +214,7 @@
 	(net 104 "Net-(U10-SW)")
 	(net 105 "Net-(U10-FB)")
 	(net 106 "12V")
+	(net 107 "unconnected-(PiConnector1-GCLK0{slash}GPIO4-Pad7)")
 	(footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical"
 		(layer "F.Cu")
 		(uuid "04e55afe-e11f-4ca3-b0bd-95150aa0d2eb")
@@ -281,7 +282,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/bcab0df3-ce22-4931-b2d5-eeedc87cc0be")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -534,7 +535,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/cbe3704f-ce78-4519-a30c-5df98d5b62b5")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 -0.91)
@@ -744,7 +745,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/94041224-2fc5-4957-8313-35d00d36e024")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -1050,7 +1051,7 @@
 		(property ki_fp_filters "TO?220*")
 		(path "/1227d997-cec8-455b-96b7-31f7cc65566e")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.58 -3.27)
@@ -1355,7 +1356,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/00000000-0000-0000-0000-000062cf7f93")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -1565,7 +1566,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/72339e34-6a15-4728-8477-0f609881422f")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -1775,7 +1776,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/ee53640f-e5bf-438b-ad20-6788d3c98fc1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -2029,7 +2030,7 @@
 		(property ki_fp_filters "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm* SOP*5.28x5.23mm*P1.27mm* VSSOP*3.0x3.0mm*P0.65mm* TSSOP*4.4x3mm*P0.65mm*")
 		(path "/a903bf04-0d6e-44e6-bdfd-8b5cdab819bb")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 2.1209 -2.6289)
@@ -2749,7 +2750,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/87264d03-06e6-4bc9-9496-0afcc0676e84")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -3002,7 +3003,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/7cc67d71-f437-420a-9044-19ca5a47ae3c")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -3255,7 +3256,7 @@
 		(property ki_fp_filters "D*DO?35*")
 		(path "/a96ef88c-5bd4-4ae5-b5d2-c0d1bf3ef692")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -2.36 -1)
@@ -3599,7 +3600,7 @@
 		)
 		(path "/afc9aa53-5f99-4448-be9a-d01d3b86c8c7")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -1.373653 2.5019)
@@ -4256,7 +4257,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/07cc9f27-a231-43a0-8333-b439d5f363e6")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -4466,7 +4467,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/91f448a4-1e6b-4dfb-a1b7-f1efd07f9a4f")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 -0.91)
@@ -4676,7 +4677,7 @@
 		(property ki_fp_filters "DIP*W7.62mm*")
 		(path "/00000000-0000-0000-0000-000062c4d2e9")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 8.95 34.41)
@@ -5307,7 +5308,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/8ac6cafa-8ee9-4c8c-8c18-40ac79bb660d")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -5517,7 +5518,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/00000000-0000-0000-0000-000062cf62c1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 -0.91)
@@ -5730,7 +5731,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/efd9dd75-1f3e-4608-a98f-dbdb72aa8e1f")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -5940,7 +5941,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/1d48b747-fd95-471a-9c94-dec3d44cc80a")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -6193,7 +6194,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/616e4e0f-46ae-43e7-acd3-f4ae3f49a966")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -6499,7 +6500,7 @@
 		(property ki_fp_filters "TO?220*")
 		(path "/0a1f0b89-c13c-4ad4-8ba8-300604535634")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.58 -3.27)
@@ -6804,7 +6805,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/26504a40-b17f-4385-8ceb-e0dd50ee99d1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -7060,7 +7061,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/187487ab-736a-4415-9e89-8d1ec93870ee")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -7268,7 +7269,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/83074c58-8578-4bda-8ddd-4d2abeea9001")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 4.572 -2.54)
@@ -7687,7 +7688,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/5200c95f-3ec3-4a3f-ac90-65af8d3d905a")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -7940,7 +7941,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/6a76daa1-2b1a-4efd-9cf7-79cb7de9e665")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -8150,7 +8151,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/cae97de4-4d4b-4adc-b154-a08a13232cb1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -8360,7 +8361,7 @@
 		)
 		(path "/fdd24973-f9a9-466f-87e0-a6066e920d80")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -1.5494 1.5494)
@@ -9013,7 +9014,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/6fbd45aa-c4ee-46d6-a1f4-27a6f913351d")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -9264,7 +9265,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/52191c4f-f873-4322-b5bc-58e353b6e175")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 4.572 -2.54)
@@ -9683,7 +9684,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/f66a3600-8b08-4f0e-bae3-bf6d97f88091")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -9893,7 +9894,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/19e0e13e-f8b9-4608-a383-25405e0ed196")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -10146,7 +10147,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/65b2d977-7cc1-471b-bae2-8fd17f2300c4")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 0 -1.56)
@@ -10440,7 +10441,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/0519b843-9c5e-4f97-b24e-7bcf90c34cc1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -10651,7 +10652,7 @@
 		(property ki_fp_filters "SOT* SG-*")
 		(path "/ac3f0f69-94f2-4241-95a5-a79141d948cb")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.302516 1.524)
@@ -11167,7 +11168,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/7e29f12b-1bfd-46aa-8c3f-42e216161c54")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.227064 -0.735)
@@ -11377,7 +11378,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/943bb958-d72b-4c03-8187-8a5df2f15752")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 -0.91)
@@ -11587,7 +11588,7 @@
 		(property ki_fp_filters "Connector*:*_2x??_*")
 		(path "/e2797d7c-13de-4b9b-9141-d58631aed2c1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 3.87 -1.33)
@@ -11915,7 +11916,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/7b7246bb-530e-4d6c-b456-fb0548811f5d")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -12220,7 +12221,7 @@
 		)
 		(path "/cfcc6218-344d-4e7c-b867-d5261f414c3c")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -3.3401 1.6315)
@@ -12512,7 +12513,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/bc7fa8a6-a361-4441-8b8a-ac9d3ad389ee")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -12765,7 +12766,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/af11398c-dcbe-43bc-9e85-b513490c3c18")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -12975,7 +12976,7 @@
 		(property ki_fp_filters "Crystal*")
 		(path "/62b2ee5e-c8d3-4889-8c24-ade3decb81f1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 0 2.7)
@@ -13255,7 +13256,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/89667600-0af9-4c6b-ba58-684a65812e3d")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -13468,7 +13469,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/c707cbe4-8fe9-407c-81b2-b542998001f2")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 -0.735)
@@ -13678,7 +13679,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/3986e119-7756-4ce6-8665-7893b76f3e9b")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -13931,7 +13932,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/c87098bc-c133-4c90-bd3f-de1a8d0af571")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -14141,7 +14142,7 @@
 		(property ki_fp_filters "R?Array?SIP*")
 		(path "/224ebff1-b7e6-4381-8a60-87764e3c9c22")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.44 1.4)
@@ -14442,7 +14443,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/4f71bd04-44cf-49d2-967c-86c0b5b0d46b")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 -0.735)
@@ -14653,7 +14654,7 @@
 		(property ki_fp_filters "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm*")
 		(path "/00000000-0000-0000-0000-000062c5028e")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -2.1209 2.6289)
@@ -15376,7 +15377,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/b0e74319-17b6-4a29-b016-dc5cbe1133a9")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -3.6341 -0.635)
@@ -15631,7 +15632,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/e6c8436b-0bb7-4884-b7e0-df720b1f2641")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -15884,7 +15885,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/f55b5008-1aab-4248-9782-d56b075b85ba")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -16094,7 +16095,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/00000000-0000-0000-0000-000062c7155c")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -16304,7 +16305,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/fee18ad9-b734-4d5a-b2e3-bd17fc183397")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -16515,7 +16516,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/6bdf2d52-c5c4-4ff4-9cd2-10148e5ef5ce")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -3.6341 -0.635)
@@ -16866,7 +16867,7 @@
 		(property ki_fp_filters "TO?220*")
 		(path "/ac9079d8-9f1c-4911-9489-06786a4e27de")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.58 -3.27)
@@ -17174,7 +17175,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/1513bb42-64a9-4167-8f43-d49894926fe2")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -17384,7 +17385,7 @@
 		(property ki_fp_filters "R?Array?SIP*")
 		(path "/132b11b5-5501-4d1e-88dd-4084aaeda3a8")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 19.22 -1.4)
@@ -17707,7 +17708,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/d08ff692-86e7-421f-888a-033cba66bc00")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -17971,7 +17972,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/27b60c98-b1a3-4721-8457-29d3f49a3f95")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -18224,7 +18225,7 @@
 		(property ki_fp_filters "D*DO?35*")
 		(path "/00000000-0000-0000-0000-000062c52409")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -2.36 1)
@@ -18516,7 +18517,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/3013a07a-9356-4b1e-88bd-8ef645fbf217")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -18770,7 +18771,7 @@
 		(property ki_fp_filters "Potentiometer*")
 		(path "/7fa511e4-c6b2-42c1-a05b-259fead50d36")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -1.9304 -2.032)
@@ -19032,7 +19033,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/b05b4e02-0bc0-4267-af1e-1f421f6dfedc")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -19286,7 +19287,7 @@
 		(property ki_fp_filters "SSOP*2.95x2.8mm*P0.65mm* VSSOP*2.3x2mm*P0.5mm* X2SON*1.4x1mm*P0.35mm*")
 		(path "/1696317c-740d-44c1-a274-099b6b417ce1")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -1.05 -1.05)
@@ -19575,7 +19576,7 @@
 		(property ki_fp_filters "Choke_* *Coil* Inductor_* L_*")
 		(path "/ad68bcf5-e9ca-4b0f-a776-16bfada9d043")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.417531 2.2733)
@@ -19872,7 +19873,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/dfbf84d3-d799-4f04-aeda-d087b8cac7c9")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 1.33 1.27)
@@ -20128,7 +20129,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/4e217724-367b-416f-8b6c-b5ae448069fd")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 -0.735)
@@ -20338,7 +20339,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/444bb897-e0a7-49ca-90db-a3caf3bf83e5")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -20551,7 +20552,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/544702b0-af8b-442e-9580-61f0a36789f6")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -20955,7 +20956,7 @@
 		)
 		(path "/b7656379-9d73-43b4-8ee7-fd9fbdb3691a")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -9.6 -8.35)
@@ -21222,7 +21223,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/2943c2b5-1552-4233-abf4-1c1fd34b3fbb")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -21475,7 +21476,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/93430520-1599-4baf-ab1e-edb30097fbc7")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -21685,7 +21686,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/a7f4c651-7786-432d-840a-66ce29f903af")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -21937,7 +21938,7 @@
 		(property ki_fp_filters "TerminalBlock*:*")
 		(path "/c250cf0e-7334-49ea-b62d-d228e692cc6e")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.6 -3.85)
@@ -22234,7 +22235,7 @@
 		(property ki_fp_filters "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm*")
 		(path "/89ff1e1c-2a6f-43bc-9ccb-c26f812ec9cb")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -2.1209 2.6289)
@@ -22956,7 +22957,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/46260208-1915-433c-ab34-c16defb6ba80")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -23209,7 +23210,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/5373df88-86a0-4b46-97cf-9c3fda187053")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -23465,7 +23466,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f87165a4-66fa-446b-b3aa-1cca24cb9ec5")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -23675,7 +23676,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/169d9aea-b6d7-42a9-8b88-5ef7bd442941")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -23885,7 +23886,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/3dda8bde-b86b-4639-b33e-a129d9ec0227")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -24139,7 +24140,7 @@
 		(property ki_fp_filters "Choke_* *Coil* Inductor_* L_*")
 		(path "/b713af57-da6c-4d11-9603-2d01446c94bf")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.1717 -0.635)
@@ -24432,7 +24433,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/00000000-0000-0000-0000-000062c6ec98")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -24642,7 +24643,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/767e828a-2583-4b00-acdb-e450942d5e73")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -24948,7 +24949,7 @@
 		(property ki_fp_filters "TO?220*")
 		(path "/7762980b-0027-478e-96bb-bfb70ad663cd")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.58 -3.27)
@@ -25253,7 +25254,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/4b4cb3e8-81b8-4ca4-a68e-cc945d3114f6")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -25506,7 +25507,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/1a9504dd-316a-4b44-86b1-562f59fc130e")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -25719,7 +25720,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/04ce4bb4-77bb-4b6c-b71c-c2d6173edd92")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -25929,7 +25930,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/fc0f7c14-05e3-475a-9251-5eaa41042643")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -26139,7 +26140,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/00000000-0000-0000-0000-000062d4d121")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 14.03)
@@ -26520,7 +26521,7 @@
 		(property ki_fp_filters "D0008A-IPC_A D0008A-IPC_B D0008A-IPC_C D0008A-MFG")
 		(path "/f2b80939-3661-4db2-91b0-1f14edcfd778")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.679021 -2.4525)
@@ -26788,7 +26789,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/53cd9f4f-59d6-4e26-81d8-368722c73646")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -27052,7 +27053,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/91835cce-d038-4965-aead-bd1a11c87973")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -27305,7 +27306,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/ebd71d3d-b6a6-4b51-9f9c-81a007ab0051")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -27515,7 +27516,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/b92c0285-a55f-46a1-9c89-4727b6ee3d38")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -27725,7 +27726,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/9bcdb192-92d8-45e0-ac42-e0c156c7734a")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 1.33 1.27)
@@ -27981,7 +27982,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/f37ab934-4c89-4a43-9c51-796706abd1e9")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -28245,7 +28246,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/80b01733-faec-4ad5-9bb4-3097d8676644")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -28455,7 +28456,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/8d6ec92e-324d-4691-9a1e-5a99a77c0f81")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 0.91)
@@ -28665,7 +28666,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/a2c0e558-2ad5-4e45-894d-dc101086a35d")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -28917,7 +28918,7 @@
 		(property ki_fp_filters "TerminalBlock*:*")
 		(path "/00000000-0000-0000-0000-000062ecc7f7")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.6 -3.85)
@@ -29213,7 +29214,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/0d3e71c2-7c13-400c-880b-e038fb25e125")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -29426,7 +29427,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/98a2dcfa-44f5-42b3-a999-2eb6d8821647")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -29690,7 +29691,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/3a21579e-fc48-48ed-bed3-e5f46b61ab0e")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -29943,7 +29944,7 @@
 		(property ki_fp_filters "R?Array?SIP*")
 		(path "/254d79a3-741e-45f2-bb12-160c920ac5bb")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.44 1.4)
@@ -30241,7 +30242,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/5515c04d-6e14-43b6-ae28-6ac531012574")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -30451,7 +30452,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/57be2580-2282-45ef-80ea-91df3a29c428")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -30704,7 +30705,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/12fec659-efca-410a-82a2-a0c86719073f")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.711252 0.91)
@@ -30917,7 +30918,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/7de077ac-9ee6-4665-81d2-a5df6caeb6f4")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.227064 0.735)
@@ -31127,7 +31128,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/6b2c73ca-0aa1-4d93-b21d-be70378d8eb9")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.727064 -0.91)
@@ -31338,7 +31339,7 @@
 		(property ki_fp_filters "D0008A-IPC_A D0008A-IPC_B D0008A-IPC_C D0008A-MFG")
 		(path "/44dc6983-0bbe-4972-bae5-6ca89502532b")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.679021 -2.4525)
@@ -31606,7 +31607,7 @@
 		(property ki_fp_filters "Connector*:*")
 		(path "/fb79f914-5a9d-483d-ab4b-c5e96c2bb934")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.33 -1.33)
@@ -31860,7 +31861,7 @@
 		(property ki_fp_filters "Choke_* *Coil* Inductor_* L_*")
 		(path "/d7fc71ef-2c0a-45e2-9b60-e31695614750")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -2.8067 0)
@@ -32558,7 +32559,7 @@
 		(property ki_fp_filters "PinHeader*2x20*P2.54mm*Vertical* PinSocket*2x20*P2.54mm*Vertical*")
 		(path "/00000000-0000-0000-0000-000062c535bf")
 		(sheetname "Root")
-		(sheetfile "AtInverter_v1.kicad_sch")
+		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -4.83 5.37)
@@ -33350,9 +33351,9 @@
 			(drill 1)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 8 "/!RESET")
+			(net 107 "unconnected-(PiConnector1-GCLK0{slash}GPIO4-Pad7)")
 			(pinfunction "GCLK0/GPIO4")
-			(pintype "bidirectional")
+			(pintype "bidirectional+no_connect")
 			(uuid "bb07ca12-78e0-4722-82cf-236a2da25c4a")
 		)
 		(pad "8" thru_hole oval
@@ -37021,52 +37022,36 @@
 		(uuid "342d2100-e2ad-44ec-90f7-42c0dad68c48")
 	)
 	(segment
-		(start 69.596 118.8212)
-		(end 68.58 117.8052)
+		(start 71.1454 117.8814)
+		(end 71.1454 118.8212)
+		(width 0.127)
+		(layer "F.Cu")
+		(net 8)
+		(uuid "8eb81f7f-1b2c-4bab-8d8e-88bb08ae4449")
+	)
+	(segment
+		(start 73.4568 124.3058)
+		(end 73.4568 120.8171)
 		(width 0.15)
 		(layer "F.Cu")
 		(net 8)
-		(uuid "5c5dd6eb-7ac0-4230-8c79-d4ce19b8b14b")
+		(uuid "970312b3-eb14-4ec4-8d20-d110771f16d5")
 	)
 	(segment
-		(start 73.6854 121.0457)
+		(start 73.4568 120.8171)
 		(end 73.4314 120.7917)
 		(width 0.15)
 		(layer "F.Cu")
 		(net 8)
-		(uuid "630023a3-4501-4523-b94f-5ca47b6b06a1")
+		(uuid "affbe897-ec3b-4dae-a462-58c40760a63d")
 	)
 	(segment
 		(start 79.6544 116.9162)
-		(end 69.469 116.9162)
-		(width 0.15)
+		(end 72.1106 116.9162)
+		(width 0.127)
 		(layer "F.Cu")
 		(net 8)
-		(uuid "663b6aed-ab4e-4962-8633-f8a965615c6e")
-	)
-	(segment
-		(start 73.6854 124.0772)
-		(end 73.6854 121.0457)
-		(width 0.15)
-		(layer "F.Cu")
-		(net 8)
-		(uuid "663e9e00-6031-4111-bb5c-edb0c3b79d94")
-	)
-	(segment
-		(start 69.469 116.9162)
-		(end 68.58 117.8052)
-		(width 0.15)
-		(layer "F.Cu")
-		(net 8)
-		(uuid "7154226a-141b-498b-9310-d7d6083c443e")
-	)
-	(segment
-		(start 73.4314 124.3312)
-		(end 73.6854 124.0772)
-		(width 0.15)
-		(layer "F.Cu")
-		(net 8)
-		(uuid "a8cfcce8-8046-4a1f-a7ed-7b296e95c404")
+		(uuid "b229ca55-daa9-4b4d-bde6-33a35167d2f9")
 	)
 	(segment
 		(start 71.1454 120.4722)
@@ -37077,6 +37062,14 @@
 		(uuid "b327e057-a933-4091-ade1-21cf9d3c8de3")
 	)
 	(segment
+		(start 73.4314 124.3312)
+		(end 73.4568 124.3058)
+		(width 0.15)
+		(layer "F.Cu")
+		(net 8)
+		(uuid "b72e9dc7-85f7-4846-b5c2-1577be7a8530")
+	)
+	(segment
 		(start 71.6534 120.9802)
 		(end 73.2429 120.9802)
 		(width 0.15)
@@ -37085,20 +37078,20 @@
 		(uuid "ba02f679-1b43-47b1-b623-096121ca5e58")
 	)
 	(segment
+		(start 72.1106 116.9162)
+		(end 71.1454 117.8814)
+		(width 0.127)
+		(layer "F.Cu")
+		(net 8)
+		(uuid "c44f9db7-aebd-4e49-8da1-88194a5476a2")
+	)
+	(segment
 		(start 84.9884 116.9162)
 		(end 89.5504 116.9162)
 		(width 0.15)
 		(layer "F.Cu")
 		(net 8)
 		(uuid "cd5b84d1-c290-4167-9cf6-2e0089b53f35")
-	)
-	(segment
-		(start 71.1454 118.8212)
-		(end 69.596 118.8212)
-		(width 0.15)
-		(layer "F.Cu")
-		(net 8)
-		(uuid "e44c5b6f-93eb-4d0d-ad90-811a6c36c899")
 	)
 	(segment
 		(start 73.2429 120.9802)

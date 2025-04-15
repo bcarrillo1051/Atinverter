@@ -18,6 +18,7 @@ diagram is interactive, allowing you to click and explore detailed information a
 
     subgraph Future
        G(Rectification)
+       H(Droop Control)
         
     end
 
@@ -25,6 +26,8 @@ diagram is interactive, allowing you to click and explore detailed information a
        D(Blink)
        E(PWM Generation 50Hz)
        F(PWM Generation 60Hz)
+       I(DC Voltage/Current Sensing)
+       J(AC Voltage/Current Sensing)
 
     end
 

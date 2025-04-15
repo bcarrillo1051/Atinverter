@@ -9,20 +9,20 @@
 		(rev "1")
 	)
 	(lib_symbols
-		(symbol "74xGxx:74LVC1G32"
+		(symbol "74xGxx:74AHC1G02"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "U"
-				(at -5.08 7.62 0)
+				(at -2.54 3.81 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "74LVC1G32"
-				(at 7.62 -7.62 0)
+			(property "Value" "74AHC1G02"
+				(at 0 -3.81 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -47,7 +47,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Single OR Gate, Low-Voltage CMOS"
+			(property "Description" "Single NOR Gate, Low-Voltage CMOS"
 				(at 0 0 0)
 				(effects
 					(font
@@ -56,7 +56,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "Single Gate OR LVC CMOS"
+			(property "ki_keywords" "Single Gate NOR LVC CMOS"
 				(at 0 0 0)
 				(effects
 					(font
@@ -74,7 +74,7 @@
 					(hide yes)
 				)
 			)
-			(symbol "74LVC1G32_0_1"
+			(symbol "74AHC1G02_0_1"
 				(arc
 					(start -7.62 -5.08)
 					(mid -5.838 0)
@@ -160,7 +160,7 @@
 					)
 				)
 			)
-			(symbol "74LVC1G32_1_1"
+			(symbol "74AHC1G02_1_1"
 				(pin input line
 					(at -15.24 2.54 0)
 					(length 7.62)
@@ -215,7 +215,7 @@
 						)
 					)
 				)
-				(pin output line
+				(pin output inverted
 					(at 12.7 0 180)
 					(length 7.62)
 					(name "~"
@@ -8653,6 +8653,10 @@
 		(uuid "681a1b74-3e19-4eb1-847f-eaa68d7e870a")
 	)
 	(no_connect
+		(at 55.88 153.67)
+		(uuid "74d6d198-afb3-4724-9209-1a09d62dd6fb")
+	)
+	(no_connect
 		(at 55.88 158.75)
 		(uuid "7cd9db39-014d-44c4-ba7d-c85e7cbfef73")
 	)
@@ -12576,16 +12580,6 @@
 	)
 	(wire
 		(pts
-			(xy 55.88 153.67) (xy 63.5 153.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f596dd78-1776-418e-9d5a-5d2a85b23355")
-	)
-	(wire
-		(pts
 			(xy 283.21 162.56) (xy 283.21 163.83)
 		)
 		(stroke
@@ -12978,7 +12972,7 @@
 		)
 		(uuid "04446906-fa2b-4215-a8af-27563edb4c0a")
 	)
-	(text "ADC for AC V Sampling"
+	(text "ADC for AC V/I Sampling"
 		(exclude_from_sim no)
 		(at 96.52 15.24 0)
 		(effects
@@ -13016,19 +13010,6 @@
 			(justify left bottom)
 		)
 		(uuid "11857e4c-ff70-441b-9a48-fdfa7fcab7e0")
-	)
-	(text "Change to NOR gate"
-		(exclude_from_sim no)
-		(at 106.172 65.532 0)
-		(effects
-			(font
-				(size 2.5 2.5)
-				(thickness 0.254)
-				(bold yes)
-			)
-			(justify left bottom)
-		)
-		(uuid "12f70da6-b3f2-4a65-b209-d55bb7559506")
 	)
 	(text "Power Supply Network"
 		(exclude_from_sim no)
@@ -13166,7 +13147,7 @@
 		)
 		(uuid "7c38e809-4599-43a3-a808-560d94470df9")
 	)
-	(text "AC Output Voltage Sensing"
+	(text "AC Voltage Sensing"
 		(exclude_from_sim no)
 		(at 67.31 144.78 0)
 		(effects
@@ -13192,7 +13173,7 @@
 		)
 		(uuid "85dd4bc0-e797-48b6-afa9-06a4898e7285")
 	)
-	(text "FET HB Driver (B Side)"
+	(text "Gate Driver (B Side)"
 		(exclude_from_sim no)
 		(at 265.43 101.6 0)
 		(effects
@@ -13325,7 +13306,7 @@
 		)
 		(uuid "fe255747-db57-4cfd-959f-a676c8b358c5")
 	)
-	(text "FET HB Driver (A Side)"
+	(text "Gste Driver (A Side)"
 		(exclude_from_sim no)
 		(at 175.26 101.6 0)
 		(effects
@@ -13747,16 +13728,6 @@
 			(justify right bottom)
 		)
 		(uuid "7a777e39-6f97-4fac-bd8a-89816c736d6a")
-	)
-	(label "!RESET"
-		(at 63.5 153.67 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "7d5383fe-76e4-422d-87eb-24fa8b30c5ac")
 	)
 	(label "!RESET"
 		(at 54.61 67.31 180)
@@ -22935,7 +22906,7 @@
 		)
 	)
 	(symbol
-		(lib_id "74xGxx:74LVC1G32")
+		(lib_id "74xGxx:74AHC1G02")
 		(at 124.46 72.39 0)
 		(mirror y)
 		(unit 1)

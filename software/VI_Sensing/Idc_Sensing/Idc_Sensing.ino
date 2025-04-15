@@ -24,11 +24,11 @@ void setup() {
 
 // Main loop: read and print both raw and averaged Idc values
 void loop() {
-  float raw_Idc = atinverter.readIdc();
-  Serial.print(F("Raw Idc : ")); Serial.print(raw_Idc); Serial.println(F("A")); // Print unaveraged Idc 
-  
-  float avg_Idc = atinverter.readAvg(raw_Idc);
-  Serial.print(F("Avg Idc : ")); Serial.print(avg_Idc); Serial.println(F("A")); // Print averaged Idc 
+  float raw_Idc = atinverter.getIdc();
+  Serial.print(F("Raw Idc : ")); Serial.print(raw_Idc); Serial.println(F("A")); // Print unaveraged Idc
+
+  float avg_Idc = atinverter.getAvgDC(1, raw_Idc);
+  Serial.print(F("Avg Idc : ")); Serial.print(avg_Idc); Serial.println(F("A")); // Print averaged Idc
   
   Serial.println();
   delay(500);
