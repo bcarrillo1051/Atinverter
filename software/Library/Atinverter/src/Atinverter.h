@@ -23,8 +23,8 @@
 #define MA_SAMPLES 10 // Default moving average sample count, adjust if needed
 
 // --- Safety Parameters ---
-#define MAX_DC_CURRENT 16.66
-#define MAX_AC_CURRENT 16.66
+#define MAX_DC_CURRENT 2.5
+#define MAX_AC_CURRENT 2.5
 
 // shutdown error codes for convenience and bookkeeping. user-defined codes start at 4
 enum ShutdownCodes
