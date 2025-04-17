@@ -20,6 +20,8 @@ Atinverter atinverter;
 void setup() {
   Serial.begin(9600);
   Serial.println(F("Initialize Input DC Current Sensing."));
+  atinverter.startPWM(false); // 60Hz, true 50Hz
+  atinverter.initTimer2Delay();
 }
 
 // Main loop: read and print both raw and averaged Idc values
@@ -31,5 +33,5 @@ void loop() {
   Serial.print(F("Avg Idc : ")); Serial.print(avg_Idc); Serial.println(F("A")); // Print averaged Idc
   
   Serial.println();
-  delay(500);
+  atinverter.delay2(1000);
 }

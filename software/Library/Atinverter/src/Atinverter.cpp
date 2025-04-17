@@ -1,6 +1,6 @@
 /*
   AtverterE.cpp - Library for AtinverterE pin and function mapping
-  Created by Bryan Carrillo, 10/18/24
+  Created by Bryan Carrillo, Zach Kwast, 10/18/24
   Released into the public domain.
 */
 
@@ -21,30 +21,31 @@ Atinverter::Atinverter(uint16_t frequency)
  */
 void Atinverter::setUpPinMode()
 {
-	// --- LED Pins ---
+	// LED Pins
   pinMode(LED1R_PIN, OUTPUT);
   pinMode(LED1G_PIN, OUTPUT);
   pinMode(LED2R_PIN, OUTPUT);
   pinMode(LED2G_PIN, OUTPUT);
 
-  // --- Internal ADC (ATMEGA328P) Voltage and Current Sensing Pins ---
+  // Internal ADC (ATMEGA328P) Voltage and Current Sensing Pins
   pinMode(V_DC_PIN, INPUT);
   pinMode(I_DC_PIN, INPUT);
 
-  // --- PWM Pins ---
+  // PWM Pins
   pinMode(PWM_A_PIN, OUTPUT);
   pinMode(PWM_B_PIN, OUTPUT);
   
-	// --- I2C Communication Pins
+	// I2C Communication Pins
 
-  // --- Overvoltage and Reset Circuitry Reset Pin ---
+  // SPI Pins
+  pinMode(VI_AC_MISO_PIN, INPUT);
+
+  // Overvoltage and Reset Circuitry Reset Pin
   pinMode(PRORESET_PIN, OUTPUT);
   digitalWrite(PRORESET_PIN, LOW);
 
-	// --- Gate Driver Pin ---
+	// Gate Driver Pin
   pinMode(GATESD_PIN, INPUT);
-
-  pinMode(VI_AC_MISO_PIN, INPUT);
 }
 
 /**
@@ -86,6 +87,8 @@ void Atinverter::set2LED(int t_delay) {
   delay(t_delay);
 }
 
+// --- DC Sensing ---
+
 /**
  * @brief Converts a raw ADC reading into an instantaneous (non-averaged) DC voltage.
  * 
@@ -119,19 +122,17 @@ float Atinverter::getIdc()
 
 /**
  * @brief Computes the moving average of a pre-defined sample count value for a given signal
- * @param signal_type Vdc or Idc (0 or 1 respectively)
- * @param signal_value Unaveraged (instantaneous) measured signal
+ * @param isVdc Vdc or Idc (true or false respectively)
+ * @param signalValue Unaveraged (instantaneous) measured signal
  * @return Averaged signal
  */
-float Atinverter::getAvgDC(int signal_type, float signal_value) {
-  const int num_readings = signal_type ? Idc_num_readings : Vdc_num_readings; 
-  
-  // Pointers to use correct buffer, read_index, and total depending on signal type
-  float* readings = signal_type ? Idc_readings : Vdc_readings; // Directly reference Idc or Vdc readings
-  int& read_index = signal_type ? Idc_read_index : Vdc_read_index; // Directly reference Idc or Vdc read_index
-  float& total = signal_type ? Idc_total : Vdc_total; // Directly reference Idc or Vdc total
+float Atinverter::getAvgDC(bool isVdc, float signalValue) {
+  const int num_readings = isVdc ? Vdc_num_readings : Idc_num_readings; // Choose buffer size based on signal type
+  float* readings = isVdc ? Vdc_readings : Idc_readings; // Choose Idc or Vdc buffer
+  int& read_index = isVdc ? Vdc_read_index : Idc_read_index; // Choose Idc or Vdc buffer index
+  float& total = isVdc ? Vdc_total : Idc_total; // Choose Idc or Vdc buffer running total
 
-  readings[read_index] = signal_value; // Replace oldest reading with recent reading
+  readings[read_index] = signalValue; // Replace oldest reading with recent reading
   total += readings[read_index]; // Add recent reading to total sum
 
   read_index++; // Increment index since we want to continue filling the circular buffer
@@ -145,7 +146,7 @@ float Atinverter::getAvgDC(int signal_type, float signal_value) {
   return avg_signal;
 }
 
-// --- AC Voltage Sensing ---
+// --- AC Sensing ---
 
 /// @brief Set sensitivity
 /// @param value Sensitivity value
@@ -154,9 +155,12 @@ void Atinverter::setSensitivity(float value)
 	sensitivity = value;
 }
 
-/// @brief Calculate zero point
-/// @return zero / center value
-int Atinverter::getZeroPoint()
+/**
+ * @brief Calculate zero point
+ * @param isVac Chooses which reading to perform, true = voltage, false = current
+ * @return zero / center value
+ */
+int Atinverter::getZeroPoint(bool isVac)
 {
 	uint32_t Vsum = 0;
 	uint32_t measurements_count = 0;
@@ -164,23 +168,31 @@ int Atinverter::getZeroPoint()
 
 	while (this->millis2() - t_start < period) // Wait a full period
 	{
-		Vsum += this->getADC(0x00);
+    if (isVac){
+      Vsum += this->getADC(VAC_ADC_CHANNEL);
+    }
+    else{
+      Vsum += this->getADC(IAC_ADC_CHANNEL);
+    }
 		measurements_count++;
 	}
 
 	return Vsum / measurements_count;
 }
 
-/// @brief Calculate root mean square (RMS) of AC valtage
-/// @param loopCount Loop count to calculate
-/// @return root mean square (RMS) of AC valtage
-float Atinverter::getRmsVoltage(uint8_t loopCount)
+/**
+ * @brief Calculates the root mean square (RMS) of AC voltage or current
+ * @param loopCount how many periods to calculate rms reading
+ * @param isVac chooses which reading to perform, true = voltage, false = current
+ * @return root mean square (RMS) of AC voltage or current
+ */
+float Atinverter::getRmsAC(uint8_t loopCount, bool isVac)
 {
 	double readingVoltage = 0.0f;
 
 	for (uint8_t i = 0; i < loopCount; i++)
 	{
-		int zeroPoint = this->getZeroPoint();
+		int zeroPoint = this->getZeroPoint(isVac);
 
 		int32_t Vnow = 0;
 		uint32_t Vsum = 0;
@@ -237,6 +249,7 @@ int Atinverter::getADC(uint8_t control_byte) {
 }
 
 // --- PWM ---
+
 // Define the static variables
 bool Atinverter::is50Hz = true;  // Default to 50Hz
 int Atinverter::sin_i = 0;
@@ -448,14 +461,14 @@ void Atinverter::shutdownGates(int shutdownCode) {
 
 
 //
-void Atinverter::checkOverCurrent(float dcCurrent, float acCurrent) {
-  // Max DC current allowed of 16.6 amps
-  if (dcCurrentDC > MAX_DC_CURRENT || dcCurrent < -MAX_DC_CURRENT) {
-    shutdownGates(OVERCURRENT);
-  }
-  // Max AC current allowed of 16.6 amps
-  if (acCurrent > MAX_AC_CURRENT || acCurrent < -MAX_AC_CURRENT) {
-    shutdownGates(OVERCURRENT);
-  }
+// void Atinverter::checkOverCurrent(float dcCurrent, float acCurrent) {
+//   // Max DC current allowed of 16.6 amps
+//   if (dcCurrentDC > MAX_DC_CURRENT || dcCurrent < -MAX_DC_CURRENT) {
+//     shutdownGates(OVERCURRENT);
+//   }
+//   // Max AC current allowed of 16.6 amps
+//   if (acCurrent > MAX_AC_CURRENT || acCurrent < -MAX_AC_CURRENT) {
+//     shutdownGates(OVERCURRENT);
+//   }
 
-}
+// }

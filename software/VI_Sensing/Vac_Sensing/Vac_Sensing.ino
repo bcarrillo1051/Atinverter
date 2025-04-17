@@ -8,6 +8,7 @@
 #include "Atinverter.h"
 #include "SPI.h"
 
+#define LOOP_RUNS 20
 #define SENSITIVITY 37.81f
 
 // Atinverter class instance
@@ -21,11 +22,11 @@ void setup() {
 
   atinverter.startPWM(false); // 60Hz, true 50Hz
   atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
-  atinverter.initTimer2Delay();
+  atinverter.initTimer2Delay(); // Set up Timer2 registers to proper init values
 }
 
 void loop() {
-    float Vac_RMS = atinverter.getRmsVoltage(20);
+    float Vac_RMS = atinverter.getRmsAC(true, LOOP_RUNS); // true = Vac, false = Iac, 20 
     Serial.print(F("Vac(RMS): ")); Serial.print(Vac_RMS); Serial.println("V");
     atinverter.delay2(2000);
 }

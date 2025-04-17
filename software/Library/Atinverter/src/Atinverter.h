@@ -18,6 +18,8 @@
 #define VREF 5.0f // Both chips powered with 5V 
 #define ADC_ATMEGA328P_MAX_VALUE 1023.0f // For ATMEGA328P (internal ADC)
 #define ADC_122S021_MAX_VALUE 4095.0f // For ADC122S021 (external SPI ADC)
+#define VAC_ADC_CHANNEL 0x00
+#define IAC_ADC_CHANNEL 0x08
 
 // --- Moving Average Parameter ---
 #define MA_SAMPLES 10 // Default moving average sample count, adjust if needed
@@ -48,13 +50,9 @@ enum ShutdownCodes
 class Atinverter {
 
   public:
-	Atinverter(uint16_t frequency = DEFAULT_FREQUENCY); // Constructor
+	// --- Constructor ---
 
-	// --- LED Pins ---
-	static const int LED1R_PIN = 2; // Red LED 1 | PD2
-	static const int LED1G_PIN = 3; // Green LED 1 | PD3
-	static const int LED2R_PIN = 4; // Red LED 2 | PD4
-	static const int LED2G_PIN = 7; // Green LED 2 | PD7
+	Atinverter(uint16_t frequency = DEFAULT_FREQUENCY);
 
 	// --- Methods ---
 
@@ -68,74 +66,97 @@ class Atinverter {
 	// DC Sensing
 	float getVdc();
 	float getIdc();
-	float getAvgDC(int signal_type, float signal);
+	float getAvgDC(bool isVdc, float signalValue);
 
 	// AC Sensing 
 	void setSensitivity(float value);
-	float getRmsVoltage(uint8_t loopCount = 1);
-	void setUpSPI(); // Sets up SPI protocol for external ADC
+	float getRmsAC(uint8_t loopCount, bool isVac);
+
+	void setUpSPI();
 	int getADC(uint8_t control_byte);
 
 	// PWM Generation
-	void enablePWM(); // Start PWM generation
-	void disablePWM(); // Stop PWM generation
-	void startPWM(bool is50HzMode); // Setup PWM and timers and start PWM generation
-	static void pwmISR(); // Interrupt Service Routine logic
+	void enablePWM();
+	void disablePWM();
+	void startPWM(bool is50HzMode);
+	static void pwmISR();
 
-	// Timer 2 Delay 
+	// Timer 2 Delay
 	void initTimer2Delay();
 	void delay2(unsigned long ms);
 	unsigned long millis2();
 
-	void shutdownGates(int shutdownCode)
-	void checkOverCurrent(float dcCurrent, float acCurrent)
+	// Gate Shutdown
+	void shutdownGates(int shutdownCode);
 
-	// --- Timer2 increment ---
+	// // Overcurrent Protection
+	// void checkOverCurrent(float dcCurrent, float acCurrent);
+
+	// --- Variables ---
+
+	// LED Pins
+	static const int LED1R_PIN = 2; // Red LED 1 | PD2
+	static const int LED1G_PIN = 3; // Green LED 1 | PD3
+	static const int LED2R_PIN = 4; // Red LED 2 | PD4
+	static const int LED2G_PIN = 7; // Green LED 2 | PD7
+
+	// Timer 2 Increment
 	static volatile unsigned long timer2Millis;
 
   private:
 
-	// --- External ADC (ADC122S021CIMM/NOPB) Voltage and Current Sensing Pins ---
+	// --- Methods ---
+
+	// AC Sensing 
+	int getZeroPoint(bool isVac);
+
+	// --- Variables ---
+	
+	// External ADC (ADC122S021CIMM/NOPB) Voltage and Current Sensing Pins
 	static const int VI_AC_CS_PIN = 10; // SPI chip select | PB2
 	static const int VI_AC_MOSI_PIN = 11; // Send control bits data | PB3
 	static const int VI_AC_MISO_PIN = 12; // Receive AC output V/I sense | PB4
 	static const int VI_AC_SCLK_PIN = 13; // SPI clock signal | PB5
 
-	// --- Internal ADC (ATMEGA328P) Voltage and Current Sensing Pins ---
+	// Internal ADC (ATMEGA328P) Voltage and Current Sensing Pins
 	static const int V_DC_PIN = A0; // DC input voltage sense | PC0
 	static const int I_DC_PIN = A1; // DC input current sense | PC1
 
-	// --- PWM Pins ---
+	// PWM Pins
 	const int PWM_A_PIN = 5; // Positive half cycle PWM | PD5
 	const int PWM_B_PIN = 6; // Negative half cycle PWM | PD6
 
-	// --- I2C Communication Pins
+	// I2C Communication Pins
 	const int I2C_SDA_PIN = A4; // Data line between ATMEGA328P and Raspberry Pi | PC4
 	const int I2C_SCL_PIN = A5; // Clock line between ATMEGA328P and Raspberry Pi | PC5
 
-	// --- Overvoltage and Reset Circuitry Reset Pin ---
+	// Overvoltage and Reset Circuitry Reset Pin
 	const int PRORESET_PIN = 9; // Resets the gate drivers, supersedes GATESD pin operation | PB1
 
-	// --- Gate Driver Pin ---
+	// Gate Driver Pin
 	const int GATESD_PIN = 8; // Gate driver shut down mechanism | PB0
 
-	// --- DC Input Voltage Sampling Resistor Values ---
+	// DC Input Voltage Sampling Resistor Values
 	static const unsigned long Rvs1 = 120000; // Adjust this if needed as per measurement
 	static const unsigned int Rsv2 = 9900; // Adjust this if needed as per measurement
 
-	// --- Parameters for Vdc Moving Average ---
+	// Parameters for Vdc Moving Average
 	static const int Vdc_num_readings = MA_SAMPLES; // Vdc samples in moving average
 	float Vdc_readings[MA_SAMPLES]; // Circular buffer for signal samples
 	int Vdc_read_index = 0; // Current index in the Vdc buffer
 	float Vdc_total = 0; // Running total of Vdc readings
 
-	// --- Parameters for Idc Moving Average ---
+	// Parameters for Idc Moving Average
 	static const int Idc_num_readings = MA_SAMPLES; // Samples in moving average
 	float Idc_readings[MA_SAMPLES]; // Circular buffer for signal samples
 	int Idc_read_index = 0; // Current index in the Idc buffer
 	float Idc_total = 0; // Running total of Idc readings
 
-	// --- Parameters for PWM ---
+	// Parameters AC Sensing
+	uint32_t period;
+	float 	 sensitivity = DEFAULT_SENSITIVITY;
+
+	// Parameters for PWM
 	static bool is50Hz; // Frequency mode: true for 50Hz, false for 60Hz
 	static int sin_i; // Index for sinPWM array value
 	static int pwm_i; // Index for PWM value
@@ -143,10 +164,8 @@ class Atinverter {
 	static const int sin50HzPWM[312]; // Sinusoidal 50Hz array samples
 	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples 
 
+	// Gate Shutdown
 	int _shutdownCode = 0;
-	uint32_t period;
-	float 	 sensitivity = DEFAULT_SENSITIVITY;
-	int getZeroPoint();
 };
 
 #endif

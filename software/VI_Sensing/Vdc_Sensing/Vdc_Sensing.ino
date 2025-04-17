@@ -23,7 +23,7 @@ void loop() {
   float raw_Vdc = atinverter.getVdc();
   Serial.print(F("Raw Vdc : ")); Serial.print(raw_Vdc); Serial.println(F("V")); // Print unaveraged Vdc
 
-  float avg_Vdc = atinverter.getAvgDC(0, raw_Vdc);
+  float avg_Vdc = atinverter.getAvgDC(true, raw_Vdc); // true = Vdc, false = Idc
   Serial.print(F("Avg Vdc : ")); Serial.print(avg_Vdc); Serial.println(F("V")); // Print averaged Vdc
 
   Serial.println();
