@@ -2,7 +2,7 @@
 title: AC Current Sensing
 layout: default
 parent: Modules
-nav_order: 3
+nav_order: 8
 mathjax: true
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: PWM Inverting
+title: PWM 50Hz Inverting
 layout: default
 parent: Modules
 nav_order: 3
