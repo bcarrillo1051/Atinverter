@@ -1,7 +1,7 @@
 ---
-title: PWM Control
+title: PWM Inverting
 layout: default
-parent: Software
+parent: Modules
 nav_order: 3
 mathjax: true
 ---

@@ -85,7 +85,6 @@ The inductor ripple current is calculated with Equation 3 for an asynchronous bo
 
 $$\Delta I_{L(\text{P-P})} = \frac{V_{IN} \times (V_{OUT} + 0.8V - V_{IN})}{L \times f_{SW} \times (V_{OUT} + 0.8V)}$$
 
-
 where:
 - ΔIL(P-P) is inductor ripple current 
 - L is inductor value 

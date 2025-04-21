@@ -1,8 +1,8 @@
 ---
 title: Timer 2 Delay
 layout: default
-parent: Software
-nav_order: 5
+parent: Library
+nav_order: 4
 mathjax: true
 ---
 

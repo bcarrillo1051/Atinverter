@@ -1,7 +1,7 @@
 ---
 title: Atinverter Library Set Up
 layout: default
-parent: Software
+parent: Library
 nav_order: 1
 ---
 

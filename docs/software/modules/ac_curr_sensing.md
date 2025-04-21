@@ -1,7 +1,7 @@
 ---
-title: AC Output V/I Sensing
+title: AC Current Sensing
 layout: default
-parent: Software
+parent: Modules
 nav_order: 3
 mathjax: true
 ---

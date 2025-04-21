@@ -1,8 +1,8 @@
 ---
 title: Atinverter UML Diagram
 layout: default
-parent: Software
-nav_order: 2
+parent: Library
+nav_order: 3
 ---
 
 # **Atinverter UML Diagram**
