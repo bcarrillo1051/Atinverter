@@ -1,5 +1,5 @@
 ---
-title: Atinverter UML Diagram
+title: UML Diagram
 layout: default
 parent: Library
 nav_order: 3

@@ -93,44 +93,44 @@
     "doc": "AC Current Sensing",
     "title": "AC Output V/I Sensing Considerations",
     "content": "Understanding how to interface with the ADC122S021CIMM/NOPB using the SPI protocol and performing voltage and current sensing of the AC output. ",
-    "url": "/software/modules/ac_curr_sensing.html#ac-output-vi-sensing-considerations",
+    "url": "/software/modules/ac_current_sensing.html#ac-output-vi-sensing-considerations",
     
-    "relUrl": "/software/modules/ac_curr_sensing.html#ac-output-vi-sensing-considerations"
+    "relUrl": "/software/modules/ac_current_sensing.html#ac-output-vi-sensing-considerations"
   },"14": {
     "doc": "AC Current Sensing",
     "title": "⌚ Choosing the Appropriate SPI Clock Source",
     "content": "We have to ensure that our SPI clock rate is suitable for the communication with the ADC. This means that the clock source cannot exceed the maximum sample rate (throughput) of the device. The table shown below provides the ranges of allow clock frequencies and how that maps to a given sample rate: . | Parameter | Max Clock Freq | Range | . | fsclk | Clock Frequency | 0.8MHz - 3.2MHz | . | fs | Sample Rate | 50ksps - 200ksps | . To better understand the relationship between the sample rate and the clock frequency, we can use the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] In our case, the available frequency from the ATMEGA328P is 16MHz, therefore to obtain the maximum allowable sample rate, we need a pre-scaler of 5 to obtain a $f_{SCLK} = 3.2MHz$, but unfortunately the microcontroller only has the following pre-scalers: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . ",
-    "url": "/software/modules/ac_curr_sensing.html#-choosing-the-appropriate-spi-clock-source",
+    "url": "/software/modules/ac_current_sensing.html#-choosing-the-appropriate-spi-clock-source",
     
-    "relUrl": "/software/modules/ac_curr_sensing.html#-choosing-the-appropriate-spi-clock-source"
+    "relUrl": "/software/modules/ac_current_sensing.html#-choosing-the-appropriate-spi-clock-source"
   },"15": {
     "doc": "AC Current Sensing",
     "title": "AC Current Sensing",
     "content": ". ",
-    "url": "/software/modules/ac_curr_sensing.html",
+    "url": "/software/modules/ac_current_sensing.html",
     
-    "relUrl": "/software/modules/ac_curr_sensing.html"
+    "relUrl": "/software/modules/ac_current_sensing.html"
   },"16": {
     "doc": "AC Voltage Sensing",
     "title": "AC Output V/I Sensing Considerations",
     "content": "Understanding how to interface with the ADC122S021CIMM/NOPB using the SPI protocol and performing voltage and current sensing of the AC output. ",
-    "url": "/software/modules/ac_volt_sensing.html#ac-output-vi-sensing-considerations",
+    "url": "/software/modules/ac_voltage_sensing.html#ac-output-vi-sensing-considerations",
     
-    "relUrl": "/software/modules/ac_volt_sensing.html#ac-output-vi-sensing-considerations"
+    "relUrl": "/software/modules/ac_voltage_sensing.html#ac-output-vi-sensing-considerations"
   },"17": {
     "doc": "AC Voltage Sensing",
     "title": "⌚ Choosing the Appropriate SPI Clock Source",
     "content": "We have to ensure that our SPI clock rate is suitable for the communication with the ADC. This means that the clock source cannot exceed the maximum sample rate (throughput) of the device. The table shown below provides the ranges of allow clock frequencies and how that maps to a given sample rate: . | Parameter | Max Clock Freq | Range | . | fsclk | Clock Frequency | 0.8MHz - 3.2MHz | . | fs | Sample Rate | 50ksps - 200ksps | . To better understand the relationship between the sample rate and the clock frequency, we can use the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] In our case, the available frequency from the ATMEGA328P is 16MHz, therefore to obtain the maximum allowable sample rate, we need a pre-scaler of 5 to obtain a $f_{SCLK} = 3.2MHz$, but unfortunately the microcontroller only has the following pre-scalers: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . ",
-    "url": "/software/modules/ac_volt_sensing.html#-choosing-the-appropriate-spi-clock-source",
+    "url": "/software/modules/ac_voltage_sensing.html#-choosing-the-appropriate-spi-clock-source",
     
-    "relUrl": "/software/modules/ac_volt_sensing.html#-choosing-the-appropriate-spi-clock-source"
+    "relUrl": "/software/modules/ac_voltage_sensing.html#-choosing-the-appropriate-spi-clock-source"
   },"18": {
     "doc": "AC Voltage Sensing",
     "title": "AC Voltage Sensing",
     "content": ". ",
-    "url": "/software/modules/ac_volt_sensing.html",
+    "url": "/software/modules/ac_voltage_sensing.html",
     
-    "relUrl": "/software/modules/ac_volt_sensing.html"
+    "relUrl": "/software/modules/ac_voltage_sensing.html"
   },"19": {
     "doc": "Blink",
     "title": "Blink",
@@ -184,16 +184,16 @@
     "doc": "DC Current Sensing",
     "title": "DC Current Sensing",
     "content": "TEST . ",
-    "url": "/software/modules/dc_curr_sensing.html",
+    "url": "/software/modules/dc_current_sensing.html",
     
-    "relUrl": "/software/modules/dc_curr_sensing.html"
+    "relUrl": "/software/modules/dc_current_sensing.html"
   },"27": {
     "doc": "DC Voltage Sensing",
     "title": "DC Voltage Sensing",
     "content": "TEST . ",
-    "url": "/software/modules/dc_volt_sensing.html",
+    "url": "/software/modules/dc_voltage_sensing.html",
     
-    "relUrl": "/software/modules/dc_volt_sensing.html"
+    "relUrl": "/software/modules/dc_voltage_sensing.html"
   },"28": {
     "doc": "Hardware",
     "title": "Hardware",
@@ -223,265 +223,300 @@
     
     "relUrl": "/software/library/library.html"
   },"32": {
-    "doc": "Atinverter Library Set Up",
+    "doc": "Reference",
+    "title": "Reference",
+    "content": " ",
+    "url": "/software/library/library_reference.html",
+    
+    "relUrl": "/software/library/library_reference.html"
+  },"33": {
+    "doc": "Set Up",
     "title": "Atinverter Library Set Up",
     "content": "A guide to help your Arduino IDE recognize and use the Atinverter user-defined library . You might be thinking: . 💭 “Okay, I downloaded the software files from the GitHub repository — now what? Can I just open some random file like blink.ino and run the code?” . You’re almost there! There is just one important step that needs to happen first; We need ensure that the Arduino IDE knows where to find the Atinverter library files (Atinverter.cpp, Atinverter.h), or else you’ll run into the notorious: . fatal error: Atinverter.h: No such file or directory . ",
-    "url": "/software/library/library_setup.html",
+    "url": "/software/library/library_setup.html#atinverter-library-set-up",
     
-    "relUrl": "/software/library/library_setup.html"
-  },"33": {
-    "doc": "Atinverter Library Set Up",
+    "relUrl": "/software/library/library_setup.html#atinverter-library-set-up"
+  },"34": {
+    "doc": "Set Up",
     "title": "📁 How Arduino Handles Libraries",
     "content": "The Arduino IDE looks for user-defined libraries in a specific directory on your computer. Simply placing .cpp or .h files in the same directory as the .ino files you wish to run isn’t enough. Here’s where those locations are: . 🔍 If you’re on Windows, it’ll be in: . C:\\Users&lt;YourUsername&gt;\\Documents\\Arduino\\libraries\\ . 🔍 If you’re on macOS or Linux, it’ll be in: . ~/Documents/Arduino/libraries/ . ",
     "url": "/software/library/library_setup.html#-how-arduino-handles-libraries",
     
     "relUrl": "/software/library/library_setup.html#-how-arduino-handles-libraries"
-  },"34": {
-    "doc": "Atinverter Library Set Up",
+  },"35": {
+    "doc": "Set Up",
     "title": "✅ What To Do",
     "content": ". | Navigate to the Atinverter library folder in the repository. It contains the source files Atinverter.cpp, Atinverter.h, and the metadata file library.properties. It is located in: . \\AtInverter\\software\\Library . | Copy the Atinverter folder to your Arduino libraries folder as described in How Arduino Handles Libraries . | . 📸 You should expect to see something like this in your Arduino libraries folder: . ",
     "url": "/software/library/library_setup.html#-what-to-do",
     
     "relUrl": "/software/library/library_setup.html#-what-to-do"
-  },"35": {
-    "doc": "Atinverter Library Set Up",
+  },"36": {
+    "doc": "Set Up",
     "title": "🚀 You’re Good to Go",
     "content": "Once the Atinverter library is in the right place, you can use it any sketch with: . #include \"Atinverter.h\" . ",
     "url": "/software/library/library_setup.html#-youre-good-to-go",
     
     "relUrl": "/software/library/library_setup.html#-youre-good-to-go"
-  },"36": {
-    "doc": "Atinverter UML Diagram",
+  },"37": {
+    "doc": "Set Up",
+    "title": "Set Up",
+    "content": " ",
+    "url": "/software/library/library_setup.html",
+    
+    "relUrl": "/software/library/library_setup.html"
+  },"38": {
+    "doc": "UML Diagram",
     "title": "Atinverter UML Diagram",
     "content": ". classDiagram class Atinverter { + LED1R_PIN : int + LED1G_PIN : int + LED2R_PIN : int + LED2G_PIN : int - VI_AC_CS_PIN : int - VI_AC_MOSI_PIN : int - VI_AC_MISO_PIN : int - VI_AC_SCLK_PIN : int - V_DC_PIN : int - I_DC_PIN : int - PWM_A_PIN : int - PWM_B_PIN : int - I2C_SDA_PIN : int - I2C_SCL_PIN : int - PRORESET_PIN : int - GATESD_PIN : int - Rvs1 : unsigned long - Rsv2 : unsigned int - num_readings : int - readings : float[num_readings] - read_index : int - total : float - is50Hz : bool - sin_i : int - pwm_i : int - OK : int - sin50HzPWM : int[312] - sin60HzPWM : int[261] + Atinverter() + setUpPinMode() : void + readVdc() : float + readAvgVdc(Vdc : float) : float + readIdc() : float + readAvgIdc(Idc : float) : float + setUpSPI() : void + readADC() : int + set1LED(led : int, state : int) : void + set2LED(t_delay : int) : void + enablePWM() : void + disablePWM() : void + startPWM(is50HzMode : bool) : void + pwmISR() : void } . ",
+    "url": "/software/library/library_uml.html#atinverter-uml-diagram",
+    
+    "relUrl": "/software/library/library_uml.html#atinverter-uml-diagram"
+  },"39": {
+    "doc": "UML Diagram",
+    "title": "UML Diagram",
+    "content": " ",
     "url": "/software/library/library_uml.html",
     
     "relUrl": "/software/library/library_uml.html"
-  },"37": {
+  },"40": {
     "doc": "Main",
     "title": "Main",
     "content": "TEST . ",
     "url": "/software/modules/main.html",
     
     "relUrl": "/software/modules/main.html"
-  },"38": {
+  },"41": {
     "doc": "Modules",
     "title": "Modules",
     "content": " ",
     "url": "/software/modules/modules.html",
     
     "relUrl": "/software/modules/modules.html"
-  },"39": {
+  },"42": {
     "doc": "Atinverter V1/2 Power Rating",
     "title": "Hardware",
     "content": ". MOSFETs (IRFB4020PBF): . | Continuous Drain Current (ID): 18 A at 25°C | Drain-to-Source Voltage (VDSS): 200 V | Maximum Power Dissipation (PD): 100 W at 25°C | . Inductors (AIRD-02-221K): . | Inductance: 220 µH ​ | Current Rating: . | Continuous: 2.8 A | Saturation: 7 A | . | . Capacitors (1189-4160-1-ND): . | Rated Voltage 250V | Ripple Current @ Low Frequency: 188 mA @ 120 Hz | Ripple Current @ High Frequency: 470 mA @ 100 kHz | . Theoretical max: . | Pmax = Vmax * Imax = 200V * 2.8A = 560W | . BUUUTTTT — that’s theoretical! Needn to consider: . | Need to consider proper heatsinking for the MOSFETs (18 A is at 25°C, derates with temp) | Ripple current through cap &lt; 470mA | Safe design margin: do not run at 100% ratings | Consider switching trajectory | . Reasonably speaking somwhere up to 450W . ",
     "url": "/hardware/power_rating.html#hardware",
     
     "relUrl": "/hardware/power_rating.html#hardware"
-  },"40": {
+  },"43": {
     "doc": "Atinverter V1/2 Power Rating",
     "title": "Atinverter V1/2 Power Rating",
     "content": " ",
     "url": "/hardware/power_rating.html",
     
     "relUrl": "/hardware/power_rating.html"
-  },"41": {
+  },"44": {
     "doc": "PWM 50Hz Inverting",
     "title": "PWM Control",
     "content": ". The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be \\(f_{sw} = 31,372Hz\\). The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave. The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains. Let’s understand the way in which the PWM code operates. ",
     "url": "/software/modules/pwm_50Hz_inverting.html#pwm-control",
     
     "relUrl": "/software/modules/pwm_50Hz_inverting.html#pwm-control"
-  },"42": {
+  },"45": {
     "doc": "PWM 50Hz Inverting",
     "title": "PWM 50Hz",
     "content": "\\(f_{sw} = 31,372Hz\\) \\(f_{sw} = \\frac{1}{f_{sw}} = 31.875\\mu s\\) . ",
     "url": "/software/modules/pwm_50Hz_inverting.html#pwm-50hz",
     
     "relUrl": "/software/modules/pwm_50Hz_inverting.html#pwm-50hz"
-  },"43": {
+  },"46": {
     "doc": "PWM 50Hz Inverting",
     "title": "PWM 50Hz Inverting",
     "content": ". ",
     "url": "/software/modules/pwm_50Hz_inverting.html",
     
     "relUrl": "/software/modules/pwm_50Hz_inverting.html"
-  },"44": {
+  },"47": {
     "doc": "PWM 60Hz Inverting",
     "title": "PWM Control",
     "content": ". The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be \\(f_{sw} = 31,372Hz\\). The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave. The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains. Let’s understand the way in which the PWM code operates. ",
     "url": "/software/modules/pwm_60Hz_inverting.html#pwm-control",
     
     "relUrl": "/software/modules/pwm_60Hz_inverting.html#pwm-control"
-  },"45": {
+  },"48": {
     "doc": "PWM 60Hz Inverting",
     "title": "PWM 50Hz",
     "content": "\\(f_{sw} = 31,372Hz\\) \\(f_{sw} = \\frac{1}{f_{sw}} = 31.875\\mu s\\) . ",
     "url": "/software/modules/pwm_60Hz_inverting.html#pwm-50hz",
     
     "relUrl": "/software/modules/pwm_60Hz_inverting.html#pwm-50hz"
-  },"46": {
+  },"49": {
     "doc": "PWM 60Hz Inverting",
     "title": "PWM 60Hz Inverting",
     "content": ". ",
     "url": "/software/modules/pwm_60Hz_inverting.html",
     
     "relUrl": "/software/modules/pwm_60Hz_inverting.html"
-  },"47": {
+  },"50": {
     "doc": "Scratchpad",
     "title": "Testing",
     "content": "First Term This is the definition of the first term. Second Term This is one definition of the second term. This is another definition of the second term. The world is flat. We now know that the world is round. This sentence uses $ delimiters to show math inline: $\\sqrt{3x-1}+(1+x)^2$ . highlight . X2 . Use `code` in your Markdown file. H20 . I need to highlight these very important words. ",
     "url": "/scratchpad.html#testing",
     
     "relUrl": "/scratchpad.html#testing"
-  },"48": {
+  },"51": {
     "doc": "Scratchpad",
     "title": "Callouts",
     "content": "A paragraph . A paragraph . Another paragraph . The last paragraph . Highlight yellow . Highlight blue . Highlight green . Highlight red . Highlight greylt . Test 2 . A paragraph . A paragraph . Another paragraph . The last paragraph . New title . “Why not simply use the delay() or millis() functions to accomplish this?” . ",
     "url": "/scratchpad.html#callouts",
     
     "relUrl": "/scratchpad.html#callouts"
-  },"49": {
+  },"52": {
     "doc": "Scratchpad",
     "title": "Italicizing and Bolding",
     "content": "Lorem ipsum . Lorem ipsum . lorem ipsum . Gone camping! :tent: Be back soon. That is so funny! :joy: . :smile: 😀 . ",
     "url": "/scratchpad.html#italicizing-and-bolding",
     
     "relUrl": "/scratchpad.html#italicizing-and-bolding"
-  },"50": {
+  },"53": {
     "doc": "Scratchpad",
     "title": "Tables",
     "content": "| head1 | head two | three |:————-|:——————|:——| ok | good swedish fish | nice | out of stock | good and plenty | nice | ok | good oreos | hmm | ok | good zoute drop | yumm | . ",
     "url": "/scratchpad.html#tables",
     
     "relUrl": "/scratchpad.html#tables"
-  },"51": {
+  },"54": {
     "doc": "Scratchpad",
     "title": "Code  blocks",
     "content": "This is code . const a = 10; static var; . ",
     "url": "/scratchpad.html#code--blocks",
     
     "relUrl": "/scratchpad.html#code--blocks"
-  },"52": {
+  },"55": {
     "doc": "Scratchpad",
     "title": "Creating a Link",
     "content": "Relative link within the directories: This is a link External Link: Arduino Docs . ",
     "url": "/scratchpad.html#creating-a-link",
     
     "relUrl": "/scratchpad.html#creating-a-link"
-  },"53": {
+  },"56": {
     "doc": "Scratchpad",
     "title": "Images",
     "content": ". hey test . oh my . sheesh . ",
     "url": "/scratchpad.html#images",
     
     "relUrl": "/scratchpad.html#images"
-  },"54": {
+  },"57": {
     "doc": "Scratchpad",
     "title": "Putting lines in between",
     "content": "hi . there . ",
     "url": "/scratchpad.html#putting-lines-in-between",
     
     "relUrl": "/scratchpad.html#putting-lines-in-between"
-  },"55": {
+  },"58": {
     "doc": "Scratchpad",
     "title": "Creating an ordered list of items",
     "content": ". | bananas | apples | durian | . ",
     "url": "/scratchpad.html#creating-an-ordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-ordered-list-of-items"
-  },"56": {
+  },"59": {
     "doc": "Scratchpad",
     "title": "Creating an unordered list of items",
     "content": ". | bananas | apples | durian . | cherries | . | . ",
     "url": "/scratchpad.html#creating-an-unordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-unordered-list-of-items"
-  },"57": {
+  },"60": {
     "doc": "Scratchpad",
     "title": "Tables",
     "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . graph TD; accTitle: the diamond pattern accDescr: a graph with four nodes: A points to B and C, while B and C both point to D A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; C--&gt;A; D--&gt;E; E--&gt;A; E--&gt;B; . flowchart LR User(circle) --tcp/80 --&gt; LoadBalancer&gt;random shape] --tcp/1337 ---&gt; Webserver{rhombus} . flowchart LR subgraph PublicInternet User end subgraph LoadBalancingZone LoadBalancer end subgraph WebserverZone WebserverA WebserverB end User --tcp/80 --&gt; LoadBalancer LoadBalancer --&gt; WebserverA LoadBalancer --&gt; WebserverB WebserverA --&gt; DatabaseserverA WebserverA -.-&gt; DatabaseserverB WebserverB --&gt; DatabaseserverA WebserverB -.-&gt; DatabaseserverB . pie title A piechart \"SliceA\" : 5 \"SliceB\" : 15 . sankey-beta day, sleep, 8 day, work, 8 day, fun, 2 . A paragraph . Another paragraph . The last paragraph . ",
     "url": "/scratchpad.html#tables-1",
     
     "relUrl": "/scratchpad.html#tables-1"
-  },"58": {
+  },"61": {
     "doc": "Scratchpad",
     "title": "Scratchpad",
     "content": " ",
     "url": "/scratchpad.html",
     
     "relUrl": "/scratchpad.html"
-  },"59": {
+  },"62": {
+    "doc": "Software",
+    "title": "Atinverter V2 Software",
+    "content": ". The Atinverter codebase is composed of various modules that utilize the Atinverter Library. The library provides essentential methods and variables that used by the modules to showcase the different features of the hardware. The following diagram provides a visual representation of the available capabilities of the Atinverter codebase where each node in the diagram highlights a specific feature of the design. The nodes for the library and modules are also interactive—click to explore specific software functionality and learn more about its design. ",
+    "url": "/software/software.html#atinverter-v2-software",
+    
+    "relUrl": "/software/software.html#atinverter-v2-software"
+  },"63": {
+    "doc": "Software",
+    "title": "Software Block Diagram",
+    "content": ". ",
+    "url": "/software/software.html#software-block-diagram",
+    
+    "relUrl": "/software/software.html#software-block-diagram"
+  },"64": {
     "doc": "Software",
     "title": "Software",
-    "content": ". The Atinverter codebase is composed of various modules, each contributing to distinct functionalities. The following diagram showcases the available features of the Atinverter codebase. Each box in the diagram is interactive, allowing you to click and explore detailed information about specific features. ",
+    "content": " ",
     "url": "/software/software.html",
     
     "relUrl": "/software/software.html"
-  },"60": {
+  },"65": {
     "doc": "Timer 2 Delay",
     "title": "⏱️ Timer 2 Delay",
     "content": ". An interface is required to handle program delays for time-sensitive operations such as AC voltage sensing and serial communication, among other tasks. 💭 “Why not use the Arduino core functions delay(), millis(), or micros() to accomplish this?” . Although that might seem like the most straightforward approach, the ATMEGA328P Timer0 — used by these core functions — is also responsible for PWM generation in our hardware. This is described in detail in the PWM Control section. If we attempt to use the core delay functions (which reconfigure Timer0 registers), while simultaneously using Timer0 to handle PWM interrupts, we risk introducing conflicting register states. This also translates to erratic behavior in our PWM output which although may not be catastrophic, it is certainly not desired 😅. 💭 “Why not create a software-based delay program with an incrementer?” . unsigned long counter = 0; while (counter &lt; SOME_VALUE) { counter++; } . To implement delay2() and millis2(), it’s not practical to only rely on a simple software incrementer (e.g., counter++) inside a loop to create timing. This would be an approach that requires trial-and-error tuning of a maximum value to achieve a desired delay. In addition, this is inefficient, non-deterministic, and highly sensitive to compiler optimizations or clock speed changes. ",
     "url": "/software/library/timer2_delay.html#%EF%B8%8F-timer-2-delay",
     
     "relUrl": "/software/library/timer2_delay.html#️-timer-2-delay"
-  },"61": {
+  },"66": {
     "doc": "Timer 2 Delay",
     "title": "💡 The Workaround",
     "content": "To resolve this, we developed custom timing functions — delay2() and millis2() — based on Timer2 from the ATMEGA328P. These serve as effective substitutes for the Arduino core library timing functions, providing a millisecond-based timing mechanism that operates independently of Timer0. ",
     "url": "/software/library/timer2_delay.html#-the-workaround",
     
     "relUrl": "/software/library/timer2_delay.html#-the-workaround"
-  },"62": {
+  },"67": {
     "doc": "Timer 2 Delay",
     "title": "🧠 Understanding the Timers on the ATMEGA328P",
     "content": "The ATMEGA328P includes three timers, each with different bit widths: . | Timer0: 8-bit | Timer1: 16-bit | Timer2: 8-bit | . 💭 “What do the ‘bits’ actually mean?” . The number of bits determines how high a timer can count before it overflows and restarts. Think of it like a clock ⏱️ . | An 8-bit timer can count from 0 to 255 ($2^8 - 1$) | A 16-bit timer can count from 0 to 65,535 ($2^{16} - 1$) | . A higher bit-width means higher resolution is possible — but for a simple 1ms tick, an 8-bit timer like Timer2 is more than sufficient. ",
     "url": "/software/library/timer2_delay.html#-understanding-the-timers-on-the-atmega328p",
     
     "relUrl": "/software/library/timer2_delay.html#-understanding-the-timers-on-the-atmega328p"
-  },"63": {
+  },"68": {
     "doc": "Timer 2 Delay",
     "title": "⚙️ Timer2 Delay Initialization",
     "content": "We need to configure the handy Timer 2 such that its interrupts will fire every 1ms. 💭 “Why trigger the interrupts every 1ms? Can’t you use another time frame?” . Yes, you can definitely use another timer frame, but why would you reasonably do that? Consider these reasons why 1ms interrupts are most appropriate: . | ☑️ Arduino’s built-in millis() and delay() functions are based on 1ms resolution. | 🔄 Simpler math and high enough resolution (1:1 mapping) . | 500 ticks $\\rightarrow$ count to 500 ticks where each counter tick is 1ms instead of 2000 ticks $\\rightarrow$ count to 2000 ticks where each tick is 0.25ms | . | ⚙️ Low CPU Overhead . | Operating the CPU at higher frequency can overwhelm the CPU and be more power intensive | . | . Okay now that I hopefully convinced you of why we need 1ms interrupts, here is how we do it: As per the registers described in pages 127-134 of the ATMEGA328P datasheet, these are what we will need to configure. There are 9 registers in total, but we do not need to configure all of them. The registers of interest and what is needed to do is as follows: . 🔧 TCCR2A – Timer/Counter Control Register A . Reset TCCR2A: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2A = 0; // Reset Timer2 TCCR2A control register . What It Controls: . | Compare Output Modes COM2A[1:0], COM2B[1:0] — what happens to OC2A/OC2B (digital 11/3) pins on compare match with TCNT2 | Waveform Generation Mode WGM2[1:0] — selects the timer’s counting behavior (Normal, PWM/Phase Correct, CTC, or Fast PWM) | . What To Set: . | Clear Timer on Compare Match (CTC) mode using WGM21 bit | . TCCR2A |= (1 &lt;&lt; WGM21); // Set CTC mode . 🔧 TCCR2B – Timer/Counter Control Register B . Reset TCCR2B: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2B = 0; // Reset Timer2 TCCR2B control register . What It Controls: . | Force Output Compare FOC2B, FOC2A — forcing a compare match on OC2B/OC2A (digital 3/11) pins | Waveform Generation Mode WGM22 — Used with TCCR2A for CTC or fast PWM | Clock Select CS2[2:0] — Sets the pre-scaler for the timer clock source | . What To Set: . | Prescaler of 64 using CS22 bit | . TCCR2B |= (1 &lt;&lt; CS22); // Set prescaler = 64 . 🔧 TCNT2 – Timer/Counter Register . Reset TCNT2: . Starts counter at 0, why would you start anywhere else? 😅 . TCNT2 = 0; // Reset Timer2 TCNT2 control register . What It Controls: . | Timer Counter 2 TCNT2[7:0] — The current value of Timer2’s counter (0-255) | . What To Set: . | Nothing, the timer runs autonomously | . 🔧 TIMSK2 – Timer/Counter2 Interrupt Mask Register . Reset TIMSK2: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TIMSK2 = 0; // Reset Timer2 TIMSK2 control register . What It Controls: . | Output Compare Match Interrupt Enables OCIE2B, OCIE2A — Enables an interrupt when the timer value TCNT2 matches the value in OCR2B or OCR2A. | Waveform Generation Mode TOIE2 — Enables an interrupt when timer overflows | . What To Set: . | Enable interrupt on Compare Match A using the OCIE2A bit. | . TIMSK2 = (1 &lt;&lt; OCIE2A); // enable compare interrupt . 🔧 OCR2A – Output Compare Register A . What It Controls: . | Holds the top value the TCNT2 counts up to in CTC mode. | When TCNT2 == OCR2A, an interrupt is fired (if enabled), and the counter resets to 0 on the next tick. | . What To Set: . | OCR2A register to 249 | . OCR2A = 249; . Why Set it To 249: . | This value can be computed based on the equation provided in page 121 of the ATMEGA328P datasheet. | . (1) General CTC equation (when toggling pin): . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{2 \\times N \\times (1 + OCRnx)}\\] where: . | $OCRnx$ is the output compare register value | $f_{OCnx}$ is the output frequency of the timer/counter | $f_{clk_{I/O}}$ Clock input frequency (16 MHz for ATmega328P) | N is the timer prescale factor (1, 8, 32, 64, 128, 256, or 1024) | “2” in denominator only needed when toggling a pin to generate a waveform | . 🔍Important Note: In interrupt-only CTC mode (no pin toggling), the “2” in the denominator is not included because the interrupt occurs once per timer cycle. Hence, this constant can be ignored. (2) CTC Interrupt-Only Frequency Equation: . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{ N \\times (1 + OCRnx)}\\] Now, we can solve for the OCR2A value that produces an interrupt at a frequency of 1kHz (1ms period) by restructuring this equation. (3) CTC Interrupt-Only OCR2A Equation: . \\[OCRnx = \\frac{f_{clk_{I/O}}}{N \\times f_{OCnx}} - 1\\] 🔢 Solving for OCR2A: . \\[OCRnx = \\frac{16*10^6}{64 \\times 1000} - 1 = 249\\] ✅ Result: . Setting OCR2A = 249 results in 1ms timer interrupts using a 16 MHz clock and a prescaler of 64. And we are done! Those are all the registers you need to set. Now when you look at the Timer 2 register initialization, it should now make more sense 😊 . Add a note on non-blocking vs blocking: delay2 vs millis2() . ",
     "url": "/software/library/timer2_delay.html#%EF%B8%8F-timer2-delay-initialization",
     
     "relUrl": "/software/library/timer2_delay.html#️-timer2-delay-initialization"
-  },"64": {
+  },"69": {
     "doc": "Timer 2 Delay",
     "title": "Timer 2 Delay",
     "content": ". ",
     "url": "/software/library/timer2_delay.html",
     
     "relUrl": "/software/library/timer2_delay.html"
-  },"65": {
+  },"70": {
     "doc": "To-Do",
     "title": "TO-DO",
     "content": ". | Order NOR gate and verify that logic protection circuitry is operational | Fix schematic and GPIO pin of Rpi connected to DTR line which has a 5V pull up (bad since Rpi is 3.3V logic) | Verify that schematic, PCB, and 3D model is not missing anything (run DRC again just in case) | Load testing captures | Modify the startPWM method such that it does not pass a boolean parameter to select between 50Hz or 60Hz PWM (not intuive for the “false” parameter to indicate start 60Hz, sounds more like false means off) | Remove seperate pwmISR() method in Timer1ISR since that actually results in longer program operation which is not ideal in the ISR (ideally minize time in ISR) | . ",
     "url": "/todo.html#to-do",
     
     "relUrl": "/todo.html#to-do"
-  },"66": {
+  },"71": {
     "doc": "To-Do",
     "title": "To-Do",
     "content": " ",
     "url": "/todo.html",
     
     "relUrl": "/todo.html"
-  },"67": {
+  },"72": {
     "doc": "Vision",
     "title": "Vision",
     "content": " ",
     "url": "/vision.html",
     
     "relUrl": "/vision.html"
-  },"68": {
+  },"73": {
     "doc": "Vision",
     "title": "Microgrid Significance",
     "content": "Electricity traverses through a large network of interconnected transmission or distribution systems known as the power grid. With the ever-growing demand for electricity and reliable power grid consumption, grid congestion has been a more prominent phenomenon. This occurs when the power grid is unable to deliver the required power to meet demand, particularly from urban area or high demand loads. To alleviate stress on the power grid, microgrids-smaller localized electrical systems-can be employed. A microgrid typically consists of distributed generators and loads as well as energy storage systems, and can operate either in grid-connected or islanded mode. ",
     "url": "/vision.html#microgrid-significance",
     
     "relUrl": "/vision.html#microgrid-significance"
-  },"69": {
+  },"74": {
     "doc": "Vision",
     "title": "EV Inspired PDA Microgrid and Open Source Platforms",
     "content": "As Electric Vehicle (EV) infrastructure continues to develop and gain wider global acceptance, there is growing motivation not only to utilize these systems for transportation but, more importantly, to harness their microgrid capabilities. To more clearly understand this concept, we can consider a power distribution architecture (PDA) for EVs that can: . | intelligently transact power with the grid, | provide important grid-forming and grid-supporting services | share power in a peer-to-peer fashion with other EVs | act as a standalone microgrid that can interface with external AC and DC sources and loads. | operate and communicate between various open source power converters | . ",

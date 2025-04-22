@@ -1,5 +1,5 @@
 ---
-title: Atinverter Library Set Up
+title: Set Up
 layout: default
 parent: Library
 nav_order: 1
@@ -52,7 +52,7 @@ Here's where those locations are:
 
 📸 You should expect to see something like this in your Arduino `libraries` folder:
 
-![User Defined Library Directory](../images/user_defined_lib.png)
+![User Defined Library Directory](../../images/user_defined_lib.png)
 
 ---
 
