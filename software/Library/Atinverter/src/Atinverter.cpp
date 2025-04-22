@@ -1,5 +1,5 @@
 /*
-  AtverterE.cpp - Library for AtinverterE pin and function mapping
+  Atinverter.cpp - Library for Atinverter pin and function mapping
   Created by Bryan Carrillo, Zach Kwast, 10/18/24
   Released into the public domain.
 */
@@ -459,16 +459,21 @@ void Atinverter::shutdownGates(int shutdownCode) {
   delay2(10000);
 }
 
+// Turns off power to the Gate drivers for 5 seconds
+void Atinverter::powerCycleGates() {
+  digitalWrite(PRORESET_PIN, HIGH);
+  delay2(5000);
+  digitalWrite(PRORESET_PIN, LOW);
+}
 
-//
-// void Atinverter::checkOverCurrent(float dcCurrent, float acCurrent) {
-//   // Max DC current allowed of 16.6 amps
-//   if (dcCurrentDC > MAX_DC_CURRENT || dcCurrent < -MAX_DC_CURRENT) {
-//     shutdownGates(OVERCURRENT);
-//   }
-//   // Max AC current allowed of 16.6 amps
-//   if (acCurrent > MAX_AC_CURRENT || acCurrent < -MAX_AC_CURRENT) {
-//     shutdownGates(OVERCURRENT);
-//   }
+void Atinverter::checkOverCurrent(float dcCurrent, float acCurrent) {
+  // Max DC current allowed of 2.5 amps
+  if (dcCurrent > MAX_DC_CURRENT || dcCurrent < -MAX_DC_CURRENT) {
+    shutdownGates(OVERCURRENT);
+  }
+  // Max AC current allowed of 2.5 amps
+  if (acCurrent > MAX_AC_CURRENT || acCurrent < -MAX_AC_CURRENT) {
+    shutdownGates(OVERCURRENT);
+  }
 
-// }
+}

@@ -23,8 +23,6 @@ float DC_volt_avg = 0;
 float DC_amp_avg = 0;
 float AC_volt = 0;
 float AC_amp = 0;
-float round_AC_volt;
-float round_AC_amp;
 
 void setup() {
 
@@ -44,7 +42,7 @@ void setup() {
 
   atinverter60.setSensitivity(SENSITIVITY);
   atinverter50.setSensitivity(SENSITIVITY);
-  atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
+  atinverter60.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
 
   atinverter60.startPWM(false);
   Serial.println("Setup Done");
@@ -75,53 +73,48 @@ void loop() {
 
   // Read all DC voltages and currents
   //unsigned long start = millis();
-  DC_volt_avg = atinverter60.readAvg(atinverter.readVdc());
-  DC_amp_avg = atinverter60.readAvg(atinverter.readIdc());
+  DC_volt_avg = atinverter60.getAvgDC(true, atinverter60.getVdc());
+  DC_amp_avg = atinverter60.getAvgDC(false, atinverter60.getIdc());
   // unsigned long time = millis() - start;
   // Serial.print(time)
   // Serial.println(" ms")
 
+
   if (isFiftyHz) {
     // Get the converted average value of AC voltage and current
-    AC_volt = atinverter50.getRmsVoltage(20);
+    AC_volt = atinverter50.getRmsAC(20, true);
     AC_amp = 5; // atinverter50.getRmsCurrent(1, ADC_amp);
     DC_volt_avg = 5;
   }
   if (isFiftyHz == false){
     // Get the converted average value of AC voltage and current
-    AC_volt = atinverter60.getRmsVoltage(20);
+    AC_volt = atinverter60.getRmsAC(20, true);
     AC_amp = 6; //atinverter60.getRmsCurrent(1, ADC_amp);
     DC_volt_avg = 6;
   }
 
-  // Turns LED Off
+  // Turns gate driver Off
   if (state == 0) {
-    digitalWrite(ledPin, LOW);
-    fifty_once = 0;
-    sixty_once = 0;
-  }
-  // Turns LED On 
-  else if (state == 1) {
+    digitalWrite(PRORESET_PIN, HIGH);
     digitalWrite(ledPin, HIGH);
     fifty_once = 0;
     sixty_once = 0;
   }
+  // Turns gate driver on 
+  else if (state == 1) {
+    digitalWrite(PRORESET_PIN, LOW);
+    digitalWrite(ledPin, LOW);
+    fifty_once = 0;
+    sixty_once = 0;
+  }
+  // Cycles proreset which power cycles gate driver
   else if (state == 2) {
-    // Cycles proreset, needs to be a function
     atinverter60.powerCycleGates();
     fifty_once = 0;
     sixty_once = 0;
   }
-  else if (state == 3) {
-    fifty_once = 0;
-    sixty_once = 0;
-  }
-  else if (state == 4) {
-    fifty_once = 0;
-    sixty_once = 0;
-  }
   // 50 Hz Sin Wave Output
-  else if (state == 5) {
+  else if (state == 3) {
     isFiftyHz = true;
     if (fifty_once == 0) {
       atinverter60.startPWM(isFiftyHz);
@@ -130,7 +123,7 @@ void loop() {
     sixty_once = 0;
   } 
   // 60 Hz Sin Wave Output
-  else if (state == 6) {
+  else if (state == 4) {
     isFiftyHz = false;
     if (sixty_once == 0) {
       atinverter60.startPWM(isFiftyHz);
@@ -138,11 +131,7 @@ void loop() {
     }
     fifty_once = 0;
   }
-  else if (state == 7) {
-    fifty_once = 0;
-    sixty_once = 0;
-  }
-  else if (state > 7) {
+  else {
     Serial.println("Invalid State");
   }
 

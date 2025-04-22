@@ -20,6 +20,7 @@
 #define ADC_122S021_MAX_VALUE 4095.0f // For ADC122S021 (external SPI ADC)
 #define VAC_ADC_CHANNEL 0x00
 #define IAC_ADC_CHANNEL 0x08
+#define SENSITIVITY 37.81f // ADC sensitivity
 
 // --- Moving Average Parameter ---
 #define MA_SAMPLES 10 // Default moving average sample count, adjust if needed
@@ -88,9 +89,10 @@ class Atinverter {
 
 	// Gate Shutdown
 	void shutdownGates(int shutdownCode);
+	void powerCycleGates();
 
 	// // Overcurrent Protection
-	// void checkOverCurrent(float dcCurrent, float acCurrent);
+	void checkOverCurrent(float dcCurrent, float acCurrent);
 
 	// --- Variables ---
 
