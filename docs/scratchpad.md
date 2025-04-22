@@ -112,7 +112,7 @@ static var;
 
 ## Creating a Link
 Relative link within the directories:  
-[This is a link](docs)  
+[This is a link](software/modules/modules.html)  
 External Link:
 [Arduino Docs](https://docs.arduino.cc/)
 

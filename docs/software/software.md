@@ -1,58 +1,20 @@
 ---
 title: Software
 layout: default
-nav_order: 1
+nav_order: 3
 ---
 
-# **Software**
+# **Atinverter V2 Software**
 ***
 
-The Atinverter codebase is composed of various modules, each contributing to distinct functionalities. \
-The following diagram showcases the available features of the Atinverter codebase. Each box in the \
-diagram is interactive, allowing you to click and explore detailed information about specific features.
+The Atinverter codebase is composed of various modules that utilize the **Atinverter Library**. The library provides essentential methods and variables that used by the modules to showcase the different features of the hardware. The following diagram provides a visual representation of the available capabilities of the Atinverter codebase where each node in the
+diagram highlights a specific feature of the design. The nodes for the library and modules are also interactive—click to explore specific software functionality and learn more about its design.
+<br>
 
-```mermaid
-   
-   %%{init: {'theme':'base'}}%%
-   flowchart TB
+## Software Block Diagram
 
-    subgraph Future
-       G(Rectification)
-       H(Droop Control)
-        
-    end
-
-    subgraph Capabilities
-       D(Blink)
-       E(PWM Generation 50Hz)
-       F(PWM Generation 60Hz)
-       I(DC Voltage/Current Sensing)
-       J(AC Voltage/Current Sensing)
-
-    end
-
-    subgraph Main
-        C(Main)
-    end
-
-    subgraph Library
-       A(Atintverter.cpp) 
-       B(Atinverter.h)
-    end
+<p align="center">
+   <object data="../images/software_block_diagram.svg" type="image/svg+xml" width="750"></object>
+</p>
 
 
-    Library-->Main
-    Capabilities-->Main
-
-    %% Change color of arrow heads
-    %%{init: {'themeVariables': {'lineColor': 'grey'}}}%%
-
-    %% Apply color to the arrows
-    %% 0: 1st arrow (Library --> Main) 1: 2nd arrow (Capabilities --> Main)
-    linkStyle 0 stroke:grey, stroke-width:3px;
-    linkStyle 1 stroke:grey, stroke-width:3px;
-
-    %% Adding clickable links, Syntax: Destination ref, hover label
-    click E "PWM_control" "PWM Generation"
-    click F "PWM_control" "PWM Generation"
-```

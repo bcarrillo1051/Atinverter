@@ -6,391 +6,517 @@
     
     "relUrl": "/AV2software.html"
   },"1": {
-    "doc": "PWM Control",
-    "title": "PWM Control",
-    "content": ". The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be \\(f_{sw} = 31,372Hz\\). The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave. The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains. Let’s understand the way in which the PWM code operates. ",
-    "url": "/software/PWM_control.html#pwm-control",
-    
-    "relUrl": "/software/PWM_control.html#pwm-control"
-  },"2": {
-    "doc": "PWM Control",
-    "title": "PWM 50Hz",
-    "content": "\\(f_{sw} = 31,372Hz\\) \\(f_{sw} = \\frac{1}{f_{sw}} = 31.875\\mu s\\) . ",
-    "url": "/software/PWM_control.html#pwm-50hz",
-    
-    "relUrl": "/software/PWM_control.html#pwm-50hz"
-  },"3": {
-    "doc": "PWM Control",
-    "title": "PWM Control",
-    "content": ". ",
-    "url": "/software/PWM_control.html",
-    
-    "relUrl": "/software/PWM_control.html"
-  },"4": {
     "doc": "St. Thomas Inverter Specs",
     "title": "University of St. Thomas Specifications",
     "content": ". mindmap root((Power Inverter Specifications)) **Ratings** Power Rating: 200W Output Voltage: 120V Input Voltage: 12V DC / 24V DC Frequency: 60Hz **Droop Control** Frequency Droop: 60Hz to 57.6Hz at full load Voltage Droop: 120V to 115.2V at full load **Protection Features** Overload Protection Short Circuit Protection Over/Under Voltage Protection Thermal Shutdown **Cooling** Passive cooling with Aluminum sinks **Application** Educational Kits: 3 Kits for K-12 Program Research Kit: 1 Kit developed by UST . ",
     "url": "/hardware/ST_HW.html#university-of-st-thomas-specifications",
     
     "relUrl": "/hardware/ST_HW.html#university-of-st-thomas-specifications"
-  },"5": {
+  },"2": {
     "doc": "St. Thomas Inverter Specs",
     "title": "Ratings",
     "content": ". | Power Rating: 200W | Output Voltage: 120V | Input voltage: 12V DC/24V DC | Frequency: 60Hz | . ",
     "url": "/hardware/ST_HW.html#ratings",
     
     "relUrl": "/hardware/ST_HW.html#ratings"
-  },"6": {
+  },"3": {
     "doc": "St. Thomas Inverter Specs",
     "title": "Droop Control",
     "content": ". | Frequency Droop: 60Hz to 57.6 Hz at full load | Voltage Droop: 120V – 115.2V at full load | . ",
     "url": "/hardware/ST_HW.html#droop-control",
     
     "relUrl": "/hardware/ST_HW.html#droop-control"
-  },"7": {
+  },"4": {
     "doc": "St. Thomas Inverter Specs",
     "title": "Protection Features",
     "content": ". | Overload Protection | Short Circuit Protection | Over/Under Voltage Protection | Thermal Shutdown | . ",
     "url": "/hardware/ST_HW.html#protection-features",
     
     "relUrl": "/hardware/ST_HW.html#protection-features"
-  },"8": {
+  },"5": {
     "doc": "St. Thomas Inverter Specs",
     "title": "Cooling",
     "content": ". | Passive cooling with Aluminum sinks | . ",
     "url": "/hardware/ST_HW.html#cooling",
     
     "relUrl": "/hardware/ST_HW.html#cooling"
-  },"9": {
+  },"6": {
     "doc": "St. Thomas Inverter Specs",
     "title": "Application",
     "content": ". | 3 Educational kits for k-12 program enclosed in a shield/box with access to inputs, outputs, and Arduino port | 1 Research kit that will be developed by UST | . ",
     "url": "/hardware/ST_HW.html#application",
     
     "relUrl": "/hardware/ST_HW.html#application"
-  },"10": {
+  },"7": {
     "doc": "St. Thomas Inverter Specs",
     "title": "St. Thomas Inverter Specs",
     "content": " ",
     "url": "/hardware/ST_HW.html",
     
     "relUrl": "/hardware/ST_HW.html"
-  },"11": {
-    "doc": "AC Output V/I Sensing",
-    "title": "AC Output V/I Sensing Considerations",
-    "content": "Understanding how to interface with the ADC122S021CIMM/NOPB using the SPI protocol and performing voltage and current sensing of the AC output. ",
-    "url": "/software/VI_AC_Output.html#ac-output-vi-sensing-considerations",
-    
-    "relUrl": "/software/VI_AC_Output.html#ac-output-vi-sensing-considerations"
-  },"12": {
-    "doc": "AC Output V/I Sensing",
-    "title": "⌚ Choosing the Appropriate SPI Clock Source",
-    "content": "We have to ensure that our SPI clock rate is suitable for the communication with the ADC. This means that the clock source cannot exceed the maximum sample rate (throughput) of the device. The table shown below provides the ranges of allow clock frequencies and how that maps to a given sample rate: . | Parameter | Max Clock Freq | Range | . | fsclk | Clock Frequency | 0.8MHz - 3.2MHz | . | fs | Sample Rate | 50ksps - 200ksps | . To better understand the relationship between the sample rate and the clock frequency, we can use the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] In our case, the available frequency from the ATMEGA328P is 16MHz, therefore to obtain the maximum allowable sample rate, we need a pre-scaler of 5 to obtain a $f_{SCLK} = 3.2MHz$, but unfortunately the microcontroller only has the following pre-scalers: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . ",
-    "url": "/software/VI_AC_Output.html#-choosing-the-appropriate-spi-clock-source",
-    
-    "relUrl": "/software/VI_AC_Output.html#-choosing-the-appropriate-spi-clock-source"
-  },"13": {
-    "doc": "AC Output V/I Sensing",
-    "title": "AC Output V/I Sensing",
-    "content": ". ",
-    "url": "/software/VI_AC_Output.html",
-    
-    "relUrl": "/software/VI_AC_Output.html"
-  },"14": {
+  },"8": {
     "doc": "Atinverter V1 Hardware",
     "title": "Atinverter V1 Hardware",
     "content": ". Atinverter V1 Report . ",
     "url": "/hardware/a_v1_hw.html",
     
     "relUrl": "/hardware/a_v1_hw.html"
-  },"15": {
+  },"9": {
     "doc": "Atinverter V2 Hardware",
     "title": "Atinverter V2 Hardware",
     "content": ". The Atinverter Version 2 (V2) incorporates a multitude of subsystems that work in tandem to support the board’s main function as a power inverter. A power inverter, not to be confused with a digital logic inverter, is a type of converter that takes a DC signal and transforms it to an AC signal. 💭 “Why Atinverter?” . With the aim of highlighting the relationship between the ATMEGA328P MCU and the power inverter circuitry, the name is based on: “ATMEGA328P” + “Inverter” = “Atinverter” . To better visualize the core components and the interconnections of the design, consider the following the high-level block diagram: . ",
     "url": "/hardware/a_v2_hw.html#atinverter-v2-hardware",
     
     "relUrl": "/hardware/a_v2_hw.html#atinverter-v2-hardware"
-  },"16": {
+  },"10": {
     "doc": "Atinverter V2 Hardware",
-    "title": "Subsystems",
-    "content": "To better understand the full scope of the Atinverter V2, it’s helpful to explore the following subsystems in more detail. | 🔌 Power Inverter | 💡 LED Blinking for Bootloader Verification | 📟 DC Voltage Sensing | 📟 DC Current Sensing | 📟 AC Voltage Sensing | 📟 AC Current Sensing | 🔁 ATMEGA328P &amp; Raspberry Pi I²C Communication | . 🔌 Power Inverter . 〰️ PWM Generation . The power inverter operation is catalyzed by the PWM generation from the ATMEGA328P. This MCU generates pulse-width modulated (PWM) square waves that, when combined with an appropriate switching circuit and filtering stage, can approximate the output of a pure sine wave power inverter. While there are other simpler approaches that can be employed to achieve inversion, such as square wave or modified square wave inverters, this one achieves higher levels of waveform fidelity. In other words, this modulation technique allows our output waveform to behave and appear more like a real sine wave. Source: Different Types of AC signals Produced by Inverters . 🧠 Gate Drivers . The next stage in the power signal chain is the gate driver circuit. It performs two main tasks: . | Effectively level shifts the low voltage PWM signals from the ATMEGA328P into higher voltages required by the H-bridge circuit. | Enhance the current delivery to the power transistors to swiftly charge and discharge the gate capacitance of the transistors to ensure rapid switching of the devices. | . 🔁 H-Bridge Topology . Being composed of 4 power transistors that complimentarily switch at a specific frequency, the H-bridge topology is a conventional design that is widely implemented in many pure sine wave inverters. This design enables the connected load to experience a positive and negative voltage swing solely based on switching states, effectively eliminating the need for a negative supply rail. This dual-polarity effect is what allows for the production of a full AC swing across the load and is achieved by PWM control signals as well as only one DC supply. 🔉 LC Filter . Prior to the delivering the power to the load, a low pass filter stage is employed to: . | Remove high frequency content, especially the switching frequency of the PWM signals. | Preserve the fundamental frequency of interest. In our case, our PWM-based inverter is designed for 50 or 60Hz. | . 🧩 Power Inverter Summary . After providing an overview of each of the power inverter stages, from PWM generation to filtering, consider the diagram below illustrating the signal chain: . To clarify subtle details about the diagram, DP5 and DP6 represent the digital pins 5 and 6 respectively. Also, two gate drivers were implemented into the design since each controls one pair of transistors. 💡 LED Blinking for Bootloader Verification . The LED circuit is effectively four LEDs that are independently controlled using four different GPIO pins of the ATMEGA328P. These LEDs are cycled on and off using a blink program providing a trivial aesthetic effect, but its primary purpose is a functional verfication of ATMEGA328P. Using a visual indictator allows us to determine if the MCU is bootloaded, which is a necessary step when working with a brand-new chip. 📟 DC Voltage Sensing . Voltage sensing of the DC input ($V_{DC}$) is achieved through a simple resistive divider. The resistive divider is made up of a limiting current resistor ($R_{limit}$) paired with a sensing resistor ($R_{sense}$). The voltage across the sensing resistance is measured by an ATMEGA328P analog pin which senses a voltage in the range of 0-5V ($V_{sense}$). It should be noted that the ATMEGA328P I/O pins cannot exceed 5V, as doing so may result in permanent damage to the MCU. Resistors values are chosen based on this condition as well as drawing an insignificant amount of power from the DC input, since the current in this path is to be delivered primarily to the output load. The resistor values of $R_{limit} = 120k\\Omega$ and $R_{sense} = 10k\\Omega$ were chosen based on the standard voltage divider equation: . \\[V_{sense} = V_{DC} \\times \\left( \\frac{R_{sense}}{R_{sense}\\times R_{limit}} \\right)\\] Given that the nominal DC input range is 12V to 48V, this translates to a sensed voltage as low as 0.92V and a high as 3.69V. It is evident that the full scale range of the analog pin is not used (0-5V), but this is intentional to account for potential overvoltage driving at the DC pin. Nonetheless, the 10 bit analog to digital converter (ADC) of the ATMEGA328P works as necessary in detecting the DC voltage based on the design parameters selected. 📟 DC Current Sensing . The current in the DC input line is measured using a Hall-effect current sensor. Let’s briefly cover how this type of device operates. Hall-Effect Current Sensor Overview . To understand hall-effect current sensors, we need to consider two fundamental laws of electromagnetism: . | Lorentz Force Law | Ampere’s Law | . Rather than just explaining what the laws mean, let’s understand how they manifest themselves in the operation of the device. Consider a conductive element where a current flows. The yellow balls represent electrons that are evenly distributed when flowing through a conductor. The current flow is denoted as “I”. Ampere’s law tells us that a magnetic field is generated around the conductor in accordance with the right-hand rule and that magnetic field is proportional to the current that is flowing. Additionally, if an external magnetic field is applied near the conductor (strongest when perpendicular due to Lorentz force), the electrons will be deflected and accumulate in one area leaving the opposite side with a net positive charge. The charge separation between both ends can be measured — known as the hall-voltage. TMCS1108 . In this design, the TMCS1108 current sensor detects the magnetic field generated by the DC input current. It internally measures the hall-voltage and then amplifies it to produce an analog voltage output which is proportional to the sensed current. This analog voltage can be calculated using the TMCS1108 datasheet provided equation in page 12: . \\[V_{OUT} = S \\times I_{IN} + V_{OUT,0A}\\] where: . | $V_{OUT}$ is the analog output voltage. | S is the ideal sensitivity of the device. | $I_{IN}$ is the isolated input current. | $V_{OUT,0A}$ is the zero current output voltage for the device variant. | . As this design employs the TMCS1108A4BQDR device variant, this features a sensitivity is 400mV/A. This describes the relation between the output analog voltage and current input where the output changes 400mV for every 1A of detected current. Higher sensitivities are generally favorable, as they results in a greater voltage response per unit of current. The non-zero current output is due to the device bidirectionality of the sensor, where the output is centered at mid-supply as noted in page 3 of the TMCS1108 datasheet. \\[V_{OUT,0A} = 0.5 × V_{S}\\] where: . | $V_{OUT,0A}$ is the zero current output voltage for the device variant. | $V_{S}$ is the supply voltage to the chip. | . Since the chip is powered by a 5V supply, at no current input, the output analog voltage resides at 2.5V. For positive current, the output voltage increases above 2.5V and conversesly for negative current, the output decreases below 2.5V. The analog output voltage is then measured by the analog pin of our ATMEGA328P, where it is converted to a digital value between the range of 0-1023. After the MCU has an understanding of what the voltage signal is in the digital domain, the current for the DC input is computed using a restructured form of the previous equation. \\[I_{IN} = \\frac{V_{OUT} - V_{OUT,0A}}{S}\\] This conversion ultimately produces an accurate current reading based on the previously discussed hall-effect phenomenon and fulfills the goal of measuring the DC input current of the Atinverter V2 device. 📟 AC Voltage Sensing . To achieve the sensing of the AC voltage at the output of the Atinverter V2, the approach is more involved compared to the DC voltage sensing methodology described earlier. As it is expected that the AC output voltage range is between 12V-48V just like the DC side, the key challenge is the bipolar nature of the AC wave, namely the negative swing as well as the high voltage level. This poses a conflict for the analog to digital (ADC) converter utilized for this design, due to the following two characteristics: . | Single-ended: measures signals at input pins relative to ground, Vmeasured = Vin - GND | Unipolar: measures positive signals, 0 to VREF | . The output waveform of the power inverter is purely an AC signal with no DC offset. Additionally, the amplitude is based directly the DC input. This implies that the output voltage of the power inverter is violating the allowable voltage range of the ADC, not only from a magnitude standpoint, but also in polarity. AC Voltage Ciruit . 📟 AC Current Sensing . 🔁 ATMEGA328P &amp; Raspberry Pi I2C Communication . ",
-    "url": "/hardware/a_v2_hw.html#subsystems",
+    "title": "Systems",
+    "content": "To better understand the full scope of the Atinverter V2, it’s helpful to explore the following systems in more detail. | 🔌 Power Inverter | 💡 LED Blinking for Bootloader Verification | 📟 DC Voltage Sensing | 📟 DC Current Sensing | 📟 AC Voltage Sensing | 📟 AC Current Sensing | 🔁 ATMEGA328P &amp; Raspberry Pi I²C Communication | . 🔌 Power Inverter . 〰️ PWM Generation . The power inverter operation is catalyzed by the PWM generation from the ATMEGA328P. This MCU generates pulse-width modulated (PWM) square waves that, when combined with an appropriate switching circuit and filtering stage, can approximate the output of a pure sine wave power inverter. While there are other simpler approaches that can be employed to achieve inversion, such as square wave or modified square wave inverters, this one achieves higher levels of waveform fidelity. In other words, this modulation technique allows our output waveform to behave and appear more like a real sine wave. Source: Different Types of AC signals Produced by Inverters . 🧠 Gate Drivers . The next stage in the power signal chain is the gate driver circuit. It performs two main tasks: . | Effectively level shifts the low voltage PWM signals from the ATMEGA328P into higher voltages required by the H-bridge circuit. | Enhance the current delivery to the power transistors to swiftly charge and discharge the gate capacitance of the transistors to ensure rapid switching of the devices. | . 🔁 H-Bridge Topology . Being composed of 4 power transistors that complimentarily switch at a specific frequency, the H-bridge topology is a conventional design that is widely implemented in many pure sine wave inverters. This design enables the connected load to experience a positive and negative voltage swing solely based on switching states, effectively eliminating the need for a negative supply rail. This dual-polarity effect is what allows for the production of a full AC swing across the load and is achieved by PWM control signals as well as only one DC supply. 🔉 LC Filter . Prior to the delivering the power to the load, a low pass filter stage is employed to: . | Remove high frequency content, especially the switching frequency of the PWM signals. | Preserve the fundamental frequency of interest. In our case, our PWM-based inverter is designed for 50 or 60Hz. | . 🧩 Power Inverter Summary . After providing an overview of each of the power inverter stages, from PWM generation to filtering, consider the diagram below illustrating the signal chain: . To clarify subtle details about the diagram, DP5 and DP6 represent the digital pins 5 and 6 respectively. Also, two gate drivers were implemented into the design since each controls one pair of transistors. 💡 LED Blinking for Bootloader Verification . The LED circuit is effectively four LEDs that are independently controlled using four different GPIO pins of the ATMEGA328P. These LEDs are cycled on and off using a blink program providing a trivial aesthetic effect, but its primary purpose is a functional verfication of ATMEGA328P. Using a visual indictator allows us to determine if the MCU is bootloaded, which is a necessary step when working with a brand-new chip. 📟 DC Voltage Sensing . Voltage sensing of the DC input ($V_{DC}$) is achieved through a simple resistive divider. The resistive divider is made up of a limiting current resistor ($R_{limit}$) paired with a sensing resistor ($R_{sense}$). The voltage across the sensing resistance is measured by an ATMEGA328P analog pin which senses a voltage in the range of 0-5V ($V_{sense}$). It should be noted that the ATMEGA328P I/O pins cannot exceed 5V, as doing so may result in permanent damage to the MCU. Resistors values are chosen based on this condition as well as drawing an insignificant amount of power from the DC input, since the current in this path is to be delivered primarily to the output load. The resistor values of $R_{limit} = 120k\\Omega$ and $R_{sense} = 10k\\Omega$ were chosen based on the standard voltage divider equation: . \\[V_{sense} = V_{DC} \\times \\left( \\frac{R_{sense}}{R_{sense}\\times R_{limit}} \\right)\\] Given that the nominal DC input range is 12V to 48V, this translates to a sensed voltage as low as 0.92V and a high as 3.69V. It is evident that the full scale range of the analog pin is not used (0-5V), but this is intentional to account for potential overvoltage driving at the DC pin. Nonetheless, the 10 bit analog to digital converter (ADC) of the ATMEGA328P works as necessary in detecting the DC voltage based on the design parameters selected. 📟 DC Current Sensing . The current in the DC input line is measured using a Hall-effect current sensor. Let’s briefly cover how this type of device operates. Hall-Effect Current Sensor Overview . To understand hall-effect current sensors, we need to consider two fundamental laws of electromagnetism: . | Lorentz Force Law | Ampere’s Law | . Rather than just explaining what the laws mean, let’s understand how they manifest themselves in the operation of the device. Consider a conductive element where a current flows. The yellow balls represent electrons that are evenly distributed when flowing through a conductor. The current flow is denoted as “I”. Ampere’s law tells us that a magnetic field is generated around the conductor in accordance with the right-hand rule and that magnetic field is proportional to the current that is flowing. Additionally, if an external magnetic field is applied near the conductor (strongest when perpendicular due to Lorentz force), the electrons will be deflected and accumulate in one area leaving the opposite side with a net positive charge. The charge separation between both ends can be measured — known as the hall-voltage. TMCS1108 . In this design, the TMCS1108 current sensor detects the magnetic field generated by the DC input current. It internally measures the hall-voltage and then amplifies it to produce an analog voltage output which is proportional to the sensed current. This analog voltage can be calculated using the TMCS1108 datasheet provided equation in page 12: . \\[V_{OUT} = S \\times I_{IN} + V_{OUT,0A}\\] where: . | $V_{OUT}$ is the analog output voltage. | S is the ideal sensitivity of the device. | $I_{IN}$ is the isolated input current. | $V_{OUT,0A}$ is the zero current output voltage for the device variant. | . As this design employs the TMCS1108A4BQDR device variant, this features a sensitivity is 400mV/A. This describes the relation between the output analog voltage and current input where the output changes 400mV for every 1A of detected current. Higher sensitivities are generally favorable, as they results in a greater voltage response per unit of current. The non-zero current output is due to the device bidirectionality of the sensor, where the output is centered at mid-supply as noted in page 3 of the TMCS1108 datasheet. \\[V_{OUT,0A} = 0.5 × V_{S}\\] where: . | $V_{OUT,0A}$ is the zero current output voltage for the device variant. | $V_{S}$ is the supply voltage to the chip. | . Since the chip is powered by a 5V supply, at no current input, the output analog voltage resides at 2.5V. For positive current, the output voltage increases above 2.5V and conversesly for negative current, the output decreases below 2.5V. The analog output voltage is then measured by the analog pin of our ATMEGA328P, where it is converted to a digital value between the range of 0-1023. After the MCU has an understanding of what the voltage signal is in the digital domain, the current for the DC input is computed using a restructured form of the previous equation. \\[I_{IN} = \\frac{V_{OUT} - V_{OUT,0A}}{S}\\] This conversion ultimately produces an accurate current reading based on the previously discussed hall-effect phenomenon and fulfills the goal of measuring the DC input current of the Atinverter V2 device. 📟 AC Voltage Sensing . To achieve the sensing of the AC voltage at the output of the power inverter, the approach is more involved than the DC voltage sensing methodology described earlier. Not only does a step down mechanism need to be implemented to provide a low power sensed signal to a processing device, but also a method to handle or correct for the the bipolar nature of the AC wave, namely the negative swing. More specifically, the AC voltage sensing network needs to be able to scale a 12V-48Vpk signal to 0-5V signal in order to be compatible with the ADC122S021, which is used for output voltage and current sampling. The ADC122S021 serves as the intermediary between the ATMEGA328P and the AC sensed signal. It samples the output produced by the AC voltage sensing network and transmits the data to the ATMEGA328P via SPI communication. The ATMEGA328P receives the sensed data by requesting channel 1 of the ADC122S021 and uses it to compute the RMS reading of the voltage. This section covers the hardware implementation for the AC sensing framework as illustrated above, but to learn more about how the RMS computation is performed and the software that orchestrates the sensing computation, see the section “BLAH”. ",
+    "url": "/hardware/a_v2_hw.html#systems",
     
-    "relUrl": "/hardware/a_v2_hw.html#subsystems"
-  },"17": {
+    "relUrl": "/hardware/a_v2_hw.html#systems"
+  },"11": {
+    "doc": "Atinverter V2 Hardware",
+    "title": "AC Voltage Sensing Network",
+    "content": ". The design is comprised of two main stages: . | ZMPT101B Transformer . | Voltage step-down using 1:1 isolation transformer | Well known and documented for projects that interface with Arduino/ESP/RaspberryPi devices | . | Signal Conditioning and Amplification . | A cascaded pair of inverting op-amp configurations to amplify the low-voltage sensed signal | Tunable gain set by a potentiometer that aims to reduce potential saturation or improve resolution at AC sensing output | Active low-pass filter attenuates high frequecy noise and improve signal integrity | . | . ZMPT101B Transformer . The first stage is based on the ZMPT101B current transformer. It is a 1:1, 1000V, 2mA rated transformer. For a more thorough documentation of the component, please review the ZMPT101B datasheet. The input to output voltage relation describing the transformer operation is stated in Figure II: . \\[U_{2} = \\frac{U_{1}}{R'} \\times R\\] where: . | $U_1$ is the input voltage | $U_2$ is the output voltage | $R’$ is the current limiting resistor | $R$ is the voltage sampling resistor | . In efforts to maintain consistency with the previous AC Voltage Circuit diagram, we will denote $U_1$, $U_2$, $R’$, $R$ as $V_{\\mathrm{AC_in}}$, $V_{\\mathrm{AC_samp}}$, $R_{lim}$, $R_{samp}$ respectively. Therefore, the newly denoted equation is . \\[V_{\\mathrm{AC_samp}} = \\frac{V_{\\mathrm{AC_in}}}{R_{lim}} \\times R_{samp}\\] 🔢 Calculating $R_{lim}$ . To achieve higher levels of Signal-to-Noise Ratio (SNR), better ADC range, and noise immunity, a current limiting resistor $R_{lim}$ should be selected such that the magnitude is near the rated current but not exceeding. Choosing a current limiting resistor is based on the highest expected voltage that will be delivered to the input primary side of the transformer. Recalling that the maximum peak voltage for the power inverter is 48V, and considering that the transformer has a rated current of 2mA, a max current value of 1.5mA is chosen. This ensures that $V_{\\mathrm{AC_in}}$ is maximized in signal strength to improve resolution, but also provides buffer from operating the part at rated conditions. \\[R_{lim} = \\frac{V_{\\mathrm{AC_in}}}{I_{\\mathrm{AC_in}}}\\] \\[R_{lim} = \\frac{48V}{1.5mA} = 32k\\Omega\\] . | Choose $33k\\Omega$ based on standard resistor values | . 🔢 Calculating $R_{samp}$ . The sampling resistance linearly influences the transformer AC voltage output as per the equation in Figure II. By rearragning the ZMPT101B expression, this renders the following equation usable for solving the sampling resistor in a passive configuration where no amplication is present. \\[V_{\\mathrm{AC_samp}} = \\frac{V_{\\mathrm{AC_in}}}{R_{lim}} \\times R_{samp}\\] \\[R_{samp} = \\frac{V_{\\mathrm{AC_samp}}}{V_{\\mathrm{AC_in}}} \\times R_{lim}\\] However, this expression is not directly applicable since it makes use of an active configuration. Nonetheless, it can be adapted to suit the needs of the current design as detailed in the next section. Signal Conditioning and Amplification . The second stage of the AC Voltage Sensing Network is a combination of two inverting amplication phases that serve the purpose of amplifying the low voltage signal produced across the sampling resistor. Each level provides an amplication factor of 10, yielding a net gain of 100. To develop a transfer function that accounts for this two op-amp amplification chain in the AC voltage sensing network, this gain stage can be modeled by a variable $G_{amp}$. This net gain is also equivalent to the product of the two intermediate gains $G_{1} \\times G_{2}$. The AC voltage from output to input then can be described as: . \\[V_{\\mathrm{ACsense}} = G_{amp} \\times \\frac{V_{\\mathrm{AC_in}}}{R_{lim}} \\times R_{samp}\\] It is important to note that $V_{\\mathrm{ACsense}}$ refers to the desired AC magnitude that will be provided to the ADC122S021 after the two op amp chain whereas $V_{\\mathrm{ACsamp}}$ is the AC magnitude at the secondary of the transformer. The amplification phases are also designed to attenuate high frequency noise, as they are based on the active low pass filter topology. This is necessary because although the output of the transformer is being amplified in two segments, the noise present at the op-amp inputs can also amplified. It is beneficial to have this embedded into the design since $V_{\\mathrm{ACsense}}$ needs to be a clean waveform for accurate readings from the ADC122S021. The cutoff frequency of this 1st order low-pass filter can be calculated using the following formula: . \\[f_{c} = \\frac{1}{2\\pi \\times C_{lp} \\times R_{fb}}\\] Another key feature of the AC Voltage Sensing Network is the potentiometer, $R_{tune}$ as it also impacts the magnitude of $V_{\\mathrm{ACsense}}$. Since the potentiometer functions as a voltage divider, it can be modeled by introducing two resistors: $R_{tune1}$, the resistor in series with the signal path, and $R_{tune2}$, the resistor connected to ground. Therefore, the divider ratio is: . \\[G_{tune} = \\frac{R_{tune1}}{R_{tune1}+ R_{tune2}}\\] Since the divider ratio is effectively a gain constant between the first and second op amp chain, both of which are linearly combined, the specific placement of this term has no effect on the $V_{\\mathrm{ACsense}}$ computation. \\[V_{\\mathrm{ACsense}} = G_{amp} \\times \\frac{V_{\\mathrm{AC_in}}}{R_{lim}} \\times R_{samp} \\times G_{tune}\\] To obtain the final sampling resistor equation that, we can isolate for the sampling resistor: . \\[R_{samp} = \\frac{V_{\\mathrm{ACsense}}}{V_{\\mathrm{AC_in}} \\times G_{amp} \\times G_{tune}} \\times R_{lim}\\] The AC portion of the $V_{\\mathrm{ACsense}}$ signal must remain within the saturation limits of the LM358 op-amp due to resulting amplified signal being centered around a 2.5V DC offset, which is caused by the $R_{bias}$ resistors. Since the LM358 op amp saturates at about 1.5V from the supply voltage (i.e. 5V - 1.5V = 3.5V), then the maximum permissible swing is $V_{\\mathrm{ACsense}} = 1V_{pk}$. The worst case scenario for potential saturation occurs when the potentiometer provides no gain attenuation (i.e $G_{tune} = 1$), resulting in an amplification of $G_{amp}$ = 100 applied to $V_{\\mathrm{ACsamp}}$. Using this case to calculate the sampling resistor is performed for both ends of the inverter range. \\(V_{\\mathrm{AC_in}}\\) = 12V: . \\[R_{samp} = \\frac{1}{12 \\times 100 \\times 1} \\times 33k = 27.5\\Omega\\] \\(V_{\\mathrm{AC_in}}\\) = 48V: . \\[R_{samp} = \\frac{1}{48 \\times 100 \\times 1} \\times 33k = 6.87\\Omega\\] . | Choose $6.8\\Omega$ based on standard resistor values, as this accomodates for both 12V and 48V $V_{\\mathrm{AC_in}}$. The effective resolution of the sensed signal can then be improved by reducing $R_{tune}$, as this increases the output swing without exceeding the op-amp’s output swing range. | . Simulation . The AC voltage sensing topology was simulated using LTSpice to verify operation. Since the LM358 is not an available in the component library, the OP07 amplifier was used as a suitable substitute. 📟 AC Current Sensing . 🔁 ATMEGA328P &amp; Raspberry Pi I2C Communication . ",
+    "url": "/hardware/a_v2_hw.html#ac-voltage-sensing-network",
+    
+    "relUrl": "/hardware/a_v2_hw.html#ac-voltage-sensing-network"
+  },"12": {
     "doc": "Atinverter V2 Hardware",
     "title": "Atinverter V2 Hardware",
     "content": ". ",
     "url": "/hardware/a_v2_hw.html",
     
     "relUrl": "/hardware/a_v2_hw.html"
+  },"13": {
+    "doc": "AC Current Sensing",
+    "title": "AC Output V/I Sensing Considerations",
+    "content": "Understanding how to interface with the ADC122S021CIMM/NOPB using the SPI protocol and performing voltage and current sensing of the AC output. ",
+    "url": "/software/modules/ac_current_sensing.html#ac-output-vi-sensing-considerations",
+    
+    "relUrl": "/software/modules/ac_current_sensing.html#ac-output-vi-sensing-considerations"
+  },"14": {
+    "doc": "AC Current Sensing",
+    "title": "⌚ Choosing the Appropriate SPI Clock Source",
+    "content": "We have to ensure that our SPI clock rate is suitable for the communication with the ADC. This means that the clock source cannot exceed the maximum sample rate (throughput) of the device. The table shown below provides the ranges of allow clock frequencies and how that maps to a given sample rate: . | Parameter | Max Clock Freq | Range | . | fsclk | Clock Frequency | 0.8MHz - 3.2MHz | . | fs | Sample Rate | 50ksps - 200ksps | . To better understand the relationship between the sample rate and the clock frequency, we can use the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] In our case, the available frequency from the ATMEGA328P is 16MHz, therefore to obtain the maximum allowable sample rate, we need a pre-scaler of 5 to obtain a $f_{SCLK} = 3.2MHz$, but unfortunately the microcontroller only has the following pre-scalers: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . ",
+    "url": "/software/modules/ac_current_sensing.html#-choosing-the-appropriate-spi-clock-source",
+    
+    "relUrl": "/software/modules/ac_current_sensing.html#-choosing-the-appropriate-spi-clock-source"
+  },"15": {
+    "doc": "AC Current Sensing",
+    "title": "AC Current Sensing",
+    "content": ". ",
+    "url": "/software/modules/ac_current_sensing.html",
+    
+    "relUrl": "/software/modules/ac_current_sensing.html"
+  },"16": {
+    "doc": "AC Voltage Sensing",
+    "title": "AC Output V/I Sensing Considerations",
+    "content": "Understanding how to interface with the ADC122S021CIMM/NOPB using the SPI protocol and performing voltage and current sensing of the AC output. ",
+    "url": "/software/modules/ac_voltage_sensing.html#ac-output-vi-sensing-considerations",
+    
+    "relUrl": "/software/modules/ac_voltage_sensing.html#ac-output-vi-sensing-considerations"
+  },"17": {
+    "doc": "AC Voltage Sensing",
+    "title": "⌚ Choosing the Appropriate SPI Clock Source",
+    "content": "We have to ensure that our SPI clock rate is suitable for the communication with the ADC. This means that the clock source cannot exceed the maximum sample rate (throughput) of the device. The table shown below provides the ranges of allow clock frequencies and how that maps to a given sample rate: . | Parameter | Max Clock Freq | Range | . | fsclk | Clock Frequency | 0.8MHz - 3.2MHz | . | fs | Sample Rate | 50ksps - 200ksps | . To better understand the relationship between the sample rate and the clock frequency, we can use the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] In our case, the available frequency from the ATMEGA328P is 16MHz, therefore to obtain the maximum allowable sample rate, we need a pre-scaler of 5 to obtain a $f_{SCLK} = 3.2MHz$, but unfortunately the microcontroller only has the following pre-scalers: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . ",
+    "url": "/software/modules/ac_voltage_sensing.html#-choosing-the-appropriate-spi-clock-source",
+    
+    "relUrl": "/software/modules/ac_voltage_sensing.html#-choosing-the-appropriate-spi-clock-source"
   },"18": {
+    "doc": "AC Voltage Sensing",
+    "title": "AC Voltage Sensing",
+    "content": ". ",
+    "url": "/software/modules/ac_voltage_sensing.html",
+    
+    "relUrl": "/software/modules/ac_voltage_sensing.html"
+  },"19": {
+    "doc": "Blink",
+    "title": "Blink",
+    "content": "TEST . ",
+    "url": "/software/modules/blink.html",
+    
+    "relUrl": "/software/modules/blink.html"
+  },"20": {
     "doc": "Boost Converter",
     "title": "Programming the Output Voltage",
     "content": ". The output voltage of the boost converter is given by the following equation: . \\[R_{1} = \\left( \\frac{V_{OUT}}{V_{REF}} - 1 \\right) \\times R_{2}\\] Desire an output voltage of 12V, internal reference voltage is 795mV, choose R2, solve for R1. | $V_{OUT} = 12V$ | $V_{REF} = 795mV$ | $R_{2} = 71.5k\\Omega$ | . \\[R_{1} \\approx 1M\\Omega\\] ",
     "url": "/hardware/boost_conv.html#programming-the-output-voltage",
     
     "relUrl": "/hardware/boost_conv.html#programming-the-output-voltage"
-  },"19": {
+  },"21": {
     "doc": "Boost Converter",
     "title": "Inductor Selection",
     "content": ". To determine the inductor current (input current draw): . \\[I_{L(DC)} = \\frac{V_{OUT} \\times I_{OUT}}{V_{IN} \\times \\eta}\\] . | $V_{OUT}$ = 12V | $V_{IN}$ = 5V | $\\eta$ = 0.8 (80% recommended by datasheet) | $I_{OUT}$ = ? | . Need to find the load current that will be drawn. This boost converter is only driving the two IR2302 gate drivers for our PWM Inverter H-bridge design so if we find the current consumed by these drivers, we will effectively find the output load to drive. The current consumption of a gate driver is based upon the static and dynamic current consumption. As per the IR2302 datasheet, the max possible Quiescent Vcc supply current $I_{QCC}$ = 1.6mA. Therefore, $I_{static}$ = 1.6mA. The dynamic current consumed by the device can be found by the following relation between the total gate charge of the MOSFET and the switching frequency: . $I_{dynamic}​ = Q_{g} ​× f_{sw}$ . As per the IRFB4020PBF MOSFET datasheet, the maximum total gate charge is 29nC and the switching frequency of operation of the gate drivers is 31,372Hz. | $Q_{g} = 29nC$ | $f_{sw} = 31,372Hz$ | . Using these values, the dynamic current consumption of one MOSFET is: . $I_{dynamic}​ = 0.91mA$ . Considering that the PWM inverter topology is based on 4 MOSFETs with only 2 operating at any given time simultaneously, this means the total dynamic current is $2 \\times I_{dynamic}​ = 1.82mA$. Additionally, the quiescent current is dictated by two gate drivers so the total static current is $2 \\times I_{static}​ = 3.2mA$. $I_{LOAD}​ = I_{STATIC} ​+ I_{DYNAMIC}$ $I_{OUT}​ = 5.02mA$ . Now that we have the total load current $I_{OUT}$ = 5.02mA, then we can solve for the inductor current using the following values: . | $V_{OUT} = 12V$ | $V_{IN} = 5V$ | $I_{OUT} = 5.02mA$ | $\\eta$ = 0.8 (80% recommended by datasheet) | . \\[I_{L(DC)} = 15.06mA\\] The inductor ripple current is calculated with Equation 3 for an asynchronous boost converter in continuous conduction mode (CCM). \\[\\Delta I_{L(\\text{P-P})} = \\frac{V_{IN} \\times (V_{OUT} + 0.8V - V_{IN})}{L \\times f_{SW} \\times (V_{OUT} + 0.8V)}\\] where: . | ΔIL(P-P) is inductor ripple current | L is inductor value | f SW is switching frequency | VOUT is output voltage | VIN is input voltage | . ",
     "url": "/hardware/boost_conv.html#inductor-selection",
     
     "relUrl": "/hardware/boost_conv.html#inductor-selection"
-  },"20": {
+  },"22": {
     "doc": "Boost Converter",
     "title": "Boost Converter",
     "content": ". ",
     "url": "/hardware/boost_conv.html",
     
     "relUrl": "/hardware/boost_conv.html"
-  },"21": {
+  },"23": {
     "doc": "Buck Converter",
     "title": "Determining the DC/DC Converter Output Current Needed",
     "content": "Requirements . | Input Voltage: 12V-48V | Output Voltage: 5V | . ",
     "url": "/hardware/buck_conv.html#determining-the-dcdc-converter-output-current-needed",
     
     "relUrl": "/hardware/buck_conv.html#determining-the-dcdc-converter-output-current-needed"
-  },"22": {
+  },"24": {
     "doc": "Buck Converter",
     "title": "Determining the Required Input Current and PCB Trace Thickness for Switching Converters",
     "content": "Chip parameters . | Chip of Interest: R-78HE-0.3 | DC-DC switching converter, not linear regulator | Input Voltage Range: 6.5V - 48V | Output Voltage: 5V | Output Current: Up to 300mA | Efficiency: Up to 83% | . Power Conversion Equations . (1) \\(P_{\\text{out}} = P_{\\text{in}} + P_{\\text{losses}}\\) (2) \\(Efficiency = \\frac{P_{\\text{out}}}{P_{\\text{in}}}\\) (3) \\(P_{\\text{in}}= V_{\\text{in}} \\times I_{\\text{in}}\\) (4) \\(P_{\\text{out}}= V_{\\text{out}} \\times I_{\\text{out}}\\) . | Plugging in equation (3) into (2) and isolating for \\(I_{\\text{in}}\\) results in: | . \\[I_{\\text{in}} = \\frac{P_{\\text{out}}}{V_{\\text{in}} \\times \\text{Efficiency}}\\] Finding the Maximum Input Current . | Known: \\(V_{\\text{out_max}} = 5V, I_{\\text{out_max}} = 300mA\\) \\(P_{\\text{out_max}} = 5 \\times 300m = 1.5W\\) . | Two cases are considered since the efficiency of the converter changes with the input voltage. \\(V_{\\text{in_max}} = 72\\), Efficiency = 72% \\(I_{\\text{in}} = \\frac{1.5W}{72 \\times \\text{0.72}} = 0.029A\\) \\(V_{\\text{in_min}} = 6.5\\), Efficiency = 83% \\(I_{\\text{in}} = \\frac{1.5W}{6.5 \\times \\text{83}} = 0.278A\\) . | Therefore, the maximum input current is 278mA. This is consistent with the inverse relationship between voltage and current in a DC-DC converter. Although the input current (278mA) is lower than the output current (300mA), the input voltage (6.5V) is higher than the output voltage (5V). This behavior is typical of switching converters, which take advantage of the complementary relationship between input and output voltage and current. | However, to be conservative, let’s say the chip consumes 300mA which is the same as the output current. This is a standard technique that is employed to approximate the current drawn from the converter especially for higher efficiencies. We could have utilized this approach, but now we know how to solve for the max input current for any converter. | Using Digikey PCB Trace Width Calculator . | The maximum input current is 0.3A and we are designing for a 1 oz copper thickness . | . | A required trace width of 0.148mm (5.83mils) is obtained | . ",
     "url": "/hardware/buck_conv.html#determining-the-required-input-current-and-pcb-trace-thickness-for-switching-converters",
     
     "relUrl": "/hardware/buck_conv.html#determining-the-required-input-current-and-pcb-trace-thickness-for-switching-converters"
-  },"23": {
+  },"25": {
     "doc": "Buck Converter",
     "title": "Buck Converter",
     "content": " ",
     "url": "/hardware/buck_conv.html",
     
     "relUrl": "/hardware/buck_conv.html"
-  },"24": {
+  },"26": {
+    "doc": "DC Current Sensing",
+    "title": "DC Current Sensing",
+    "content": "TEST . ",
+    "url": "/software/modules/dc_current_sensing.html",
+    
+    "relUrl": "/software/modules/dc_current_sensing.html"
+  },"27": {
+    "doc": "DC Voltage Sensing",
+    "title": "DC Voltage Sensing",
+    "content": "TEST . ",
+    "url": "/software/modules/dc_voltage_sensing.html",
+    
+    "relUrl": "/software/modules/dc_voltage_sensing.html"
+  },"28": {
     "doc": "Hardware",
     "title": "Hardware",
     "content": ". Atinverter V1 Atinverter V2 . ",
     "url": "/hardware/hardware.html",
     
     "relUrl": "/hardware/hardware.html"
-  },"25": {
+  },"29": {
     "doc": "Home",
     "title": "Atinverter Documentation",
     "content": "Explore the documentation to learn more about this open source power converter! . Vision Hardware Software . ",
     "url": "/#atinverter-documentation",
     
     "relUrl": "/#atinverter-documentation"
-  },"26": {
+  },"30": {
     "doc": "Home",
     "title": "Home",
     "content": " ",
     "url": "/",
     
     "relUrl": "/"
-  },"27": {
-    "doc": "Atinverter UML Diagram",
-    "title": "Atinverter UML Diagram",
-    "content": ". classDiagram class Atinverter { + LED1R_PIN : int + LED1G_PIN : int + LED2R_PIN : int + LED2G_PIN : int - VI_AC_CS_PIN : int - VI_AC_MOSI_PIN : int - VI_AC_MISO_PIN : int - VI_AC_SCLK_PIN : int - V_DC_PIN : int - I_DC_PIN : int - PWM_A_PIN : int - PWM_B_PIN : int - I2C_SDA_PIN : int - I2C_SCL_PIN : int - PRORESET_PIN : int - GATESD_PIN : int - Rvs1 : unsigned long - Rsv2 : unsigned int - num_readings : int - readings : float[num_readings] - read_index : int - total : float - is50Hz : bool - sin_i : int - pwm_i : int - OK : int - sin50HzPWM : int[312] - sin60HzPWM : int[261] + Atinverter() + setUpPinMode() : void + readVdc() : float + readAvgVdc(Vdc : float) : float + readIdc() : float + readAvgIdc(Idc : float) : float + setUpSPI() : void + readADC() : int + set1LED(led : int, state : int) : void + set2LED(t_delay : int) : void + enablePWM() : void + disablePWM() : void + startPWM(is50HzMode : bool) : void + pwmISR() : void } . ",
-    "url": "/software/library_UML.html",
+  },"31": {
+    "doc": "Library",
+    "title": "Library",
+    "content": " ",
+    "url": "/software/library/library.html",
     
-    "relUrl": "/software/library_UML.html"
-  },"28": {
-    "doc": "Atinverter Library Set Up",
+    "relUrl": "/software/library/library.html"
+  },"32": {
+    "doc": "Reference",
+    "title": "Reference",
+    "content": " ",
+    "url": "/software/library/library_reference.html",
+    
+    "relUrl": "/software/library/library_reference.html"
+  },"33": {
+    "doc": "Set Up",
     "title": "Atinverter Library Set Up",
     "content": "A guide to help your Arduino IDE recognize and use the Atinverter user-defined library . You might be thinking: . 💭 “Okay, I downloaded the software files from the GitHub repository — now what? Can I just open some random file like blink.ino and run the code?” . You’re almost there! There is just one important step that needs to happen first; We need ensure that the Arduino IDE knows where to find the Atinverter library files (Atinverter.cpp, Atinverter.h), or else you’ll run into the notorious: . fatal error: Atinverter.h: No such file or directory . ",
-    "url": "/software/library_setup.html",
+    "url": "/software/library/library_setup.html#atinverter-library-set-up",
     
-    "relUrl": "/software/library_setup.html"
-  },"29": {
-    "doc": "Atinverter Library Set Up",
+    "relUrl": "/software/library/library_setup.html#atinverter-library-set-up"
+  },"34": {
+    "doc": "Set Up",
     "title": "📁 How Arduino Handles Libraries",
     "content": "The Arduino IDE looks for user-defined libraries in a specific directory on your computer. Simply placing .cpp or .h files in the same directory as the .ino files you wish to run isn’t enough. Here’s where those locations are: . 🔍 If you’re on Windows, it’ll be in: . C:\\Users&lt;YourUsername&gt;\\Documents\\Arduino\\libraries\\ . 🔍 If you’re on macOS or Linux, it’ll be in: . ~/Documents/Arduino/libraries/ . ",
-    "url": "/software/library_setup.html#-how-arduino-handles-libraries",
+    "url": "/software/library/library_setup.html#-how-arduino-handles-libraries",
     
-    "relUrl": "/software/library_setup.html#-how-arduino-handles-libraries"
-  },"30": {
-    "doc": "Atinverter Library Set Up",
+    "relUrl": "/software/library/library_setup.html#-how-arduino-handles-libraries"
+  },"35": {
+    "doc": "Set Up",
     "title": "✅ What To Do",
     "content": ". | Navigate to the Atinverter library folder in the repository. It contains the source files Atinverter.cpp, Atinverter.h, and the metadata file library.properties. It is located in: . \\AtInverter\\software\\Library . | Copy the Atinverter folder to your Arduino libraries folder as described in How Arduino Handles Libraries . | . 📸 You should expect to see something like this in your Arduino libraries folder: . ",
-    "url": "/software/library_setup.html#-what-to-do",
+    "url": "/software/library/library_setup.html#-what-to-do",
     
-    "relUrl": "/software/library_setup.html#-what-to-do"
-  },"31": {
-    "doc": "Atinverter Library Set Up",
+    "relUrl": "/software/library/library_setup.html#-what-to-do"
+  },"36": {
+    "doc": "Set Up",
     "title": "🚀 You’re Good to Go",
     "content": "Once the Atinverter library is in the right place, you can use it any sketch with: . #include \"Atinverter.h\" . ",
-    "url": "/software/library_setup.html#-youre-good-to-go",
+    "url": "/software/library/library_setup.html#-youre-good-to-go",
     
-    "relUrl": "/software/library_setup.html#-youre-good-to-go"
-  },"32": {
+    "relUrl": "/software/library/library_setup.html#-youre-good-to-go"
+  },"37": {
+    "doc": "Set Up",
+    "title": "Set Up",
+    "content": " ",
+    "url": "/software/library/library_setup.html",
+    
+    "relUrl": "/software/library/library_setup.html"
+  },"38": {
+    "doc": "UML Diagram",
+    "title": "Atinverter UML Diagram",
+    "content": ". classDiagram class Atinverter { + LED1R_PIN : int + LED1G_PIN : int + LED2R_PIN : int + LED2G_PIN : int - VI_AC_CS_PIN : int - VI_AC_MOSI_PIN : int - VI_AC_MISO_PIN : int - VI_AC_SCLK_PIN : int - V_DC_PIN : int - I_DC_PIN : int - PWM_A_PIN : int - PWM_B_PIN : int - I2C_SDA_PIN : int - I2C_SCL_PIN : int - PRORESET_PIN : int - GATESD_PIN : int - Rvs1 : unsigned long - Rsv2 : unsigned int - num_readings : int - readings : float[num_readings] - read_index : int - total : float - is50Hz : bool - sin_i : int - pwm_i : int - OK : int - sin50HzPWM : int[312] - sin60HzPWM : int[261] + Atinverter() + setUpPinMode() : void + readVdc() : float + readAvgVdc(Vdc : float) : float + readIdc() : float + readAvgIdc(Idc : float) : float + setUpSPI() : void + readADC() : int + set1LED(led : int, state : int) : void + set2LED(t_delay : int) : void + enablePWM() : void + disablePWM() : void + startPWM(is50HzMode : bool) : void + pwmISR() : void } . ",
+    "url": "/software/library/library_uml.html#atinverter-uml-diagram",
+    
+    "relUrl": "/software/library/library_uml.html#atinverter-uml-diagram"
+  },"39": {
+    "doc": "UML Diagram",
+    "title": "UML Diagram",
+    "content": " ",
+    "url": "/software/library/library_uml.html",
+    
+    "relUrl": "/software/library/library_uml.html"
+  },"40": {
+    "doc": "Main",
+    "title": "Main",
+    "content": "TEST . ",
+    "url": "/software/modules/main.html",
+    
+    "relUrl": "/software/modules/main.html"
+  },"41": {
+    "doc": "Modules",
+    "title": "Modules",
+    "content": " ",
+    "url": "/software/modules/modules.html",
+    
+    "relUrl": "/software/modules/modules.html"
+  },"42": {
     "doc": "Atinverter V1/2 Power Rating",
     "title": "Hardware",
     "content": ". MOSFETs (IRFB4020PBF): . | Continuous Drain Current (ID): 18 A at 25°C | Drain-to-Source Voltage (VDSS): 200 V | Maximum Power Dissipation (PD): 100 W at 25°C | . Inductors (AIRD-02-221K): . | Inductance: 220 µH ​ | Current Rating: . | Continuous: 2.8 A | Saturation: 7 A | . | . Capacitors (1189-4160-1-ND): . | Rated Voltage 250V | Ripple Current @ Low Frequency: 188 mA @ 120 Hz | Ripple Current @ High Frequency: 470 mA @ 100 kHz | . Theoretical max: . | Pmax = Vmax * Imax = 200V * 2.8A = 560W | . BUUUTTTT — that’s theoretical! Needn to consider: . | Need to consider proper heatsinking for the MOSFETs (18 A is at 25°C, derates with temp) | Ripple current through cap &lt; 470mA | Safe design margin: do not run at 100% ratings | Consider switching trajectory | . Reasonably speaking somwhere up to 450W . ",
     "url": "/hardware/power_rating.html#hardware",
     
     "relUrl": "/hardware/power_rating.html#hardware"
-  },"33": {
+  },"43": {
     "doc": "Atinverter V1/2 Power Rating",
     "title": "Atinverter V1/2 Power Rating",
     "content": " ",
     "url": "/hardware/power_rating.html",
     
     "relUrl": "/hardware/power_rating.html"
-  },"34": {
+  },"44": {
+    "doc": "PWM 50Hz Inverting",
+    "title": "PWM Control",
+    "content": ". The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be \\(f_{sw} = 31,372Hz\\). The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave. The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains. Let’s understand the way in which the PWM code operates. ",
+    "url": "/software/modules/pwm_50Hz_inverting.html#pwm-control",
+    
+    "relUrl": "/software/modules/pwm_50Hz_inverting.html#pwm-control"
+  },"45": {
+    "doc": "PWM 50Hz Inverting",
+    "title": "PWM 50Hz",
+    "content": "\\(f_{sw} = 31,372Hz\\) \\(f_{sw} = \\frac{1}{f_{sw}} = 31.875\\mu s\\) . ",
+    "url": "/software/modules/pwm_50Hz_inverting.html#pwm-50hz",
+    
+    "relUrl": "/software/modules/pwm_50Hz_inverting.html#pwm-50hz"
+  },"46": {
+    "doc": "PWM 50Hz Inverting",
+    "title": "PWM 50Hz Inverting",
+    "content": ". ",
+    "url": "/software/modules/pwm_50Hz_inverting.html",
+    
+    "relUrl": "/software/modules/pwm_50Hz_inverting.html"
+  },"47": {
+    "doc": "PWM 60Hz Inverting",
+    "title": "PWM Control",
+    "content": ". The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be \\(f_{sw} = 31,372Hz\\). The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave. The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains. Let’s understand the way in which the PWM code operates. ",
+    "url": "/software/modules/pwm_60Hz_inverting.html#pwm-control",
+    
+    "relUrl": "/software/modules/pwm_60Hz_inverting.html#pwm-control"
+  },"48": {
+    "doc": "PWM 60Hz Inverting",
+    "title": "PWM 50Hz",
+    "content": "\\(f_{sw} = 31,372Hz\\) \\(f_{sw} = \\frac{1}{f_{sw}} = 31.875\\mu s\\) . ",
+    "url": "/software/modules/pwm_60Hz_inverting.html#pwm-50hz",
+    
+    "relUrl": "/software/modules/pwm_60Hz_inverting.html#pwm-50hz"
+  },"49": {
+    "doc": "PWM 60Hz Inverting",
+    "title": "PWM 60Hz Inverting",
+    "content": ". ",
+    "url": "/software/modules/pwm_60Hz_inverting.html",
+    
+    "relUrl": "/software/modules/pwm_60Hz_inverting.html"
+  },"50": {
     "doc": "Scratchpad",
     "title": "Testing",
     "content": "First Term This is the definition of the first term. Second Term This is one definition of the second term. This is another definition of the second term. The world is flat. We now know that the world is round. This sentence uses $ delimiters to show math inline: $\\sqrt{3x-1}+(1+x)^2$ . highlight . X2 . Use `code` in your Markdown file. H20 . I need to highlight these very important words. ",
     "url": "/scratchpad.html#testing",
     
     "relUrl": "/scratchpad.html#testing"
-  },"35": {
+  },"51": {
     "doc": "Scratchpad",
     "title": "Callouts",
     "content": "A paragraph . A paragraph . Another paragraph . The last paragraph . Highlight yellow . Highlight blue . Highlight green . Highlight red . Highlight greylt . Test 2 . A paragraph . A paragraph . Another paragraph . The last paragraph . New title . “Why not simply use the delay() or millis() functions to accomplish this?” . ",
     "url": "/scratchpad.html#callouts",
     
     "relUrl": "/scratchpad.html#callouts"
-  },"36": {
+  },"52": {
     "doc": "Scratchpad",
     "title": "Italicizing and Bolding",
     "content": "Lorem ipsum . Lorem ipsum . lorem ipsum . Gone camping! :tent: Be back soon. That is so funny! :joy: . :smile: 😀 . ",
     "url": "/scratchpad.html#italicizing-and-bolding",
     
     "relUrl": "/scratchpad.html#italicizing-and-bolding"
-  },"37": {
+  },"53": {
     "doc": "Scratchpad",
     "title": "Tables",
     "content": "| head1 | head two | three |:————-|:——————|:——| ok | good swedish fish | nice | out of stock | good and plenty | nice | ok | good oreos | hmm | ok | good zoute drop | yumm | . ",
     "url": "/scratchpad.html#tables",
     
     "relUrl": "/scratchpad.html#tables"
-  },"38": {
+  },"54": {
     "doc": "Scratchpad",
     "title": "Code  blocks",
     "content": "This is code . const a = 10; static var; . ",
     "url": "/scratchpad.html#code--blocks",
     
     "relUrl": "/scratchpad.html#code--blocks"
-  },"39": {
+  },"55": {
     "doc": "Scratchpad",
     "title": "Creating a Link",
     "content": "Relative link within the directories: This is a link External Link: Arduino Docs . ",
     "url": "/scratchpad.html#creating-a-link",
     
     "relUrl": "/scratchpad.html#creating-a-link"
-  },"40": {
+  },"56": {
     "doc": "Scratchpad",
     "title": "Images",
     "content": ". hey test . oh my . sheesh . ",
     "url": "/scratchpad.html#images",
     
     "relUrl": "/scratchpad.html#images"
-  },"41": {
+  },"57": {
     "doc": "Scratchpad",
     "title": "Putting lines in between",
     "content": "hi . there . ",
     "url": "/scratchpad.html#putting-lines-in-between",
     
     "relUrl": "/scratchpad.html#putting-lines-in-between"
-  },"42": {
+  },"58": {
     "doc": "Scratchpad",
     "title": "Creating an ordered list of items",
     "content": ". | bananas | apples | durian | . ",
     "url": "/scratchpad.html#creating-an-ordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-ordered-list-of-items"
-  },"43": {
+  },"59": {
     "doc": "Scratchpad",
     "title": "Creating an unordered list of items",
     "content": ". | bananas | apples | durian . | cherries | . | . ",
     "url": "/scratchpad.html#creating-an-unordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-unordered-list-of-items"
-  },"44": {
+  },"60": {
     "doc": "Scratchpad",
     "title": "Tables",
     "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . graph TD; accTitle: the diamond pattern accDescr: a graph with four nodes: A points to B and C, while B and C both point to D A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; C--&gt;A; D--&gt;E; E--&gt;A; E--&gt;B; . flowchart LR User(circle) --tcp/80 --&gt; LoadBalancer&gt;random shape] --tcp/1337 ---&gt; Webserver{rhombus} . flowchart LR subgraph PublicInternet User end subgraph LoadBalancingZone LoadBalancer end subgraph WebserverZone WebserverA WebserverB end User --tcp/80 --&gt; LoadBalancer LoadBalancer --&gt; WebserverA LoadBalancer --&gt; WebserverB WebserverA --&gt; DatabaseserverA WebserverA -.-&gt; DatabaseserverB WebserverB --&gt; DatabaseserverA WebserverB -.-&gt; DatabaseserverB . pie title A piechart \"SliceA\" : 5 \"SliceB\" : 15 . sankey-beta day, sleep, 8 day, work, 8 day, fun, 2 . A paragraph . Another paragraph . The last paragraph . ",
     "url": "/scratchpad.html#tables-1",
     
     "relUrl": "/scratchpad.html#tables-1"
-  },"45": {
+  },"61": {
     "doc": "Scratchpad",
     "title": "Scratchpad",
     "content": " ",
     "url": "/scratchpad.html",
     
     "relUrl": "/scratchpad.html"
-  },"46": {
+  },"62": {
+    "doc": "Software",
+    "title": "Atinverter V2 Software",
+    "content": ". The Atinverter codebase is composed of various modules that utilize the Atinverter Library. The library provides essentential methods and variables that used by the modules to showcase the different features of the hardware. The following diagram provides a visual representation of the available capabilities of the Atinverter codebase where each node in the diagram highlights a specific feature of the design. The nodes for the library and modules are also interactive—click to explore specific software functionality and learn more about its design. ",
+    "url": "/software/software.html#atinverter-v2-software",
+    
+    "relUrl": "/software/software.html#atinverter-v2-software"
+  },"63": {
+    "doc": "Software",
+    "title": "Software Block Diagram",
+    "content": ". ",
+    "url": "/software/software.html#software-block-diagram",
+    
+    "relUrl": "/software/software.html#software-block-diagram"
+  },"64": {
     "doc": "Software",
     "title": "Software",
-    "content": ". The Atinverter codebase is composed of various modules, each contributing to distinct functionalities. The following diagram showcases the available features of the Atinverter codebase. Each box in the diagram is interactive, allowing you to click and explore detailed information about specific features. %%{init: {'theme':'base'}}%% flowchart TB subgraph Future G(Rectification) H(Droop Control) end subgraph Capabilities D(Blink) E(PWM Generation 50Hz) F(PWM Generation 60Hz) I(DC Voltage/Current Sensing) J(AC Voltage/Current Sensing) end subgraph Main C(Main) end subgraph Library A(Atintverter.cpp) B(Atinverter.h) end Library--&gt;Main Capabilities--&gt;Main %% Change color of arrow heads %%{init: {'themeVariables': {'lineColor': 'grey'}}}%% %% Apply color to the arrows %% 0: 1st arrow (Library --&gt; Main) 1: 2nd arrow (Capabilities --&gt; Main) linkStyle 0 stroke:grey, stroke-width:3px; linkStyle 1 stroke:grey, stroke-width:3px; %% Adding clickable links, Syntax: Destination ref, hover label click E \"PWM_control\" \"PWM Generation\" click F \"PWM_control\" \"PWM Generation\" . ",
+    "content": " ",
     "url": "/software/software.html",
     
     "relUrl": "/software/software.html"
-  },"47": {
+  },"65": {
     "doc": "Timer 2 Delay",
     "title": "⏱️ Timer 2 Delay",
     "content": ". An interface is required to handle program delays for time-sensitive operations such as AC voltage sensing and serial communication, among other tasks. 💭 “Why not use the Arduino core functions delay(), millis(), or micros() to accomplish this?” . Although that might seem like the most straightforward approach, the ATMEGA328P Timer0 — used by these core functions — is also responsible for PWM generation in our hardware. This is described in detail in the PWM Control section. If we attempt to use the core delay functions (which reconfigure Timer0 registers), while simultaneously using Timer0 to handle PWM interrupts, we risk introducing conflicting register states. This also translates to erratic behavior in our PWM output which although may not be catastrophic, it is certainly not desired 😅. 💭 “Why not create a software-based delay program with an incrementer?” . unsigned long counter = 0; while (counter &lt; SOME_VALUE) { counter++; } . To implement delay2() and millis2(), it’s not practical to only rely on a simple software incrementer (e.g., counter++) inside a loop to create timing. This would be an approach that requires trial-and-error tuning of a maximum value to achieve a desired delay. In addition, this is inefficient, non-deterministic, and highly sensitive to compiler optimizations or clock speed changes. ",
-    "url": "/software/timer2_delay.html#%EF%B8%8F-timer-2-delay",
+    "url": "/software/library/timer2_delay.html#%EF%B8%8F-timer-2-delay",
     
-    "relUrl": "/software/timer2_delay.html#️-timer-2-delay"
-  },"48": {
+    "relUrl": "/software/library/timer2_delay.html#️-timer-2-delay"
+  },"66": {
     "doc": "Timer 2 Delay",
     "title": "💡 The Workaround",
     "content": "To resolve this, we developed custom timing functions — delay2() and millis2() — based on Timer2 from the ATMEGA328P. These serve as effective substitutes for the Arduino core library timing functions, providing a millisecond-based timing mechanism that operates independently of Timer0. ",
-    "url": "/software/timer2_delay.html#-the-workaround",
+    "url": "/software/library/timer2_delay.html#-the-workaround",
     
-    "relUrl": "/software/timer2_delay.html#-the-workaround"
-  },"49": {
+    "relUrl": "/software/library/timer2_delay.html#-the-workaround"
+  },"67": {
     "doc": "Timer 2 Delay",
     "title": "🧠 Understanding the Timers on the ATMEGA328P",
     "content": "The ATMEGA328P includes three timers, each with different bit widths: . | Timer0: 8-bit | Timer1: 16-bit | Timer2: 8-bit | . 💭 “What do the ‘bits’ actually mean?” . The number of bits determines how high a timer can count before it overflows and restarts. Think of it like a clock ⏱️ . | An 8-bit timer can count from 0 to 255 ($2^8 - 1$) | A 16-bit timer can count from 0 to 65,535 ($2^{16} - 1$) | . A higher bit-width means higher resolution is possible — but for a simple 1ms tick, an 8-bit timer like Timer2 is more than sufficient. ",
-    "url": "/software/timer2_delay.html#-understanding-the-timers-on-the-atmega328p",
+    "url": "/software/library/timer2_delay.html#-understanding-the-timers-on-the-atmega328p",
     
-    "relUrl": "/software/timer2_delay.html#-understanding-the-timers-on-the-atmega328p"
-  },"50": {
+    "relUrl": "/software/library/timer2_delay.html#-understanding-the-timers-on-the-atmega328p"
+  },"68": {
     "doc": "Timer 2 Delay",
     "title": "⚙️ Timer2 Delay Initialization",
     "content": "We need to configure the handy Timer 2 such that its interrupts will fire every 1ms. 💭 “Why trigger the interrupts every 1ms? Can’t you use another time frame?” . Yes, you can definitely use another timer frame, but why would you reasonably do that? Consider these reasons why 1ms interrupts are most appropriate: . | ☑️ Arduino’s built-in millis() and delay() functions are based on 1ms resolution. | 🔄 Simpler math and high enough resolution (1:1 mapping) . | 500 ticks $\\rightarrow$ count to 500 ticks where each counter tick is 1ms instead of 2000 ticks $\\rightarrow$ count to 2000 ticks where each tick is 0.25ms | . | ⚙️ Low CPU Overhead . | Operating the CPU at higher frequency can overwhelm the CPU and be more power intensive | . | . Okay now that I hopefully convinced you of why we need 1ms interrupts, here is how we do it: As per the registers described in pages 127-134 of the ATMEGA328P datasheet, these are what we will need to configure. There are 9 registers in total, but we do not need to configure all of them. The registers of interest and what is needed to do is as follows: . 🔧 TCCR2A – Timer/Counter Control Register A . Reset TCCR2A: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2A = 0; // Reset Timer2 TCCR2A control register . What It Controls: . | Compare Output Modes COM2A[1:0], COM2B[1:0] — what happens to OC2A/OC2B (digital 11/3) pins on compare match with TCNT2 | Waveform Generation Mode WGM2[1:0] — selects the timer’s counting behavior (Normal, PWM/Phase Correct, CTC, or Fast PWM) | . What To Set: . | Clear Timer on Compare Match (CTC) mode using WGM21 bit | . TCCR2A |= (1 &lt;&lt; WGM21); // Set CTC mode . 🔧 TCCR2B – Timer/Counter Control Register B . Reset TCCR2B: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2B = 0; // Reset Timer2 TCCR2B control register . What It Controls: . | Force Output Compare FOC2B, FOC2A — forcing a compare match on OC2B/OC2A (digital 3/11) pins | Waveform Generation Mode WGM22 — Used with TCCR2A for CTC or fast PWM | Clock Select CS2[2:0] — Sets the pre-scaler for the timer clock source | . What To Set: . | Prescaler of 64 using CS22 bit | . TCCR2B |= (1 &lt;&lt; CS22); // Set prescaler = 64 . 🔧 TCNT2 – Timer/Counter Register . Reset TCNT2: . Starts counter at 0, why would you start anywhere else? 😅 . TCNT2 = 0; // Reset Timer2 TCNT2 control register . What It Controls: . | Timer Counter 2 TCNT2[7:0] — The current value of Timer2’s counter (0-255) | . What To Set: . | Nothing, the timer runs autonomously | . 🔧 TIMSK2 – Timer/Counter2 Interrupt Mask Register . Reset TIMSK2: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TIMSK2 = 0; // Reset Timer2 TIMSK2 control register . What It Controls: . | Output Compare Match Interrupt Enables OCIE2B, OCIE2A — Enables an interrupt when the timer value TCNT2 matches the value in OCR2B or OCR2A. | Waveform Generation Mode TOIE2 — Enables an interrupt when timer overflows | . What To Set: . | Enable interrupt on Compare Match A using the OCIE2A bit. | . TIMSK2 = (1 &lt;&lt; OCIE2A); // enable compare interrupt . 🔧 OCR2A – Output Compare Register A . What It Controls: . | Holds the top value the TCNT2 counts up to in CTC mode. | When TCNT2 == OCR2A, an interrupt is fired (if enabled), and the counter resets to 0 on the next tick. | . What To Set: . | OCR2A register to 249 | . OCR2A = 249; . Why Set it To 249: . | This value can be computed based on the equation provided in page 121 of the ATMEGA328P datasheet. | . (1) General CTC equation (when toggling pin): . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{2 \\times N \\times (1 + OCRnx)}\\] where: . | $OCRnx$ is the output compare register value | $f_{OCnx}$ is the output frequency of the timer/counter | $f_{clk_{I/O}}$ Clock input frequency (16 MHz for ATmega328P) | N is the timer prescale factor (1, 8, 32, 64, 128, 256, or 1024) | “2” in denominator only needed when toggling a pin to generate a waveform | . 🔍Important Note: In interrupt-only CTC mode (no pin toggling), the “2” in the denominator is not included because the interrupt occurs once per timer cycle. Hence, this constant can be ignored. (2) CTC Interrupt-Only Frequency Equation: . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{ N \\times (1 + OCRnx)}\\] Now, we can solve for the OCR2A value that produces an interrupt at a frequency of 1kHz (1ms period) by restructuring this equation. (3) CTC Interrupt-Only OCR2A Equation: . \\[OCRnx = \\frac{f_{clk_{I/O}}}{N \\times f_{OCnx}} - 1\\] 🔢 Solving for OCR2A: . \\[OCRnx = \\frac{16*10^6}{64 \\times 1000} - 1 = 249\\] ✅ Result: . Setting OCR2A = 249 results in 1ms timer interrupts using a 16 MHz clock and a prescaler of 64. And we are done! Those are all the registers you need to set. Now when you look at the Timer 2 register initialization, it should now make more sense 😊 . Add a note on non-blocking vs blocking: delay2 vs millis2() . ",
-    "url": "/software/timer2_delay.html#%EF%B8%8F-timer2-delay-initialization",
+    "url": "/software/library/timer2_delay.html#%EF%B8%8F-timer2-delay-initialization",
     
-    "relUrl": "/software/timer2_delay.html#️-timer2-delay-initialization"
-  },"51": {
+    "relUrl": "/software/library/timer2_delay.html#️-timer2-delay-initialization"
+  },"69": {
     "doc": "Timer 2 Delay",
     "title": "Timer 2 Delay",
     "content": ". ",
-    "url": "/software/timer2_delay.html",
+    "url": "/software/library/timer2_delay.html",
     
-    "relUrl": "/software/timer2_delay.html"
-  },"52": {
+    "relUrl": "/software/library/timer2_delay.html"
+  },"70": {
     "doc": "To-Do",
     "title": "TO-DO",
     "content": ". | Order NOR gate and verify that logic protection circuitry is operational | Fix schematic and GPIO pin of Rpi connected to DTR line which has a 5V pull up (bad since Rpi is 3.3V logic) | Verify that schematic, PCB, and 3D model is not missing anything (run DRC again just in case) | Load testing captures | Modify the startPWM method such that it does not pass a boolean parameter to select between 50Hz or 60Hz PWM (not intuive for the “false” parameter to indicate start 60Hz, sounds more like false means off) | Remove seperate pwmISR() method in Timer1ISR since that actually results in longer program operation which is not ideal in the ISR (ideally minize time in ISR) | . ",
     "url": "/todo.html#to-do",
     
     "relUrl": "/todo.html#to-do"
-  },"53": {
+  },"71": {
     "doc": "To-Do",
     "title": "To-Do",
     "content": " ",
     "url": "/todo.html",
     
     "relUrl": "/todo.html"
-  },"54": {
+  },"72": {
     "doc": "Vision",
     "title": "Vision",
     "content": " ",
     "url": "/vision.html",
     
     "relUrl": "/vision.html"
-  },"55": {
+  },"73": {
     "doc": "Vision",
     "title": "Microgrid Significance",
     "content": "Electricity traverses through a large network of interconnected transmission or distribution systems known as the power grid. With the ever-growing demand for electricity and reliable power grid consumption, grid congestion has been a more prominent phenomenon. This occurs when the power grid is unable to deliver the required power to meet demand, particularly from urban area or high demand loads. To alleviate stress on the power grid, microgrids-smaller localized electrical systems-can be employed. A microgrid typically consists of distributed generators and loads as well as energy storage systems, and can operate either in grid-connected or islanded mode. ",
     "url": "/vision.html#microgrid-significance",
     
     "relUrl": "/vision.html#microgrid-significance"
-  },"56": {
+  },"74": {
     "doc": "Vision",
     "title": "EV Inspired PDA Microgrid and Open Source Platforms",
     "content": "As Electric Vehicle (EV) infrastructure continues to develop and gain wider global acceptance, there is growing motivation not only to utilize these systems for transportation but, more importantly, to harness their microgrid capabilities. To more clearly understand this concept, we can consider a power distribution architecture (PDA) for EVs that can: . | intelligently transact power with the grid, | provide important grid-forming and grid-supporting services | share power in a peer-to-peer fashion with other EVs | act as a standalone microgrid that can interface with external AC and DC sources and loads. | operate and communicate between various open source power converters | . ",
