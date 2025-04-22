@@ -118,6 +118,7 @@ void loop() {
     isFiftyHz = true;
     if (fifty_once == 0) {
       atinverter60.startPWM(isFiftyHz);
+      digitalWrite(PRORESET_PIN, LOW);
       fifty_once = 1;
     }
     sixty_once = 0;
@@ -127,6 +128,7 @@ void loop() {
     isFiftyHz = false;
     if (sixty_once == 0) {
       atinverter60.startPWM(isFiftyHz);
+      digitalWrite(PRORESET_PIN, LOW);
       sixty_once = 1;
     }
     fifty_once = 0;
