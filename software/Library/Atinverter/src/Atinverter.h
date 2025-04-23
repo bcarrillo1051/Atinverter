@@ -51,122 +51,113 @@ enum ShutdownCodes
 class Atinverter {
 
   public:
-	// --- Constructor ---
+  	// - Constructor -
 
 	Atinverter(uint16_t frequency = DEFAULT_FREQUENCY);
 
-	// --- Methods ---
+	// - Methods -
 
-	// Set-up Pins
-	void setUpPinMode();
-
-	// LED Blinking
+	// --- LED Blinking ---
+	void setUpLEDs();
 	void set1LED(int led, int state);
-	void set2LED(int t_delay);
+	void cycleLEDs(int t_delay);
 	
-	// DC Sensing
+	// --- DC Voltage and Current Sensing ---
 	float getVdc();
 	float getIdc();
 	float getAvgDC(bool isVdc, float signalValue);
 
-	// AC Sensing 
+	// --- AC Voltage and Current Sensing ---
 	void setSensitivity(float value);
+	int getADC(uint8_t control_byte);
 	float getRmsAC(uint8_t loopCount, bool isVac);
 
-	void setUpSPI();
-	int getADC(uint8_t control_byte);
-
-	// PWM Generation
-	void enablePWM();
-	void disablePWM();
+	// --- PWM 50Hz/60Hz Inversion ---
 	void startPWM(bool is50HzMode);
 	static void pwmISR();
+	void enablePWM();
+	void disablePWM();
 
-	// Timer 2 Delay
+	// --- Timer 2 Delay ---
 	void initTimer2Delay();
 	void delay2(unsigned long ms);
 	unsigned long millis2();
 
-	// Gate Shutdown
+	// --- Gate Shutdown ---
 	void shutdownGates(int shutdownCode);
 	void powerCycleGates();
 
 	// // Overcurrent Protection
 	void checkOverCurrent(float dcCurrent, float acCurrent);
+	// // --- Overcurrent Protection ---
+	// void checkOverCurrent(float dcCurrent, float acCurrent);
 
-	// --- Variables ---
+	// - Member Variables -
 
-	// LED Pins
-	static const int LED1R_PIN = 2; // Red LED 1 | PD2
-	static const int LED1G_PIN = 3; // Green LED 1 | PD3
-	static const int LED2R_PIN = 4; // Red LED 2 | PD4
-	static const int LED2G_PIN = 7; // Green LED 2 | PD7
+	// --- LED Blinking ---
+	static const int LED1R_PIN = 2; // Red LED 1 pin | PD2
+	static const int LED1G_PIN = 3; // Green LED 1 pin | PD3
+	static const int LED2R_PIN = 4; // Red LED 2 pin | PD4
+	static const int LED2G_PIN = 7; // Green LED 2 pin | PD7
 
-	// Timer 2 Increment
-	static volatile unsigned long timer2Millis;
+	// --- Timer 2 Delay ---
+	static volatile unsigned long timer2Millis; // Timer 2 Increment
 
   private:
 
-	// --- Methods ---
+	// - Methods -
 
-	// AC Sensing 
+	// --- AC Voltage and Current Sensing ---
 	int getZeroPoint(bool isVac);
 
-	// --- Variables ---
-	
-	// External ADC (ADC122S021CIMM/NOPB) Voltage and Current Sensing Pins
-	static const int VI_AC_CS_PIN = 10; // SPI chip select | PB2
-	static const int VI_AC_MOSI_PIN = 11; // Send control bits data | PB3
-	static const int VI_AC_MISO_PIN = 12; // Receive AC output V/I sense | PB4
-	static const int VI_AC_SCLK_PIN = 13; // SPI clock signal | PB5
+	// - Member Variables -
 
-	// Internal ADC (ATMEGA328P) Voltage and Current Sensing Pins
-	static const int V_DC_PIN = A0; // DC input voltage sense | PC0
-	static const int I_DC_PIN = A1; // DC input current sense | PC1
+	// --- AC Voltage and Current Sensing ---
+	// AC Voltage and Current Pin Definitions
+	static const int VI_AC_CS_PIN = 10;   // SPI chip select pin | PB2
+	static const int VI_AC_MOSI_PIN = 11; // Send control bits data pin | PB3
+	static const int VI_AC_MISO_PIN = 12; // Receive AC output V/I sense pin | PB4
+	static const int VI_AC_SCLK_PIN = 13; // SPI clock signal pin | PB5
+	// Parameters for PWM
+	static bool is50Hz;               // Frequency mode: true for 50Hz, false for 60Hz
+	static int sin_i;                 // Index for sinPWM array value
+	static int pwm_i;                 // Index for PWM value
+	static int OK;                    // Flag to toggle between pins 5 and 6
+	static const int sin50HzPWM[312]; // Sinusoidal 50Hz array samples
+	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples
+	// Parameters AC Sensing
+	uint32_t period; // Period of PWM type (50Hz or 60Hz)
+	float 	 sensitivity = DEFAULT_SENSITIVITY; // Tune this value to achieve proper sensing
 
-	// PWM Pins
-	const int PWM_A_PIN = 5; // Positive half cycle PWM | PD5
-	const int PWM_B_PIN = 6; // Negative half cycle PWM | PD6
-
-	// I2C Communication Pins
-	const int I2C_SDA_PIN = A4; // Data line between ATMEGA328P and Raspberry Pi | PC4
-	const int I2C_SCL_PIN = A5; // Clock line between ATMEGA328P and Raspberry Pi | PC5
-
-	// Overvoltage and Reset Circuitry Reset Pin
-	const int PRORESET_PIN = 9; // Resets the gate drivers, supersedes GATESD pin operation | PB1
-
-	// Gate Driver Pin
-	const int GATESD_PIN = 8; // Gate driver shut down mechanism | PB0
-
-	// DC Input Voltage Sampling Resistor Values
-	static const unsigned long Rvs1 = 120000; // Adjust this if needed as per measurement
-	static const unsigned int Rsv2 = 9900; // Adjust this if needed as per measurement
-
+	// --- DC Voltage and Current Sensing ---
+	// DC Voltage and Current Pin Definitions
+	static const int V_DC_PIN = A0;           // DC input voltage sense pin | PC0
+	static const int I_DC_PIN = A1;           // DC input current sense pin | PC1
+	// DC Voltage Sensing Resistor Values
+	static const unsigned long Rvs1 = 120000; // DC voltage sensing resistor 1, adjust as needed
+	static const unsigned int Rsv2 = 9900;    // DC voltage sensing resistor 2, adjust as needed
 	// Parameters for Vdc Moving Average
 	static const int Vdc_num_readings = MA_SAMPLES; // Vdc samples in moving average
-	float Vdc_readings[MA_SAMPLES]; // Circular buffer for signal samples
-	int Vdc_read_index = 0; // Current index in the Vdc buffer
-	float Vdc_total = 0; // Running total of Vdc readings
-
+	float Vdc_readings[MA_SAMPLES];                 // Circular buffer for Vdc samples
+	int Vdc_read_index = 0;                         // Current index in the Vdc buffer
+	float Vdc_total = 0;                            // Running total of Vdc readings
 	// Parameters for Idc Moving Average
-	static const int Idc_num_readings = MA_SAMPLES; // Samples in moving average
-	float Idc_readings[MA_SAMPLES]; // Circular buffer for signal samples
-	int Idc_read_index = 0; // Current index in the Idc buffer
-	float Idc_total = 0; // Running total of Idc readings
+	static const int Idc_num_readings = MA_SAMPLES; // Idc damples in moving average
+	float Idc_readings[MA_SAMPLES];                 // Circular buffer for Idc samples
+	int Idc_read_index = 0;                         // Current index in the Idc buffer
+	float Idc_total = 0;                            // Running total of Idc readings
 
-	// Parameters AC Sensing
-	uint32_t period;
-	float 	 sensitivity = DEFAULT_SENSITIVITY;
+	// --- PWM 50Hz/60Hz Inversion ---
+	const int PWM_A_PIN = 5;    // Positive half cycle PWM pin | PD5
+	const int PWM_B_PIN = 6;    // Negative half cycle PWM pin | PD6
+	const int GATESD_PIN = 8;   // Gate driver shut down mechanism pin | PB0
+	const int PRORESET_PIN = 9; // Overvoltage and Reset Circuitry Reset pin | PB1
 
-	// Parameters for PWM
-	static bool is50Hz; // Frequency mode: true for 50Hz, false for 60Hz
-	static int sin_i; // Index for sinPWM array value
-	static int pwm_i; // Index for PWM value
-	static int OK; // Flag to toggle between pins 5 and 6
-	static const int sin50HzPWM[312]; // Sinusoidal 50Hz array samples
-	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples 
+	// --- I2C Communication ---
+	const int I2C_SDA_PIN = A4;  // Data line between ATMEGA328P and Raspberry Pi pin | PC4
+	const int I2C_SCL_PIN = A5;  // Clock line between ATMEGA328P and Raspberry Pi pin | PC5
 
-	// Gate Shutdown
+	// --- Gate Shutdown ---
 	int _shutdownCode = 0;
 };
 

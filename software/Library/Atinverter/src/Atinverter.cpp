@@ -12,40 +12,21 @@
  */
 Atinverter::Atinverter(uint16_t frequency)
 {
-  period = 1000 / frequency; // 60Hz = 16666 µs (or ~16.7 milliseconds)
+  period = 1000 / frequency; // Computes period in ms
 }
 
+// --- LED Blinking ---
+
 /**
- * @brief Sets the pin states for the inverter.
- *        This function sets the pin modes for all the necessary GPIO pins.
+ * @brief Sets 4 LED pins to outputs
  */
-void Atinverter::setUpPinMode()
+void Atinverter::setUpLEDs()
 {
 	// LED Pins
   pinMode(LED1R_PIN, OUTPUT);
   pinMode(LED1G_PIN, OUTPUT);
   pinMode(LED2R_PIN, OUTPUT);
   pinMode(LED2G_PIN, OUTPUT);
-
-  // Internal ADC (ATMEGA328P) Voltage and Current Sensing Pins
-  pinMode(V_DC_PIN, INPUT);
-  pinMode(I_DC_PIN, INPUT);
-
-  // PWM Pins
-  pinMode(PWM_A_PIN, OUTPUT);
-  pinMode(PWM_B_PIN, OUTPUT);
-  
-	// I2C Communication Pins
-
-  // SPI Pins
-  pinMode(VI_AC_MISO_PIN, INPUT);
-
-  // Overvoltage and Reset Circuitry Reset Pin
-  pinMode(PRORESET_PIN, OUTPUT);
-  digitalWrite(PRORESET_PIN, LOW);
-
-	// Gate Driver Pin
-  pinMode(GATESD_PIN, INPUT);
 }
 
 /**
@@ -67,7 +48,7 @@ void Atinverter::set1LED(int LED, int state)
  *
  * @param t_delay Delay time in milliseconds between each LED toggle.
  */
-void Atinverter::set2LED(int t_delay) {
+void Atinverter::cycleLEDs(int t_delay) {
   digitalWrite(LED1G_PIN, HIGH); // Turn LED1 green on
   delay(t_delay);
   digitalWrite(LED1R_PIN, HIGH); // Turn LED1 red on
@@ -87,7 +68,7 @@ void Atinverter::set2LED(int t_delay) {
   delay(t_delay);
 }
 
-// --- DC Sensing ---
+// --- DC Voltage and Current Sensing ---
 
 /**
  * @brief Converts a raw ADC reading into an instantaneous (non-averaged) DC voltage.
@@ -146,13 +127,39 @@ float Atinverter::getAvgDC(bool isVdc, float signalValue) {
   return avg_signal;
 }
 
-// --- AC Sensing ---
+// --- AC Voltage and Current Sensing ---
 
 /// @brief Set sensitivity
 /// @param value Sensitivity value
 void Atinverter::setSensitivity(float value)
 {
 	sensitivity = value;
+}
+
+/**
+ * @brief Provides the ADC readout from the ADC122S021
+ * @param control_byte ADC channel selection, channel 1 = 0x00, channel 2 = 0x08
+ * @return int A 12-bit ADC value ranging from 0 to 4095.
+ */
+int Atinverter::getADC(uint8_t control_byte) {
+  
+  // Begin SPI communication
+  digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
+  SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms
+  
+  // First transfer - send control byte and receive 4 MSB bits of data
+  uint16_t data = SPI.transfer(control_byte); // Send channel selection bits, also receive 4 MSB bits
+  data <<= 8; // Left shift received MSB byte by 8 bits (0000 0110) -> (0000 0110 0000 0000)
+  
+  // Second transfer - send dummy byte and receive 8 LSB bits of data
+  data |= SPI.transfer(0x00); // Transmit dummy byte, only care about receiving remaining LSB byte
+  
+  // End SPI communication
+  digitalWrite(VI_AC_CS_PIN, HIGH); // SPI transfer ends with chip select high 
+  SPI.endTransaction();
+
+  data &= 0x0FFF; // Mask to keep only the 12 LSBs (valid ADC data), discard upper 4 bits
+  return data;
 }
 
 /**
@@ -212,43 +219,7 @@ float Atinverter::getRmsAC(uint8_t loopCount, bool isVac)
 	return readingVoltage / loopCount;
 }
 
-/**
- * @brief Sets up the SPI protocol between the ADC122S021 and the ATMEGA328P 
- */
-void Atinverter::setUpSPI() {
-  // CS Handling
-  pinMode(VI_AC_CS_PIN, OUTPUT); // Set CS to OUTPUT
-  digitalWrite(VI_AC_CS_PIN, HIGH); // Ensure comms is not active
-  SPI.begin(); // Configures SCK and MOSI to outputs, MISO to input
-}
-
-/**
- * @brief Provides the ADC readout from the ADC122S021
- * @param control_byte ADC channel selection, channel 1 = 0x00, channel 2 = 0x08
- * @return int A 12-bit ADC value ranging from 0 to 4095.
- */
-int Atinverter::getADC(uint8_t control_byte) {
-  
-  // Begin SPI communication
-  digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
-  SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms
-  
-  // First transfer - send control byte and receive 4 MSB bits of data
-  uint16_t data = SPI.transfer(control_byte); // Send channel selection bits, also receive 4 MSB bits
-  data <<= 8; // Left shift received MSB byte by 8 bits (0000 0110) -> (0000 0110 0000 0000)
-  
-  // Second transfer - send dummy byte and receive 8 LSB bits of data
-  data |= SPI.transfer(0x00); // Transmit dummy byte, only care about receiving remaining LSB byte
-  
-  // End SPI communication
-  digitalWrite(VI_AC_CS_PIN, HIGH); // SPI transfer ends with chip select high 
-  SPI.endTransaction();
-
-  data &= 0x0FFF; // Mask to keep only the 12 LSBs (valid ADC data), discard upper 4 bits
-  return data;
-}
-
-// --- PWM ---
+// --- PWM 50Hz/60Hz Inversion ---
 
 // Define the static variables
 bool Atinverter::is50Hz = true;  // Default to 50Hz
@@ -289,34 +260,23 @@ const int Atinverter::sin60HzPWM[] = {
 };
 
 /**
- * @brief Allows for turning on the PWM at run time  
- */
-void Atinverter::enablePWM() {
-  sei(); // Enable interrupts to resume PWM
-}
-
-/**
- * @brief Allows for turning off the PWM at run time  
- */
-void Atinverter::disablePWM() {
-  cli(); // Disable interrupts to stop PWM
-}
-
-/**
- * @brief Initializes PWM and Timers for 50Hz ot 60Hz      
+ * @brief Initializes PWM and Timers for 50Hz or 60Hz and begins operation
  */
 void Atinverter::startPWM(bool is50HzMode) {
 
   cli(); // Disable interrupts during setup
   is50Hz = is50HzMode; // Set the correct frequency mode
 
-  // Set PWM pins as outputs
+  // Set PWM pins as outputs 
   pinMode(PWM_A_PIN, OUTPUT);
   pinMode(PWM_B_PIN, OUTPUT);
 
-  // Set !GATESD pin as OUTPUT and pull high so that gate drivers are enabled
-  pinMode(GATESD_PIN, OUTPUT); 
-  digitalWrite(GATESD_PIN, HIGH); // (!GateSD = 0 and !GateSD = 1 turns off and on respectively)
+  // Overvoltage and Reset Circuitry Reset Pin
+  pinMode(PRORESET_PIN, OUTPUT);
+  digitalWrite(PRORESET_PIN, LOW); // Keep gate drivers on (!GateSD is high)
+
+  // Gate Driver Pin
+  pinMode(GATESD_PIN, INPUT); // Keep as INPUT unless need to manually drive, set to OUTPUT
 
   // Set up Timer0 for Phase Correct PWM, (8 bit = 256)
   TCCR0A = 0; // Reset control register A
@@ -388,7 +348,26 @@ void Atinverter::pwmISR() {
   }
 }
 
-// --- Timer2-based Delay Variable ---
+/**
+ * @brief Allows for turning on the PWM at run time  
+ */
+void Atinverter::enablePWM() {
+  cli(); // Avoid ISR firing during mask change
+  TIMSK1 |= (1 << OCIE1A); // Enable only the Timer1 Compare A interrupt 
+  sei(); // Resume normal operation
+}
+
+/**
+ * @brief Allows for turning off the PWM at run time  
+ */
+void Atinverter::disablePWM() {
+  cli(); // Avoid ISR firing during mask change
+  TIMSK1 &= ~(1 << OCIE1A); // Disable only the Timer1 Compare A interrupt
+  sei(); // Resume normal operation
+}
+
+// --- Timer 2 Delay ---
+
 // Used to implement a custom 1ms tick counter using Timer2.
 // This allows for non-`delay()` based timing separate from the default Arduino millis().
 volatile unsigned long Atinverter::timer2Millis = 0;
@@ -451,6 +430,7 @@ ISR(TIMER2_COMPA_vect) {
   Atinverter::timer2Millis++;
 }
 
+// --- Gate Shutdown ---
 
 // immediately triggers the gate shutdown
 void Atinverter::shutdownGates(int shutdownCode) {

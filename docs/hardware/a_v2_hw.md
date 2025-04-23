@@ -85,7 +85,7 @@ Prior to the delivering the power to the load, a low pass filter stage is employ
 After providing an overview of each of the power inverter stages, from PWM generation to filtering, consider the diagram below illustrating the signal chain:
 
 <p align="center">
-<img src="../images/PWM_generation.png" alt="PWM Generation" width="700"/>
+<img src="../images/PWM_inverter_block_diagram.png" alt="PWM Inverter Block Diagram" width="800"/>
 </p>
 
 
@@ -180,10 +180,10 @@ This conversion ultimately produces an accurate current reading based on the pre
 To achieve the sensing of the AC voltage at the output of the power inverter, the approach is more involved than the DC voltage sensing methodology described earlier. Not only does a step down mechanism need to be implemented to provide a low power sensed signal to a processing device, but also a method to handle or correct for the the bipolar nature of the AC wave, namely the negative swing. More specifically, the AC voltage sensing network needs to be able to scale a 12V-48Vpk signal to 0-5V signal in order to be compatible with the ADC122S021, which is used for output voltage and current sampling. The ADC122S021 serves as the intermediary between the ATMEGA328P and the AC sensed signal. It samples the output produced by the AC voltage sensing network and transmits the data to the ATMEGA328P via SPI communication. The ATMEGA328P receives the sensed data by requesting channel 1 of the ADC122S021 and uses it to compute the RMS reading of the voltage.
 
 <p align="center">
-<img src="../images/AC_voltage_sensing_block_diagram.png" alt="AC Voltage Sensing Network" width="600"/>
+<img src="../images/AC_voltage_sensing_block_diagram.png" alt="AC Voltage Sensing Blocl Diagram" width="800"/>
 </p>
 
-This section covers the hardware implementation for the AC sensing framework as illustrated above, but to learn more about how the RMS computation is performed and the software that orchestrates the sensing computation, see the section **"BLAH"**.  
+This section covers the hardware implementation for the AC sensing framework as illustrated above. To learn more about how the voltage RMS computation is performed and other key considerations for the software design, see the section [AC Voltage Sensing](../software/modules/ac_voltage_sensing).
 
 ## **AC Voltage Sensing Network**
 
@@ -297,5 +297,15 @@ The AC voltage sensing topology was simulated using LTSpice to verify operation.
 {: .highlight-green }
 📟 AC Current Sensing
 
+Sensing the current from the AC load is similarly achieved to sensing the DC input. On the AC side, the TMCS1108 hall-effect current sensor is likewise employed. What differs is how the signal is analyzed after being sampled by current sensor. In this case, the output analog voltage that maps to the load current is not being delivered directly to ATMEGA328P for processing and calculation, but rather to the second input channel of the ADC122S021.
+
+<p align="center">
+<img src="../images/AC_current_sensing_block_diagram.png" alt="AC Current Sensing Block Diagram" width="800"/>
+</p>
+
+To gain more insight into how the algorithm for computing the AC load current is performed using the ADC122S021 sampling, please refer to the section on [AC Current Sensing](../software/modules/ac_current_sensing).
+
 {: .highlight-green }
 🔁 ATMEGA328P & Raspberry Pi I2C Communication
+
+- **Will be documented once I2C bus is verified**

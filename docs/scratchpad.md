@@ -218,3 +218,5 @@ graph TD;
 > > Another paragraph
 > >
 > > The last paragraph
+
+- Understanding how to communicate between the ADC122S021 and the ATMEGA328P using the SPI protocol for serial transfer of AC voltage data. 

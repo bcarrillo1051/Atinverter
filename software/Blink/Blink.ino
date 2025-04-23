@@ -12,7 +12,7 @@ Atinverter atinverter; // Create an Atinverter object
 int PERIOD = 1000; // Set up duration of LED on or off (ms)
 
 void setup() {
-  atinverter.setUpPinMode(); // Sets pins to inputs or outputs
+  atinverter.setUpLEDs();
 }
 
 void loop() {
@@ -26,5 +26,7 @@ void loop() {
   atinverter.set1LED(atinverter.LED1R_PIN, LOW); // Test 1st Red LED ON
   atinverter.set1LED(atinverter.LED2G_PIN, LOW); // Test 2nd Green LED ON
   delay(PERIOD);
-  atinverter.set2LED(PERIOD);
+
+  // --- Atinverter.cycleLEDs ---
+  atinverter.cycleLEDs(PERIOD);
 }

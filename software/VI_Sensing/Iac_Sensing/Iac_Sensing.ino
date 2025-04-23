@@ -21,7 +21,7 @@ void setup() {
   atinverter.setSensitivity(SENSITIVITY);
 
   atinverter.startPWM(false); // 60Hz, true 50Hz
-  atinverter.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
+  SPI.begin(); // Configures SCK, CS, and MOSI to outputs
   atinverter.initTimer2Delay(); // Set up Timer2 registers to proper init values
 }
 
