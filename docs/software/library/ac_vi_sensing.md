@@ -1,8 +1,8 @@
 ---
-title: AC Voltage Sensing
+title: AC V/I Sensing
 layout: default
-parent: Modules
-nav_order: 7
+parent: Library
+nav_order: 6
 mathjax: true
 ---
 
@@ -30,7 +30,8 @@ mathjax: true
   </script>
 {% endif %}
 
-# **AC Voltage Sensing Software Overview**
+# **AC Voltage Sensing Software**
+---
 
 As mentioned in the [AC Voltage Sensing](../../hardware/a_v2_hw) hardware section, to achieve AC RMS voltage measurement across the load of the power inverter ($V_{\mathrm{AC_load}}$), the signal is:
 1. Transformed from a 12V-48$V_{pk}$ AC signal to a composite signal containing both DC and AC components.

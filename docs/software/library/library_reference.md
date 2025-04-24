@@ -14,7 +14,7 @@ The Atinverter library is comprised of two files: `Atinverter.h` and `Atinverter
 <img src="../../images/atinverter_library_high_level.png" alt="Atinverter Library High Level" width="400"/>
 </p>
 
-Looking deeper into the Atinverter Library, it consists of 
+Upon further inspection of the Atinverter Library, we can observe that it is organized into five main sections based on functionality. To learn more about each section and their respective methods, refer to [Software Modules](../modules/modules).
 
 <p align="center">
 <img src="../../images/atinverter_library_expanded_view.png" alt="Atinverter Library Exapanded View" width="600"/>

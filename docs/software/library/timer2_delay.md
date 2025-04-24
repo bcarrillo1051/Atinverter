@@ -2,7 +2,7 @@
 title: Timer 2 Delay
 layout: default
 parent: Library
-nav_order: 4
+nav_order: 8
 mathjax: true
 ---
 

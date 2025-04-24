@@ -1,6 +1,6 @@
 /*
 	Atinverter.h = Library for Atinverter pin and functions
-	Created by Bryan Carrillo, 4/23/24
+  	Created by Bryan Carrillo, Zach Kwast, 10/18/24
 	Released into the public domain (Open Source DC to AC Inverter)
 */
 
@@ -20,7 +20,11 @@
 #define ADC_122S021_MAX_VALUE 4095.0f // For ADC122S021 (external SPI ADC)
 #define VAC_ADC_CHANNEL 0x00
 #define IAC_ADC_CHANNEL 0x08
-#define SENSITIVITY 37.81f // ADC sensitivity
+#define SENSITIVITY 37.81f // ADC122S021 sensitivity
+
+// --- AC Voltage Sensing Parameters ---
+#define DEFAULT_FREQUENCY 50.0f
+#define DEFAULT_SENSITIVITY 500.0f
 
 // --- Moving Average Parameter ---
 #define MA_SAMPLES 10 // Default moving average sample count, adjust if needed
@@ -39,9 +43,6 @@ enum ShutdownCodes
   OVERTEMPERATURE = 3,
   NUM_PRESETCODES
 };
-// --- AC Voltage Sensing Parameters ---
-#define DEFAULT_FREQUENCY 50.0f
-#define DEFAULT_SENSITIVITY 500.0f
 
 /**
  * @class Atinverter
@@ -88,10 +89,8 @@ class Atinverter {
 	void turnOnGates();
 	void powerCycleGates();
 
-	// // Overcurrent Protection
+	// --- Overcurrent Protection ---
 	void checkOverCurrent(float dcCurrent, float acCurrent);
-	// // --- Overcurrent Protection ---
-	// void checkOverCurrent(float dcCurrent, float acCurrent);
 
 	// - Member Variables -
 
@@ -109,7 +108,7 @@ class Atinverter {
 	// - Methods -
 
 	// --- AC Voltage and Current Sensing ---
-	int getZeroPoint(bool isVac);
+	int getZeroPoint(uint8_t control_byte);
 
 	// - Member Variables -
 

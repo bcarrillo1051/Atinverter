@@ -10,8 +10,7 @@
  * @brief Constructor for the AtinverterE class.
  *        Initializes any necessary components or variables.
  */
-Atinverter::Atinverter(uint16_t frequency)
-{
+Atinverter::Atinverter(uint16_t frequency) {
   period = 1000 / frequency; // Computes period in ms
 }
 
@@ -20,8 +19,7 @@ Atinverter::Atinverter(uint16_t frequency)
 /**
  * @brief Sets 4 LED pins to outputs
  */
-void Atinverter::setUpLEDs()
-{
+void Atinverter::setUpLEDs() {
 	// LED Pins
   pinMode(LED1R_PIN, OUTPUT);
   pinMode(LED1G_PIN, OUTPUT);
@@ -35,8 +33,7 @@ void Atinverter::setUpLEDs()
  * @param LED   The pin number of the LED to control.
  * @param state The desired state for the LED (HIGH to turn on, LOW to turn off).
  */
-void Atinverter::set1LED(int LED, int state)
-{
+void Atinverter::set1LED(int LED, int state) {
   digitalWrite(LED, state); // Set LED to the specified state
 }
 
@@ -78,8 +75,7 @@ void Atinverter::cycleLEDs(int t_delay) {
  * 
  * @return Instantaneous measured DC voltage (Vdc).
  */
-float Atinverter::getVdc() 
-{
+float Atinverter::getVdc() {
   int digital_val = analogRead(V_DC_PIN);  // Read raw ADC value
   float Vdc_sense = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to sensed voltage
   float Vdc = Vdc_sense * (Rvs1 + Rsv2) / Rsv2; // Scale to actual input voltage
@@ -90,8 +86,7 @@ float Atinverter::getVdc()
  * @brief Returns and prints the instantaneous (unaveraged) Idc
  * @return Measured DC current
  */
-float Atinverter::getIdc()
-{
+float Atinverter::getIdc() {
   int digital_val = analogRead(I_DC_PIN); // Read raw ADC value
   float Vout = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to analog voltage
 
@@ -131,8 +126,7 @@ float Atinverter::getAvgDC(bool isVdc, float signalValue) {
 
 /// @brief Set sensitivity
 /// @param value Sensitivity value
-void Atinverter::setSensitivity(float value)
-{
+void Atinverter::setSensitivity(float value) {
 	sensitivity = value;
 }
 
@@ -164,23 +158,17 @@ int Atinverter::getADC(uint8_t control_byte) {
 
 /**
  * @brief Calculate zero point
- * @param isVac Chooses which reading to perform, true = voltage, false = current
+ * @param control_byte Selects ADC122S021 channel to read: 0x00 = voltage, 0x08 = current
  * @return zero / center value
  */
-int Atinverter::getZeroPoint(bool isVac)
-{
+int Atinverter::getZeroPoint(uint8_t control_byte) {
 	uint32_t Vsum = 0;
 	uint32_t measurements_count = 0;
 	uint32_t t_start = this->millis2();
 
 	while (this->millis2() - t_start < period) // Wait a full period
 	{
-    if (isVac){
-      Vsum += this->getADC(VAC_ADC_CHANNEL);
-    }
-    else{
-      Vsum += this->getADC(IAC_ADC_CHANNEL);
-    }
+    Vsum += this->getADC(control_byte);
 		measurements_count++;
 	}
 
@@ -193,13 +181,21 @@ int Atinverter::getZeroPoint(bool isVac)
  * @param isVac chooses which reading to perform, true = voltage, false = current
  * @return root mean square (RMS) of AC voltage or current
  */
-float Atinverter::getRmsAC(uint8_t loopCount, bool isVac)
-{
+float Atinverter::getRmsAC(uint8_t loopCount, bool isVac) {
+
+  uint8_t control_byte; // Sets control byte based on bool
+  if (isVac){
+    control_byte = VAC_ADC_CHANNEL; // Channel 1: voltage reading
+  }
+  else{
+    control_byte = IAC_ADC_CHANNEL; // Channel 2: current reading
+  }
+
 	double readingVoltage = 0.0f;
 
 	for (uint8_t i = 0; i < loopCount; i++)
 	{
-		int zeroPoint = this->getZeroPoint(isVac);
+		int zeroPoint = this->getZeroPoint(control_byte);
 
 		int32_t Vnow = 0;
 		uint32_t Vsum = 0;
@@ -208,7 +204,7 @@ float Atinverter::getRmsAC(uint8_t loopCount, bool isVac)
 
 		while (this->millis2() - t_start < period)
 		{
-			Vnow = this->getADC(0x00) - zeroPoint;
+			Vnow = this->getADC(control_byte) - zeroPoint;
 			Vsum += (Vnow * Vnow);
 			measurements_count++;
 		}
@@ -228,7 +224,8 @@ int Atinverter::pwm_i = 0;
 int Atinverter::OK = 0;
 
 // Define the sinusoidal 50Hz sample array (312 points)
-const int Atinverter::sin50HzPWM[] = {1,2,5,7,10,12,15,17,19,22,24,27,30,32,34,37,39,42,
+const int Atinverter::sin50HzPWM[] = {
+  1,2,5,7,10,12,15,17,19,22,24,27,30,32,34,37,39,42,
   44,47,49,52,54,57,59,61,64,66,69,71,73,76,78,80,83,85,88,90,92,94,97,99,
   101,103,106,108,110,113,115,117,119,121,124,126,128,130,132,134,136,138,140,142,144,146,
   148,150,152,154,156,158,160,162,164,166,168,169,171,173,175,177,178,180,182,184,185,187,188,190,192,193,
@@ -242,22 +239,20 @@ const int Atinverter::sin50HzPWM[] = {1,2,5,7,10,12,15,17,19,22,24,27,30,32,34,3
   103,101,99,97,94,92,90,88,85,83,80,78,76,73,71,69,66,64,61,59,57,54,52,49,47,44,42,39,37,34,32,30,
   27,24,22,19,17,15,12,10,7,5,2,1};
 
-
 // Define the sinusoidal 60Hz sample array (261 points)
 const int Atinverter::sin60HzPWM[] = { 
-    1,3,6,9,12,15,18,21,24,26,29,32,35,38,41,44,47,50,53,56,59,62,65,68,71,73,76,79,
-    82,85,88,91,93,96,99,102,104,107,110,112,115,118,120,123,126,128,131,133,136,138,
-    141,143,146,148,151,153,155,158,160,162,165,167,169,171,173,176,178,180,182,184,
-    186,188,190,192,194,196,197,199,201,203,205,206,208,210,211,213,214,216,217,219,
-    220,222,223,224,226,227,228,229,230,232,233,234,235,236,237,238,239,239,240,241,
-    242,243,243,244,244,245,246,246,247,247,247,248,248,248,249,249,249,249,249,249,
-    249,249,249,249,249,249,248,248,248,247,247,247,246,246,245,244,244,243,243,242,
-    241,240,239,239,238,237,236,235,234,233,232,230,229,228,227,226,224,223,222,220,
-    219,217,216,214,213,211,210,208,206,205,203,201,199,197,196,194,192,190,188,186,
-    184,182,180,178,176,173,171,169,167,165,162,160,158,155,153,151,148,146,143,141,
-    138,136,133,131,128,126,123,120,118,115,112,110,107,104,102,99,96,93,91,88,85,82,
-    79,76,73,71,68,65,62,59,56,53,50,47,44,41,38,35,32,29,26,24,21,18,15,12,9,6,3,1
-};
+  1,3,6,9,12,15,18,21,24,26,29,32,35,38,41,44,47,50,53,56,59,62,65,68,71,73,76,79,
+  82,85,88,91,93,96,99,102,104,107,110,112,115,118,120,123,126,128,131,133,136,138,
+  141,143,146,148,151,153,155,158,160,162,165,167,169,171,173,176,178,180,182,184,
+  186,188,190,192,194,196,197,199,201,203,205,206,208,210,211,213,214,216,217,219,
+  220,222,223,224,226,227,228,229,230,232,233,234,235,236,237,238,239,239,240,241,
+  242,243,243,244,244,245,246,246,247,247,247,248,248,248,249,249,249,249,249,249,
+  249,249,249,249,249,249,248,248,248,247,247,247,246,246,245,244,244,243,243,242,
+  241,240,239,239,238,237,236,235,234,233,232,230,229,228,227,226,224,223,222,220,
+  219,217,216,214,213,211,210,208,206,205,203,201,199,197,196,194,192,190,188,186,
+  184,182,180,178,176,173,171,169,167,165,162,160,158,155,153,151,148,146,143,141,
+  138,136,133,131,128,126,123,120,118,115,112,110,107,104,102,99,96,93,91,88,85,82,
+  79,76,73,71,68,65,62,59,56,53,50,47,44,41,38,35,32,29,26,24,21,18,15,12,9,6,3,1};
 
 /**
  * @brief Initializes PWM and Timers for 50Hz or 60Hz and begins operation
