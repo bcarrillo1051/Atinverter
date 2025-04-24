@@ -436,7 +436,13 @@ ISR(TIMER2_COMPA_vect) {
 void Atinverter::shutdownGates(int shutdownCode) {
   _shutdownCode = shutdownCode;
   digitalWrite(PRORESET_PIN, HIGH);
-  delay2(10000);
+  delay2(1000);
+}
+
+// turns on the gate driver pin
+void Atinverter::turnOnGates() {
+  digitalWrite(PRORESET_PIN, LOW);
+  delay2(1000);
 }
 
 // Turns off power to the Gate drivers for 5 seconds

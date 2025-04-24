@@ -7,14 +7,15 @@
 #include "Atinverter.h"
 #include "Wire.h"
 
+// Atinverter initialization 60 and 50 Hz
 Atinverter atinverter60(60);
 Atinverter atinverter50(50);
 
 // Variable initialization 
 const int ledPin = 3;
 int state = 0;
-int sixty_once = 0;
-int fifty_once = 0;
+int sixty_once = false;
+int fifty_once = false;
 int prev_state = 0;
 bool isFiftyHz = false;
 
@@ -37,13 +38,15 @@ void setup() {
   digitalWrite(ledPin, LOW);
 
   // Initializes pins
-  atinverter60.setUpPinMode();
+  atinverter60.setUpLEDs();
   atinverter60.initTimer2Delay();
 
+  // Initializes SPI ADC sensitivity and communication (ADC122S021CIMM/NOPB)
   atinverter60.setSensitivity(SENSITIVITY);
   atinverter50.setSensitivity(SENSITIVITY);
-  atinverter60.setUpSPI(); // Configures SPI protocol for ADC122S021CIMM/NOPB
+  //atinverter60.setUpSPI();
 
+  // Begins PWM at 60 Hz
   atinverter60.startPWM(false);
   Serial.println("Setup Done");
 }
@@ -71,67 +74,63 @@ void loop() {
     prev_state = state;
   }
 
-  // Read all DC voltages and currents
-  //unsigned long start = millis();
+  // Read all DC voltages and currents, averages of 10 samples
   DC_volt_avg = atinverter60.getAvgDC(true, atinverter60.getVdc());
   DC_amp_avg = atinverter60.getAvgDC(false, atinverter60.getIdc());
-  // unsigned long time = millis() - start;
-  // Serial.print(time)
-  // Serial.println(" ms")
-
 
   if (isFiftyHz) {
     // Get the converted average value of AC voltage and current
     AC_volt = atinverter50.getRmsAC(20, true);
-    AC_amp = 5; // atinverter50.getRmsCurrent(1, ADC_amp);
-    DC_volt_avg = 5;
+    AC_amp = atinverter50.getRmsAC(20, false);
   }
   if (isFiftyHz == false){
     // Get the converted average value of AC voltage and current
     AC_volt = atinverter60.getRmsAC(20, true);
-    AC_amp = 6; //atinverter60.getRmsCurrent(1, ADC_amp);
-    DC_volt_avg = 6;
+    AC_amp = atinverter60.getRmsAC(20, false);
   }
 
   // Turns gate driver Off
   if (state == 0) {
-    digitalWrite(PRORESET_PIN, HIGH);
+    atinverter60.shutdownGates(MANUAL);
     digitalWrite(ledPin, HIGH);
-    fifty_once = 0;
-    sixty_once = 0;
+    fifty_once = false;
+    sixty_once = false;
   }
-  // Turns gate driver on 
+  // Disable PWM
   else if (state == 1) {
-    digitalWrite(PRORESET_PIN, LOW);
-    digitalWrite(ledPin, LOW);
-    fifty_once = 0;
-    sixty_once = 0;
+    atinverter60.disablePWM();
+    fifty_once = false;
+    sixty_once = false;
   }
   // Cycles proreset which power cycles gate driver
   else if (state == 2) {
     atinverter60.powerCycleGates();
-    fifty_once = 0;
-    sixty_once = 0;
+    fifty_once = false;
+    sixty_once = false;
   }
   // 50 Hz Sin Wave Output
   else if (state == 3) {
     isFiftyHz = true;
-    if (fifty_once == 0) {
-      atinverter60.startPWM(isFiftyHz);
-      digitalWrite(PRORESET_PIN, LOW);
-      fifty_once = 1;
+    if (fifty_once == false) {
+      atinverter50.enablePWM();
+      atinverter50.startPWM(isFiftyHz);
+      atinverter50.turnOnGates();
+      digitalWrite(ledPin, LOW);
+      fifty_once = true;
     }
-    sixty_once = 0;
+    sixty_once = false;
   } 
   // 60 Hz Sin Wave Output
   else if (state == 4) {
     isFiftyHz = false;
-    if (sixty_once == 0) {
+    if (sixty_once == false) {
+      atinverter60.enablePWM();
       atinverter60.startPWM(isFiftyHz);
-      digitalWrite(PRORESET_PIN, LOW);
-      sixty_once = 1;
+      atinverter60.turnOnGates();
+      digitalWrite(ledPin, LOW);
+      sixty_once = true;
     }
-    fifty_once = 0;
+    fifty_once = false;
   }
   else {
     Serial.println("Invalid State");

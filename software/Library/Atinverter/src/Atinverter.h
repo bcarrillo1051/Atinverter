@@ -34,7 +34,7 @@ enum ShutdownCodes
 {
   // is not shut down = -1
   HARDWARE = 0,
-  SOFTWAREUNLABELED = 1,
+  MANUAL = 1,
   OVERCURRENT = 2,
   OVERTEMPERATURE = 3,
   NUM_PRESETCODES
@@ -85,6 +85,7 @@ class Atinverter {
 
 	// --- Gate Shutdown ---
 	void shutdownGates(int shutdownCode);
+	void turnOnGates();
 	void powerCycleGates();
 
 	// // Overcurrent Protection
