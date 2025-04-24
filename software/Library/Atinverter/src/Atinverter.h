@@ -7,7 +7,7 @@
 #ifndef ATINVERTER_H
 #define ATINVERTER_H
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include <SPI.h>
 
 // --- Current Sensor Parameters ---
