@@ -6,10 +6,8 @@
  *              on the serial monitor. It is sensed using the ADC122S021.
  ******************************************************************************/
 #include "Atinverter.h"
-#include "SPI.h"
 
 #define LOOP_RUNS 20
-#define SENSITIVITY 37.81f
 
 // Atinverter class instance
 Atinverter atinverter(60);
