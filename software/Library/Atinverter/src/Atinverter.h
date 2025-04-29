@@ -10,24 +10,26 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-// --- Current Sensor Parameters ---
+// --- TMCS1108 Current Sensor Parameters ---
 #define SENSOR_GAIN_MV_PER_A 400.0f // Sensitivity for A4 variant (400 mV per A)
-#define MV_TO_V 1000.0f
+#define MV_TO_V 1000.0f // Scaling factor from mV to V
+#define VOUT_0A 2.5f // Zero current output voltage
 
 // --- ADC Parameters ---
-#define VREF 5.0f // Both chips powered with 5V 
+#define VREF 5.0f // Reference voltage for both ADCs
 #define ADC_ATMEGA328P_MAX_VALUE 1023.0f // For ATMEGA328P (internal ADC)
 #define ADC_122S021_MAX_VALUE 4095.0f // For ADC122S021 (external SPI ADC)
-#define VAC_ADC_CHANNEL 0x00
-#define IAC_ADC_CHANNEL 0x08
-#define SENSITIVITY 37.81f // ADC122S021 sensitivity
+#define VAC_ADC_CHANNEL 0x00 // ADC122S021 channel 1
+#define IAC_ADC_CHANNEL 0x08 // ADC122S021 channel 2
+#define CLOCK_FREQUENCY 1000000 // Clock used to drive ADC122S021
 
-// --- AC Voltage Sensing Parameters ---
-#define DEFAULT_FREQUENCY 50.0f
-#define DEFAULT_SENSITIVITY 500.0f
+// --- AC RMS Parameters ---
+#define DEFAULT_FREQUENCY 60.0f // When no frequency is specified for Atinverter instance
+#define DEFAULT_SENSITIVITY 500.0f // When no sensitivity is specified for AC RMS calculation
+#define SENSITIVITY 37.81f // Tuned value after testing, adjust as needed
 
 // --- Moving Average Parameter ---
-#define MA_SAMPLES 10 // Default moving average sample count, adjust if needed
+#define MA_SAMPLES 10 // Default moving average sample count, adjust as needed
 
 // --- Safety Parameters ---
 #define MAX_DC_CURRENT 2.5
@@ -69,6 +71,7 @@ class Atinverter {
 	float getAvgDC(bool isVdc, float signalValue);
 
 	// --- AC Voltage and Current Sensing ---
+	void setUpSPI();
 	void setSensitivity(float value);
 	int getADC(uint8_t control_byte);
 	float getRmsAC(uint8_t loopCount, bool isVac);

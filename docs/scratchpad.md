@@ -124,6 +124,8 @@ External Link:
 >> oh my
 >>> sheesh
 
+ The nodes for the library and modules are also interactive—click to explore specific software functionality and learn more about its design.
+
 ## Putting lines in between
 
 hi
@@ -220,3 +222,22 @@ graph TD;
 > > The last paragraph
 
 - Understanding how to communicate between the ADC122S021 and the ATMEGA328P using the SPI protocol for serial transfer of AC voltage data. 
+<p align="center">
+   <object data="../images/software_block_diagram.svg" type="image/svg+xml" width="750"></object>
+</p>
+
+
+### Configuring SPI Protocol
+
+This section describes SPI pins and clock frequency configuration to ensure successful communication.
+
+To set the CS, MOSI, and SCLK pins to their desired state, use the following command
+
+```cpp
+#include <SPI.h>
+```
+
+
+```cpp
+SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms
+```

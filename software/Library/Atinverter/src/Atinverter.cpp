@@ -17,7 +17,7 @@ Atinverter::Atinverter(uint16_t frequency) {
 // --- LED Blinking ---
 
 /**
- * @brief Sets 4 LED pins to outputs
+ * @brief Configures all 4 LED pins as outputs.
  */
 void Atinverter::setUpLEDs() {
 	// LED Pins
@@ -28,7 +28,7 @@ void Atinverter::setUpLEDs() {
 }
 
 /**
- * @brief Controls the state of a specified LED.
+ * @brief Sets a specified LED pin to HIGH or LOW.
  *
  * @param LED   The pin number of the LED to control.
  * @param state The desired state for the LED (HIGH to turn on, LOW to turn off).
@@ -40,7 +40,7 @@ void Atinverter::set1LED(int LED, int state) {
 /**
  * @brief Sequentially cycles through four LEDs, turning each on and off with a delay.
  * 
- * This function turns on each LED in order with a delay between each,
+ * This method turns on each LED in order with a delay between each,
  * then turns them off in reverse order, also with a delay.
  *
  * @param t_delay Delay time in milliseconds between each LED toggle.
@@ -68,10 +68,11 @@ void Atinverter::cycleLEDs(int t_delay) {
 // --- DC Voltage and Current Sensing ---
 
 /**
- * @brief Converts a raw ADC reading into an instantaneous (non-averaged) DC voltage.
+ * @brief Senses and returns the input DC voltage.
  * 
- * Applies the voltage divider formula to convert the ADC value to the actual
- * DC input voltage based on the known resistor values.
+ * Converts a ATMEGA328P ADC reading connected to a voltage divider at the DC bus 
+ * into an instantaneous (non-averaged) DC voltage. Applies the voltage divider formula to 
+ * convert the ADC value to the actual DC input voltage based on the known resistor values.
  * 
  * @return Instantaneous measured DC voltage (Vdc).
  */
@@ -83,21 +84,24 @@ float Atinverter::getVdc() {
 }
 
 /**
- * @brief Returns and prints the instantaneous (unaveraged) Idc
- * @return Measured DC current
+ * @brief Senses and returns the input DC voltage.
+ * 
+ * Converts a ATMEGA328P ADC reading connected to the analog voltage pin (Vout) of TMCS1108A4BQDR
+ * into an instantaneous (non-averaged) DC current. Uses 1st order linear transfer function from 
+ * TMCS1108A4BQDR datasheet on page 12 to compute from the read proportional current.
+ * 
+ * @return Instantaneous measured DC current (Idc).
  */
 float Atinverter::getIdc() {
   int digital_val = analogRead(I_DC_PIN); // Read raw ADC value
   float Vout = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to analog voltage
-
-  float Vout_0A = 0.5 * VREF; // Compute the zero current output voltage for TMCS1108A4BDR, see page 3 of datasheet
-  
-  float Idc = (Vout - Vout_0A) / SENSOR_GAIN_MV_PER_A * MV_TO_V; // Use transfer function to compute Idc, see page 12 of datasheet 
+  float Idc = (Vout - VOUT_0A) / SENSOR_GAIN_MV_PER_A * MV_TO_V; // Use transfer function to compute Idc
   return Idc;
 }
 
 /**
- * @brief Computes the moving average of a pre-defined sample count value for a given signal
+ * @brief Computes and returns the moving average for the input DC voltage or current based on a pre-defined 
+ *        sample count.
  * @param isVdc Vdc or Idc (true or false respectively)
  * @param signalValue Unaveraged (instantaneous) measured signal
  * @return Averaged signal
@@ -118,14 +122,39 @@ float Atinverter::getAvgDC(bool isVdc, float signalValue) {
 
   float avg_signal = total / num_readings; // Calculate the moving average
   total -= readings[read_index]; // Subtract recent reading from the total sum
-  
+
   return avg_signal;
 }
 
 // --- AC Voltage and Current Sensing ---
 
-/// @brief Set sensitivity
-/// @param value Sensitivity value
+/**
+ * @brief Initializes the SPI interface and configures the relevant pins.
+ * 
+ * This method sets up the SPI hardware on the ATMEGA328P by calling `SPI.begin()`,
+ * which configures the SCK, MOSI, and CS pins as outputs and enables the SPI subsystem.
+ * 
+ */
+void Atinverter::setUpSPI() {
+  SPI.begin(); // Configures SCK, CS, and MOSI to outputs
+}
+
+/**
+ * @brief Sets the sensitivity factor used to scale RMS ADC values to real-world signal amplitude.
+ *
+ * This scaling factor compensates for the signal conditioning performed by the AC Voltage Sensing circuitry
+ * or TMCS1108A4BQDR Hall-effect current sensor. 
+ * 
+ * For the AC Voltage Sensing, the ZMPT101B steps down the AC mains voltage via a transformer and amplifies 
+ * it using LM358 op-amps, centering the waveform around 2.5V and producing a smaller swing proportional 
+ * to the input voltage.
+ *
+ * As a result, the ADC reading reflects a scaled version of the actual AC signal.
+ * This method sets a user-defined factor (e.g., volts per ADC volt) used in RMS calculations
+ * to convert the measured signal back into real-world units (e.g., Vrms or Arms).
+ *
+ * @param value Sensitivity scaling factor (e.g., 312.5 for converting 0.016V ADC swing to 5Vrms).
+ */
 void Atinverter::setSensitivity(float value) {
 	sensitivity = value;
 }
@@ -139,7 +168,7 @@ int Atinverter::getADC(uint8_t control_byte) {
   
   // Begin SPI communication
   digitalWrite(VI_AC_CS_PIN, LOW); // SPI transfer begins with chip select low
-  SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms
+  SPI.beginTransaction(SPISettings(CLOCK_FREQUENCY, MSBFIRST, SPI_MODE0)); // Configure and start comms
   
   // First transfer - send control byte and receive 4 MSB bits of data
   uint16_t data = SPI.transfer(control_byte); // Send channel selection bits, also receive 4 MSB bits
@@ -157,16 +186,24 @@ int Atinverter::getADC(uint8_t control_byte) {
 }
 
 /**
- * @brief Calculate zero point
- * @param control_byte Selects ADC122S021 channel to read: 0x00 = voltage, 0x08 = current
- * @return zero / center value
+ * @brief Calculates the zero-point (center) value of the ADC readings over a full sampling period.
+ *
+ * This function continuously samples either the DC voltage or current using the external ADC122S021,
+ * and computes the average value over one full period. The result represents the zero-point, which
+ * is used for AC signal offset correction.
+ *
+ * @param control_byte Selects the ADC122S021 input channel to read:
+ *        - 0x00: DC voltage channel
+ *        - 0x08: DC current channel
+ * 
+ * @return Averaged ADC reading over the sampling period (zero-point).
  */
 int Atinverter::getZeroPoint(uint8_t control_byte) {
 	uint32_t Vsum = 0;
 	uint32_t measurements_count = 0;
 	uint32_t t_start = this->millis2();
 
-	while (this->millis2() - t_start < period) // Wait a full period
+	while (this->millis2() - t_start < period)
 	{
     Vsum += this->getADC(control_byte);
 		measurements_count++;

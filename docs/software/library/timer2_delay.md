@@ -243,6 +243,3 @@ And we are done! Those are all the registers you need to set. Now when you look 
 
 ---
 
-Add a note on non-blocking vs blocking:
-delay2 vs millis2()
-

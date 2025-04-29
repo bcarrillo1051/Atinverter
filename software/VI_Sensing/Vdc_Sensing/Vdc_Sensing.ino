@@ -9,13 +9,15 @@
  ******************************************************************************/
 #include "Atinverter.h"
 
-// Atinverter class instance
-Atinverter atinverter;
+// Atinverter 60Hz class instance
+Atinverter atinverter (60);
 
 // Initialize Serial Monitor and set moving average samples
 void setup() {
   Serial.begin(9600);
   Serial.println(F("Initialize Input DC Voltage Sensing."));
+  atinverter.startPWM(false);
+  atinverter.initTimer2Delay();
 }
 
 // Main loop: read and print both raw and averaged Vdc values
@@ -27,5 +29,5 @@ void loop() {
   Serial.print(F("Avg Vdc : ")); Serial.print(avg_Vdc); Serial.println(F("V")); // Print averaged Vdc
 
   Serial.println();
-  delay(500); // Adjust to change Vdc print rate (in milliseconds)
+  atinverter.delay2(500); // Adjust to change Vdc print rate (in milliseconds)
 }

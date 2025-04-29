@@ -24411,7 +24411,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100Ω"
+		(property "Value" "6.8Ω"
 			(at 123.19 180.34 0)
 			(effects
 				(font

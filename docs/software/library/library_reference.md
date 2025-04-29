@@ -2,7 +2,7 @@
 title: Reference
 layout: default
 parent: Library
-nav_order: 2
+nav_order: 1
 ---
 
 # **Atinverter V2 Library Reference**
@@ -14,8 +14,16 @@ The Atinverter library is comprised of two files: `Atinverter.h` and `Atinverter
 <img src="../../images/atinverter_library_high_level.png" alt="Atinverter Library High Level" width="400"/>
 </p>
 
-Upon further inspection of the Atinverter Library, we can observe that it is organized into five main sections based on functionality. To learn more about each section and their respective methods, refer to [Software Modules](../modules/modules).
+<div style="text-align: center;">
+    <h7><b>Figure X.</b> Atinverter Library High Level</h7>
+</div>
+
+Upon further inspection of the Atinverter Library, we can observe that it is organized into five main sections based on functionality. The nodes for the five main section of the library are interactive—click to explore specific software functionality and learn more about its design. Additionally, the code is thoroughly documented within the program files, so these sections will focus primarily on providing an overview of the design and any algorithms that were implemented.
 
 <p align="center">
-<img src="../../images/atinverter_library_expanded_view.png" alt="Atinverter Library Exapanded View" width="600"/>
+   <object data="../../images/atinverter_library_expanded_view.svg" type="image/svg+xml" width="600"></object>
 </p>
+
+<div style="text-align: center;">
+    <h7><b>Figure X.</b> Atinverter Library Expanded View</h7>
+</div>

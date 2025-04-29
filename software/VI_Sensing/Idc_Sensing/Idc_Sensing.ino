@@ -14,14 +14,13 @@
 #include "Atinverter.h"
 
 // Atinverter class instance
-Atinverter atinverter;
+Atinverter atinverter (60);
 
-// Initialize Serial Monitor
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600); // Initialize Serial Monitor
   Serial.println(F("Initialize Input DC Current Sensing."));
   atinverter.startPWM(false); // 60Hz, true 50Hz
-  atinverter.initTimer2Delay();
+  atinverter.initTimer2Delay(); // Initialize timer 2 registers
 }
 
 // Main loop: read and print both raw and averaged Idc values
@@ -29,9 +28,9 @@ void loop() {
   float raw_Idc = atinverter.getIdc();
   Serial.print(F("Raw Idc : ")); Serial.print(raw_Idc); Serial.println(F("A")); // Print unaveraged Idc
 
-  float avg_Idc = atinverter.getAvgDC(1, raw_Idc);
+  float avg_Idc = atinverter.getAvgDC(false, raw_Idc); // false = Idc, true = Vdc
   Serial.print(F("Avg Idc : ")); Serial.print(avg_Idc); Serial.println(F("A")); // Print averaged Idc
   
   Serial.println();
-  atinverter.delay2(1000);
+  atinverter.delay2(500); // Print rate in ms
 }

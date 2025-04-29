@@ -2,7 +2,7 @@
 title: Set Up
 layout: default
 parent: Library
-nav_order: 1
+nav_order: 2
 ---
 
 # **Atinverter Library Set Up**

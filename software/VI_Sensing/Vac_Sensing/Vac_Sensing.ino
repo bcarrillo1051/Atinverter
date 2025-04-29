@@ -17,9 +17,8 @@ void setup() {
   Serial.begin(9600);
   Serial.println(F("Initialize Output AC Voltage Sensing."));
   atinverter.setSensitivity(SENSITIVITY);
-
+  atinverter.setUpSPI();
   atinverter.startPWM(false); // 60Hz, true 50Hz
-  SPI.begin(); // Configures SCK, CS, and MOSI to outputs
   atinverter.initTimer2Delay(); // Set up Timer2 registers to proper init values
 }
 

@@ -91,411 +91,607 @@
     "relUrl": "/hardware/a_v2_hw.html"
   },"13": {
     "doc": "AC V/I Sensing",
-    "title": "AC Voltage Sensing Software",
-    "content": ". As mentioned in the AC Voltage Sensing hardware section, to achieve AC RMS voltage measurement across the load of the power inverter ($V_{\\mathrm{AC_load}}$), the signal is: . | Transformed from a 12V-48$V_{pk}$ AC signal to a composite signal containing both DC and AC components. | Scaled down to a 2.5V DC, 0-1V AC peak signal (effectively ranges from 1.5V to 3.5V), to maintain compatibilibity with the ADC122S021 input channels | . Now that this signal is conditioned appropriately for sampling, the next step is properly configure the SPI bus on the ATMEGA328P to allow communication between the ADC122S021. ",
-    "url": "/software/library/ac_vi_sensing.html#ac-voltage-sensing-software",
+    "title": "AC Voltage and Current Sensing Software",
+    "content": ". ",
+    "url": "/software/library/ac_vi_sensing.html#ac-voltage-and-current-sensing-software",
     
-    "relUrl": "/software/library/ac_vi_sensing.html#ac-voltage-sensing-software"
+    "relUrl": "/software/library/ac_vi_sensing.html#ac-voltage-and-current-sensing-software"
   },"14": {
     "doc": "AC V/I Sensing",
-    "title": "Interfacing ADC122S021 with ATMEGA328P Using SPI",
-    "content": "Outline of SPI Communication . The ATMEGA328P operates as the master/controller and the ADC122S021 as the slave/peripheral. As it conventional in SPI communication, the ATMEGA328P initiates communication by setting CS low. The communication is conducted in 16 clock pulses of the SCLK frequency, corresponding to two byte data frames. Since SPI inherently is full-duplex, these two data frames are used for: . | Sending control data through MOSI (DIN of ADC122S021) to specify the channel to read from | Receiving conversion data through MISO (DOUT of ADC122S021) | . It should be highlighted that the only useful data for DIN and DOUT are the first 8 most signicant bits (MSB) and the last 12 least significant bits (LSB). Given that ADC122S021 utilizes a successive approximation register (SARs) topology, it employs the use of a track and hold mechanism. The voltage samples are tracked for the first 4 clock cycles and held for data transmission during the subsequent 12 clock cycles. Once the 12-bit conversion data is received by the ATMEGA328P, the CS line is enabled high to terminate communication with the ADC122S021. The timing diagram of the ADC122S021 provides an insightful visual representation of the SPI communication and reflects the information covered. Configuring SPI Protocol . This section describes SPI pins and clock frequency configuration to ensure successful communication. The following table delineates the ATMEGA328P pin type, number, and state to be set: . | Pin Type | Digital Pin Number | State | . | CS | 10 | OUTPUT | . | MOSI | 11 | OUTPUT | . | MISO | 12 | INPUT | . | SCLK | 13 | OUTPUT | . Configuring all SPI pins on the ATMEGA328P can be achieved by including the Arduino built-in library SPI.h in a program. In this case, the library is included in our user-defined library Atinverter.h. #include &lt;SPI.h&gt; . M . CS, MOSI, SCLK . SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms . ⌚ Choosing the Appropriate SPI Clock Source . We have to ensure that our SPI clock rate is suitable for the communication with the ADC. This means that the clock source cannot exceed the maximum sample rate (throughput) of the device. The table shown below provides the ranges of allow clock frequencies and how that maps to a given sample rate: . | Parameter | Max Clock Freq | Range | . | fsclk | Clock Frequency | 0.8MHz - 3.2MHz | . | fs | Sample Rate | 50ksps - 200ksps | . To better understand the relationship between the sample rate and the clock frequency, we can use the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] In our case, the available frequency from the ATMEGA328P is 16MHz, therefore to obtain the maximum allowable sample rate, we need a pre-scaler of 5 to obtain a $f_{SCLK} = 3.2MHz$, but unfortunately the microcontroller only has the following pre-scalers: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . ",
-    "url": "/software/library/ac_vi_sensing.html#interfacing-adc122s021-with-atmega328p-using-spi",
+    "title": "Overview",
+    "content": "As mentioned in the AC Voltage Sensing hardware section, to achieve AC RMS voltage measurement across the load of the power inverter ($V_{\\mathrm{AC_load}}$), the signal is: . | Transformed from a 12V-48$V_{pk}$ AC signal to a composite signal containing both DC and AC components. | Scaled down to a 2.5V DC, 0-1V AC peak signal (effectively ranges from 1.5V to 3.5V), to maintain compatibilibity with the ADC122S021 input channels | . Now that this signal is conditioned appropriately for sampling, the next step is properly configure the SPI bus on the ATMEGA328P to interface with the ADC122S021. ",
+    "url": "/software/library/ac_vi_sensing.html#overview",
     
-    "relUrl": "/software/library/ac_vi_sensing.html#interfacing-adc122s021-with-atmega328p-using-spi"
+    "relUrl": "/software/library/ac_vi_sensing.html#overview"
   },"15": {
+    "doc": "AC V/I Sensing",
+    "title": "Outline of SPI Communication",
+    "content": "The ATMEGA328P operates as the master/controller and the ADC122S021 as the slave/peripheral. As it conventional in SPI communication, the ATMEGA328P initiates communication by setting CS low. The communication is conducted in 16 clock pulses of the SCLK frequency, corresponding to two byte data frames. Since SPI inherently is full-duplex, these two data frames are used for: . | Sending control data through MOSI (DIN of ADC122S021) to specify the channel to read from | Receiving conversion data through MISO (DOUT of ADC122S021) | . It should be highlighted that the only useful data for DIN and DOUT are the first 8 most signicant bits (MSB) and the last 12 least significant bits (LSB) respectively. Given that ADC122S021 utilizes a successive approximation register (SARs) topology, it employs the use of a track and hold mechanism. The voltage samples are tracked for the first 4 clock cycles and held for data transmission during the subsequent 12 clock cycles. Once the 12-bit conversion data is received by the ATMEGA328P, the CS line is enabled high to terminate communication with the ADC122S021. The timing diagram of the ADC122S021 provides an insightful visual representation of the SPI communication and reflects the information covered. . ",
+    "url": "/software/library/ac_vi_sensing.html#outline-of-spi-communication",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#outline-of-spi-communication"
+  },"16": {
+    "doc": "AC V/I Sensing",
+    "title": "Choosing the Appropriate SPI Clock Source ⌚",
+    "content": "Ensuring suitable communication with the ADC122S021 relies on providing a clock source from the ATMEGA328P that falls within the allowable frequency range of the device. The clock signal is critical as it maps to the sampling rate of the ADC122S021 which is also constrained to a specific range. The table below summarizes the ranges of allowable clock frequencies and their corresponding sample rates: . | Notation | Parameter | Range | . | $f_{sclk}$ | Clock Frequency | 0.8MHz - 3.2MHz | . | $f_{s}$ | Sample Rate | 50ksps - 200ksps | . The relationship between the sample rate and the clock frequency can be understood from the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] This expression reflects the idea that a complete 12-bit signal conversion requires 16 clock pulses. As a result, the sampling frequency is one-sixteenth of the clock frequency. The clock source delivered to the ADC122S021 is derived from the 16MHz main clock of the ATMEGA328P and a pre-scaler value of our choosing. The available pre-scalers are displayed below: . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . Given that the clock signal is constrained to the range of 0.8MHz - 3.2MHz for the ADC122S021, this means we can choose to either to supply a 1MHz or 2MHz clock signal from the ATMEGA328P. Either option is in theoretically valid, but there are important tradeoffs to consider: . Choosing a higher sampling frequency (2MHz): . | Better resolution | Improved signal to noise ratio (SNR) | Spreading of ADC quantization noise over a broader bandwidth | . Choosing a lower sampling frequency (1MHz): . | Reduced software overhead (fewer clock cycles) | Less memory intensive for MCU | More power efficient | . The Nyquist Sampling Theorem states that to minimally reconstruct an analog signal without aliasing, the sampling frequency $f_{s}$ must be at least 2 times the maximum frequency component $f_{max}$ of the analog signal. This miminum requirement for the sampling rate is also known as the Nyquist Rate. \\[f_{s} \\geq 2 \\times f_{max}\\] Aliasing represents an adverse effect where the sampled waveform loses its charateristic shape and appears as a different frequency. While just marginally satisfying the Nyquist Rate condition may be appropriate in some applications, this does not always guarentee proper resolution and amplitude accuracy of the signal. In practical applications such as sampling sinusoidal signals, it is recommended that $f_{s}$ is at least 5 to 10 times the sinusoidal signal $f_{sinusoid}$. Higher ADC sample rates yield finer resolution in the digitized sinusoidal waveform, whereas lower sampling raters result in a degraded signal in terms of resolution and signal shape. In this design, the ADC122S021 is tasked with sampling the output voltage and current signals of PWM inverter, both of which are 50Hz or 60Hz sinusoidal signals depending on the PWM generation technique. Considering how these signals are far lower in frequency relative to the sampling capabilities of the ADC122S021, a clock rate of 1MHz (pre-scaler 16) was selected. This aims to reduce software overhead and memory load as well as mantain an adequate sampling rate for proper signal digitization. \\[f_{s} = \\frac{1 \\times 10^6MHz}{16} = 62.5kHz\\] \\[\\frac{f_{s}}{f_{max}} = \\frac{62.5kHz}{60Hz} ≈ 1042\\] The sampling frequeny is substantially larger than the recommended amount so a high fidelity signal is to be expected. Translating this concept into software, the command below: . SPI.beginTransaction(SPISettings(CLOCK_FREQUENCY, MSBFIRST, SPI_MODE0)); . is used to specify key metrics of the SPI communication protocol. The CLOCK_FREQUENCY is a macro that maps to 1MHz. In addition, most significant bit (MSB) transmission and SPI Mode 0 (CPOL = 0, CPHA = 0) are specified with macros in accordance with ADC122S021 device requirements. ",
+    "url": "/software/library/ac_vi_sensing.html#choosing-the-appropriate-spi-clock-source-",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#choosing-the-appropriate-spi-clock-source-"
+  },"17": {
+    "doc": "AC V/I Sensing",
+    "title": "Pin Assignments",
+    "content": "The following table delineates the pins used for the SPI protocol and their desired states: . | Pin Type | Digital Pin Number | State | . | CS | 10 | OUTPUT | . | MOSI | 11 | OUTPUT | . | MISO | 12 | INPUT | . | SCLK | 13 | OUTPUT | . Configuring all SPI pins on the ATMEGA328P can be performed by using SPI.begin() from the Arduino built-in SPI.h library. In this case, since the SPI.h library is included in the user-defined header file Atinverter.h, no need to include it separately in the module program. ",
+    "url": "/software/library/ac_vi_sensing.html#pin-assignments",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#pin-assignments"
+  },"18": {
+    "doc": "AC V/I Sensing",
+    "title": "Library Structure",
+    "content": "Implementation in Atinverter.h: . #include &lt;SPI.h&gt; // TMCS1108 Current Sensor Parameters #define SENSOR_GAIN_MV_PER_A 400.0f #define MV_TO_V 1000.0f #define VOUT_0A 2.5f // ADC Parameters #define VREF 5.0f #define ADC_122S021_MAX_VALUE 4095.0f // Parameters AC Sensing uint32_t period; float sensitivity = DEFAULT_SENSITIVITY; // AC Voltage and Current Pin Definitions static const int VI_AC_CS_PIN = 10; static const int VI_AC_MOSI_PIN = 11; static const int VI_AC_MISO_PIN = 12; static const int VI_AC_SCLK_PIN = 13; // Methods void setUpSPI(); void setSensitivity(float value); int getADC(uint8_t control_byte); int getZeroPoint(uint8_t control_byte); float getRmsAC(uint8_t loopCount, bool isVac); . ",
+    "url": "/software/library/ac_vi_sensing.html#library-structure",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#library-structure"
+  },"19": {
+    "doc": "AC V/I Sensing",
+    "title": "Method Descriptions",
+    "content": " ",
+    "url": "/software/library/ac_vi_sensing.html#method-descriptions",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#method-descriptions"
+  },"20": {
+    "doc": "AC V/I Sensing",
+    "title": "void setUpSPI()",
+    "content": "Purpose: Initializes the SPI interface and configures the relevant pins. Psuedocode: . | Configure CS, MOSI, and SCLK pins to their desired state | . Atinverter.cpp Code: . void Atinverter::setUpSPI() { SPI.begin(); } . ",
+    "url": "/software/library/ac_vi_sensing.html#void-setupspi",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#void-setupspi"
+  },"21": {
+    "doc": "AC V/I Sensing",
+    "title": "int getZeroPoint(uint8_t control_byte)",
+    "content": "Purpose: Calculates the zero-point (DC offset) value of the ADC readings over a full sampling period. This value is used to remove the DC bias from the AC signal before performing RMS calculations. Psuedocode: . | Initialize Variables . | ADC readings summation to 0 | ADC readings measurement count to 0 | Record the start time using millis2() | . | Main Loop . | Whil the elapsed time is less than the period: . | Read the ADC value from the specified control_byte channel | Accumulate the ADC value | Increment the measurement count | . | . | Return . | Compute and return the average (sum divided by the count) | . | . Implementation in Atinverter.cpp: . int Atinverter::getZeroPoint(uint8_t control_byte) { uint32_t Vsum = 0; uint32_t measurements_count = 0; uint32_t t_start = this-&gt;millis2(); while (this-&gt;millis2() - t_start &lt; period) { Vsum += this-&gt;getADC(control_byte); measurements_count++; } return Vsum / measurements_count; } . ",
+    "url": "/software/library/ac_vi_sensing.html#int-getzeropointuint8_t-control_byte",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#int-getzeropointuint8_t-control_byte"
+  },"22": {
+    "doc": "AC V/I Sensing",
+    "title": "void setSensitivity(float value)",
+    "content": "Purpose: Sets the sensitivity factor used to scale RMS ADC values to real-world signal amplitude. The sensitivity factor is applied in the getRmsAC() method after calculating the RMS value of the ADC samples. It ensures that the returned value reflects the actual physical signal magnitude, not just the ADC voltage level. Psuedocode: . | Take the user-defined sensitivity input. | Store it as the internal sensitivity scaling variable. | . Implementation in Atinverter.cpp: . void Atinverter::setSensitivity(float value) { sensitivity = value; } . ",
+    "url": "/software/library/ac_vi_sensing.html#void-setsensitivityfloat-value",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#void-setsensitivityfloat-value"
+  },"23": {
+    "doc": "AC V/I Sensing",
+    "title": "int getADC(uint8_t control_byte)",
+    "content": "Purpose: . Psuedocode: . Implementation in Atinverter.cpp: . int Atinverter::getADC(uint8_t control_byte) { digitalWrite(VI_AC_CS_PIN, LOW); SPI.beginTransaction(SPISettings(CLOCK_FREQUENCY, MSBFIRST, SPI_MODE0)); uint16_t data = SPI.transfer(control_byte); data &lt;&lt;= 8; data |= SPI.transfer(0x00); digitalWrite(VI_AC_CS_PIN, HIGH); SPI.endTransaction(); data &amp;= 0x0FFF; return data; } . ",
+    "url": "/software/library/ac_vi_sensing.html#int-getadcuint8_t-control_byte",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#int-getadcuint8_t-control_byte"
+  },"24": {
+    "doc": "AC V/I Sensing",
+    "title": "float getRmsAC(uint8_t loopCount, bool isVac)",
+    "content": "Purpose: . Psuedocode: . Implementation in Atinverter.cpp: . float Atinverter::getRmsAC(uint8_t loopCount, bool isVac) { uint8_t control_byte; if (isVac){ control_byte = VAC_ADC_CHANNEL; } else{ control_byte = IAC_ADC_CHANNEL; } double readingVoltage = 0.0f; for (uint8_t i = 0; i &lt; loopCount; i++) { int zeroPoint = this-&gt;getZeroPoint(control_byte); int32_t Vnow = 0; uint32_t Vsum = 0; uint32_t measurements_count = 0; uint32_t t_start = this-&gt;millis2(); while (this-&gt;millis2() - t_start &lt; period) { Vnow = this-&gt;getADC(control_byte) - zeroPoint; Vsum += (Vnow * Vnow); measurements_count++; } readingVoltage += sqrt(Vsum / measurements_count) / ADC_122S021_MAX_VALUE * VREF * sensitivity; } return readingVoltage / loopCount; } . ",
+    "url": "/software/library/ac_vi_sensing.html#float-getrmsacuint8_t-loopcount-bool-isvac",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#float-getrmsacuint8_t-loopcount-bool-isvac"
+  },"25": {
+    "doc": "AC V/I Sensing",
+    "title": "AC Voltage Sensing Module Program",
+    "content": "Purpose: Demonstrates the use of the AC Voltage Sensing methods in an Arduino sketch. Psuedocode: . Implementation of Vac_Sensing.ino: . #include \"Atinverter.h\" #define LOOP_RUNS 20 // Atinverter class instance Atinverter atinverter(60); void setup() { Serial.begin(9600); Serial.println(F(\"Initialize Output AC Voltage Sensing.\")); atinverter.setSensitivity(SENSITIVITY); atinverter.setUpSPI(); atinverter.startPWM(false); atinverter.initTimer2Delay(); } void loop() { float Vac_RMS = atinverter.getRmsAC(true, LOOP_RUNS); Serial.print(F(\"Vac(RMS): \")); Serial.print(Vac_RMS); Serial.println(\"V\"); atinverter.delay2(2000); } . ",
+    "url": "/software/library/ac_vi_sensing.html#ac-voltage-sensing-module-program",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#ac-voltage-sensing-module-program"
+  },"26": {
+    "doc": "AC V/I Sensing",
+    "title": "AC Current Sensing Module Program",
+    "content": "Purpose: Demonstrates the use of the AC Current Sensing methods in an Arduino sketch. Psuedocode: . Implementation of Iac_Sensing.ino: . #include \"Atinverter.h\" #define LOOP_RUNS 20 // Atinverter class instance Atinverter atinverter(60); void setup() { // Initialize Serial Monitor Serial.begin(9600); Serial.println(F(\"Initialize Output AC Voltage Sensing.\")); atinverter.setSensitivity(SENSITIVITY); atinverter.startPWM(false); // 60Hz, true 50Hz atinverter.setUpSPI(); // Configures SCK, CS, and MOSI to outputs atinverter.initTimer2Delay(); // Set up Timer2 registers to proper init values } void loop() { float Iac_RMS = atinverter.getRmsAC(false, LOOP_RUNS); // true = Vac, false = Iac, 20 Serial.print(F(\"Iac(RMS): \")); Serial.print(Iac_RMS); Serial.println(\"A\"); atinverter.delay2(2000); } . ",
+    "url": "/software/library/ac_vi_sensing.html#ac-current-sensing-module-program",
+    
+    "relUrl": "/software/library/ac_vi_sensing.html#ac-current-sensing-module-program"
+  },"27": {
     "doc": "AC V/I Sensing",
     "title": "AC V/I Sensing",
     "content": ". ",
     "url": "/software/library/ac_vi_sensing.html",
     
     "relUrl": "/software/library/ac_vi_sensing.html"
-  },"16": {
+  },"28": {
     "doc": "Blink",
     "title": "Blink Software",
     "content": ". ",
     "url": "/software/library/blink.html#blink-software",
     
     "relUrl": "/software/library/blink.html#blink-software"
-  },"17": {
+  },"29": {
+    "doc": "Blink",
+    "title": "Overview",
+    "content": "This feature of the library is primarily useful for testing the bootloaded state of the ATMEGA328P or for basic LED blinking operations. ",
+    "url": "/software/library/blink.html#overview",
+    
+    "relUrl": "/software/library/blink.html#overview"
+  },"30": {
+    "doc": "Blink",
+    "title": "Pin Assignments",
+    "content": "This table shows the mapping of the LEDs and their corresponding ATMEGA328P pin assignments: . | Pin Description | Pin Name (Code) | Pin Number | Pin State | . | Red LED 1 | LED1R_PIN | 2 | OUTPUT | . | Green LED 1 | LED1G_PIN | 3 | OUTPUT | . | Red LED 2 | LED2R_PIN | 4 | OUTPUT | . | Green LED 2 | LED2G_PIN | 7 | OUTPUT | . ",
+    "url": "/software/library/blink.html#pin-assignments",
+    
+    "relUrl": "/software/library/blink.html#pin-assignments"
+  },"31": {
+    "doc": "Blink",
+    "title": "Library Structure",
+    "content": "Implementation in Atinverter.h: . // LED Pin Definitions static const int LED1R_PIN = 2; static const int LED1G_PIN = 3; static const int LED2R_PIN = 4; static const int LED2G_PIN = 7; // Methods void setUpLEDs(); void set1LED(int LED, int state); void cycleLEDs(int t_delay); . ",
+    "url": "/software/library/blink.html#library-structure",
+    
+    "relUrl": "/software/library/blink.html#library-structure"
+  },"32": {
+    "doc": "Blink",
+    "title": "Method Descriptions",
+    "content": " ",
+    "url": "/software/library/blink.html#method-descriptions",
+    
+    "relUrl": "/software/library/blink.html#method-descriptions"
+  },"33": {
+    "doc": "Blink",
+    "title": "void setUpLEDs()",
+    "content": "Purpose: Configures all LED pins as outputs. Psuedocode: . | Configure the state of all 4 LED pins as outputs for driving. | . Implementation in Atinverter.cpp: . void Atinverter::setUpLEDs() { pinMode(LED1R_PIN, OUTPUT); pinMode(LED1G_PIN, OUTPUT); pinMode(LED2R_PIN, OUTPUT); pinMode(LED2G_PIN, OUTPUT); } . ",
+    "url": "/software/library/blink.html#void-setupleds",
+    
+    "relUrl": "/software/library/blink.html#void-setupleds"
+  },"34": {
+    "doc": "Blink",
+    "title": "void set1LED(int LED, int state)",
+    "content": "Purpose: Sets a user-selected LED pin as on or off. Pseudocode: . | Sets a user-selected LED pin as on (HIGH) or off (LOW). | . Implementation in Atinverter.cpp: . void Atinverter::set1LED(int LED, int state) { digitalWrite(LED, state); } . ",
+    "url": "/software/library/blink.html#void-set1ledint-led-int-state",
+    
+    "relUrl": "/software/library/blink.html#void-set1ledint-led-int-state"
+  },"35": {
+    "doc": "Blink",
+    "title": "void cycleLEDs(int t_delay)",
+    "content": "Purpose: Sequentially cycles through four LEDs, turning each on and off with a delay. Pseudocode: . | Turns on each LED in order with a delay in between in milliseconds | Turns off each LED in reverse order with a delay in between in milliseconds | . Implementation in Atinverter.cpp: . void Atinverter::cycleLEDs(int t_delay) { digitalWrite(LED1G_PIN, HIGH); delay(t_delay); digitalWrite(LED1R_PIN, HIGH); delay(t_delay); digitalWrite(LED2G_PIN, HIGH); delay(t_delay); digitalWrite(LED2R_PIN, HIGH); delay(t_delay); digitalWrite(LED2R_PIN, LOW); delay(t_delay); digitalWrite(LED2G_PIN, LOW); delay(t_delay); digitalWrite(LED1R_PIN, LOW); delay(t_delay); digitalWrite(LED1G_PIN, LOW); delay(t_delay); } . ",
+    "url": "/software/library/blink.html#void-cycleledsint-t_delay",
+    
+    "relUrl": "/software/library/blink.html#void-cycleledsint-t_delay"
+  },"36": {
+    "doc": "Blink",
+    "title": "Blink Module Program",
+    "content": "Purpose: Demonstrates the use of the Blink methods in an Arduino sketch. Pseudocode: . | Create a new Atinverter instance | Set up the period of time for delaying LED operations | Set the GPIO pins for LEDs as outputs | Turn on LED 1 | Turn on LED 2 | Wait for the defined period | Turn off LED 1 | Turn off LED 2 | Wait for the defined period | Cycle through LEDs with delay | . Implementation of Blink.ino: . #include \"Atinverter.h\" Atinverter atinverter; int PERIOD = 1000; void setup() { atinverter.setUpLEDs(); } void loop() { atinverter.set1LED(atinverter.LED1R_PIN, HIGH); atinverter.set1LED(atinverter.LED2G_PIN, HIGH); delay(PERIOD); atinverter.set1LED(atinverter.LED1R_PIN, LOW); atinverter.set1LED(atinverter.LED2G_PIN, LOW); delay(PERIOD); atinverter.cycleLEDs(PERIOD); } . ",
+    "url": "/software/library/blink.html#blink-module-program",
+    
+    "relUrl": "/software/library/blink.html#blink-module-program"
+  },"37": {
     "doc": "Blink",
     "title": "Blink",
     "content": " ",
     "url": "/software/library/blink.html",
     
     "relUrl": "/software/library/blink.html"
-  },"18": {
+  },"38": {
     "doc": "Boost Converter",
     "title": "Programming the Output Voltage",
     "content": ". The output voltage of the boost converter is given by the following equation: . \\[R_{1} = \\left( \\frac{V_{OUT}}{V_{REF}} - 1 \\right) \\times R_{2}\\] Desire an output voltage of 12V, internal reference voltage is 795mV, choose R2, solve for R1. | $V_{OUT} = 12V$ | $V_{REF} = 795mV$ | $R_{2} = 71.5k\\Omega$ | . \\[R_{1} \\approx 1M\\Omega\\] ",
     "url": "/hardware/boost_conv.html#programming-the-output-voltage",
     
     "relUrl": "/hardware/boost_conv.html#programming-the-output-voltage"
-  },"19": {
+  },"39": {
     "doc": "Boost Converter",
     "title": "Inductor Selection",
     "content": ". To determine the inductor current (input current draw): . \\[I_{L(DC)} = \\frac{V_{OUT} \\times I_{OUT}}{V_{IN} \\times \\eta}\\] . | $V_{OUT}$ = 12V | $V_{IN}$ = 5V | $\\eta$ = 0.8 (80% recommended by datasheet) | $I_{OUT}$ = ? | . Need to find the load current that will be drawn. This boost converter is only driving the two IR2302 gate drivers for our PWM Inverter H-bridge design so if we find the current consumed by these drivers, we will effectively find the output load to drive. The current consumption of a gate driver is based upon the static and dynamic current consumption. As per the IR2302 datasheet, the max possible Quiescent Vcc supply current $I_{QCC}$ = 1.6mA. Therefore, $I_{static}$ = 1.6mA. The dynamic current consumed by the device can be found by the following relation between the total gate charge of the MOSFET and the switching frequency: . $I_{dynamic}​ = Q_{g} ​× f_{sw}$ . As per the IRFB4020PBF MOSFET datasheet, the maximum total gate charge is 29nC and the switching frequency of operation of the gate drivers is 31,372Hz. | $Q_{g} = 29nC$ | $f_{sw} = 31,372Hz$ | . Using these values, the dynamic current consumption of one MOSFET is: . $I_{dynamic}​ = 0.91mA$ . Considering that the PWM inverter topology is based on 4 MOSFETs with only 2 operating at any given time simultaneously, this means the total dynamic current is $2 \\times I_{dynamic}​ = 1.82mA$. Additionally, the quiescent current is dictated by two gate drivers so the total static current is $2 \\times I_{static}​ = 3.2mA$. $I_{LOAD}​ = I_{STATIC} ​+ I_{DYNAMIC}$ $I_{OUT}​ = 5.02mA$ . Now that we have the total load current $I_{OUT}$ = 5.02mA, then we can solve for the inductor current using the following values: . | $V_{OUT} = 12V$ | $V_{IN} = 5V$ | $I_{OUT} = 5.02mA$ | $\\eta$ = 0.8 (80% recommended by datasheet) | . \\[I_{L(DC)} = 15.06mA\\] The inductor ripple current is calculated with Equation 3 for an asynchronous boost converter in continuous conduction mode (CCM). \\[\\Delta I_{L(\\text{P-P})} = \\frac{V_{IN} \\times (V_{OUT} + 0.8V - V_{IN})}{L \\times f_{SW} \\times (V_{OUT} + 0.8V)}\\] where: . | ΔIL(P-P) is inductor ripple current | L is inductor value | f SW is switching frequency | VOUT is output voltage | VIN is input voltage | . ",
     "url": "/hardware/boost_conv.html#inductor-selection",
     
     "relUrl": "/hardware/boost_conv.html#inductor-selection"
-  },"20": {
+  },"40": {
     "doc": "Boost Converter",
     "title": "Boost Converter",
     "content": ". ",
     "url": "/hardware/boost_conv.html",
     
     "relUrl": "/hardware/boost_conv.html"
-  },"21": {
+  },"41": {
     "doc": "Buck Converter",
     "title": "Determining the DC/DC Converter Output Current Needed",
     "content": "Requirements . | Input Voltage: 12V-48V | Output Voltage: 5V | . ",
     "url": "/hardware/buck_conv.html#determining-the-dcdc-converter-output-current-needed",
     
     "relUrl": "/hardware/buck_conv.html#determining-the-dcdc-converter-output-current-needed"
-  },"22": {
+  },"42": {
     "doc": "Buck Converter",
     "title": "Determining the Required Input Current and PCB Trace Thickness for Switching Converters",
     "content": "Chip parameters . | Chip of Interest: R-78HE-0.3 | DC-DC switching converter, not linear regulator | Input Voltage Range: 6.5V - 48V | Output Voltage: 5V | Output Current: Up to 300mA | Efficiency: Up to 83% | . Power Conversion Equations . (1) \\(P_{\\text{out}} = P_{\\text{in}} + P_{\\text{losses}}\\) (2) \\(Efficiency = \\frac{P_{\\text{out}}}{P_{\\text{in}}}\\) (3) \\(P_{\\text{in}}= V_{\\text{in}} \\times I_{\\text{in}}\\) (4) \\(P_{\\text{out}}= V_{\\text{out}} \\times I_{\\text{out}}\\) . | Plugging in equation (3) into (2) and isolating for \\(I_{\\text{in}}\\) results in: | . \\[I_{\\text{in}} = \\frac{P_{\\text{out}}}{V_{\\text{in}} \\times \\text{Efficiency}}\\] Finding the Maximum Input Current . | Known: \\(V_{\\text{out_max}} = 5V, I_{\\text{out_max}} = 300mA\\) \\(P_{\\text{out_max}} = 5 \\times 300m = 1.5W\\) . | Two cases are considered since the efficiency of the converter changes with the input voltage. \\(V_{\\text{in_max}} = 72\\), Efficiency = 72% \\(I_{\\text{in}} = \\frac{1.5W}{72 \\times \\text{0.72}} = 0.029A\\) \\(V_{\\text{in_min}} = 6.5\\), Efficiency = 83% \\(I_{\\text{in}} = \\frac{1.5W}{6.5 \\times \\text{83}} = 0.278A\\) . | Therefore, the maximum input current is 278mA. This is consistent with the inverse relationship between voltage and current in a DC-DC converter. Although the input current (278mA) is lower than the output current (300mA), the input voltage (6.5V) is higher than the output voltage (5V). This behavior is typical of switching converters, which take advantage of the complementary relationship between input and output voltage and current. | However, to be conservative, let’s say the chip consumes 300mA which is the same as the output current. This is a standard technique that is employed to approximate the current drawn from the converter especially for higher efficiencies. We could have utilized this approach, but now we know how to solve for the max input current for any converter. | Using Digikey PCB Trace Width Calculator . | The maximum input current is 0.3A and we are designing for a 1 oz copper thickness . | . | A required trace width of 0.148mm (5.83mils) is obtained | . ",
     "url": "/hardware/buck_conv.html#determining-the-required-input-current-and-pcb-trace-thickness-for-switching-converters",
     
     "relUrl": "/hardware/buck_conv.html#determining-the-required-input-current-and-pcb-trace-thickness-for-switching-converters"
-  },"23": {
+  },"43": {
     "doc": "Buck Converter",
     "title": "Buck Converter",
     "content": " ",
     "url": "/hardware/buck_conv.html",
     
     "relUrl": "/hardware/buck_conv.html"
-  },"24": {
+  },"44": {
     "doc": "DC V/I Sensing",
     "title": "DC Voltage and Current Sensing Software",
     "content": ". ",
     "url": "/software/library/dc_vi_sensing.html#dc-voltage-and-current-sensing-software",
     
     "relUrl": "/software/library/dc_vi_sensing.html#dc-voltage-and-current-sensing-software"
-  },"25": {
+  },"45": {
+    "doc": "DC V/I Sensing",
+    "title": "Overview",
+    "content": "The input DC voltage and current sensing is achieved seamlessly through onboard ADC pins of the ATMEGA328P, along with TMCS1108A4BQDR current sensor. These values can be obtained through a computation using raw readouts of the ADC or for improved accuracy, through a running average sampling method. ",
+    "url": "/software/library/dc_vi_sensing.html#overview",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#overview"
+  },"46": {
+    "doc": "DC V/I Sensing",
+    "title": "Pin Assignments",
+    "content": "This table expresses the dedicated analog pins used for the design and their respective state. | Pin Description | Pin Name (Code) | Pin Number | Pin State | . | DC Voltage Sensing | V_DC_PIN | A0 | INPUT | . | DC Current Sensing | I_DC_PIN | A1 | INPUT | . ",
+    "url": "/software/library/dc_vi_sensing.html#pin-assignments",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#pin-assignments"
+  },"47": {
+    "doc": "DC V/I Sensing",
+    "title": "Library Structure",
+    "content": "Implementation in Atinverter.h: . // TMCS1108 Current Sensor Parameters #define SENSOR_GAIN_MV_PER_A 400.0f // Sensitivity for A4 variant (400 mV per A) #define MV_TO_V 1000.0f // Scaling factor from mV to V #define VOUT_0A 2.5f // Zero current output voltage // ADC Parameters #define VREF 5.0f // Reference voltage for both ADCs #define ADC_ATMEGA328P_MAX_VALUE 1023.0f // For ATMEGA328P (internal ADC) // Moving Average Samples #define MA_SAMPLES 10 // DC Voltage and Current Pin Definitions static const int V_DC_PIN = A0; static const int I_DC_PIN = A1; // DC Voltage Sensing Resistor Values static const unsigned long Rvs1 = 120000; static const unsigned int Rsv2 = 9900; // Parameters for Vdc Moving Average static const int Vdc_num_readings = MA_SAMPLES; float Vdc_readings[MA_SAMPLES]; int Vdc_read_index = 0; float Vdc_total = 0; // Parameters for Idc Moving Average static const int Idc_num_readings = MA_SAMPLES; float Idc_readings[MA_SAMPLES]; int Idc_read_index = 0; float Idc_total = 0; // Method Declarations float getVdc(); float getIdc(); float getAvgDC(bool isVdc, float signalValue); . ",
+    "url": "/software/library/dc_vi_sensing.html#library-structure",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#library-structure"
+  },"48": {
+    "doc": "DC V/I Sensing",
+    "title": "Method Descriptions",
+    "content": " ",
+    "url": "/software/library/dc_vi_sensing.html#method-descriptions",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#method-descriptions"
+  },"49": {
+    "doc": "DC V/I Sensing",
+    "title": "getVdc()",
+    "content": "Purpose: Senses and returns the input DC voltage. Psuedocode: . | Read raw ADC value from ATMEGA328P analog pin connected to sensing voltage | Translate the digital ADC reading into its analog voltage equivalent . | \\[Sensed\\ Voltage = \\left( \\frac{Reference\\ Voltage \\times ADC\\ Reading}{2^{(ADC\\ Bits)} - 1} \\right)\\] | . | Convert the sensed voltage to the DC input voltage using rearranged voltage divider . | \\[Input\\ DC\\ Voltage = Sensed\\ Voltage \\times \\frac{(Top\\ Resistor + Bottom\\ Resistor)}{Top\\ Resistor}\\] | . | Return the calculated DC input voltage | . Implementation in Atinverter.cpp: . float Atinverter::getVdc() { int digital_val = analogRead(V_DC_PIN); float Vdc_sense = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); float Vdc = Vdc_sense * (Rvs1 + Rsv2) / Rsv2; return Vdc; } . ",
+    "url": "/software/library/dc_vi_sensing.html#getvdc",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#getvdc"
+  },"50": {
+    "doc": "DC V/I Sensing",
+    "title": "getIdc()",
+    "content": "Purpose: Senses and returns the input DC current. Psuedocode: . | Read raw ADC value from ATMEGA328P analog pin connected to TMCS1108 analog output | Translate the digital ADC reading into its analog voltage equivalent . | \\[Output\\ Voltage = \\left( \\frac{Reference\\ Voltage \\times ADC\\ Reading}{2^{(ADC\\ Bits)} - 1} \\right)\\] | . | Compute the input current using the transfer function from the TMCS1108 datasheet (equation 1 on page 12) . | \\[Input\\ DC\\ Current = \\left( \\frac{Output\\ Voltage - Zero\\ Current\\ Output\\ Voltage}{Sensitivity} \\right)\\] | . | Return the calculated DC input current | . Implementation in Atinverter.cpp: . float Atinverter::getIdc() { int digital_val = analogRead(I_DC_PIN); float Vout = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); float Idc = (Vout - VOUT_0A) / SENSOR_GAIN_MV_PER_A * MV_TO_V; return Idc; } . ",
+    "url": "/software/library/dc_vi_sensing.html#getidc",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#getidc"
+  },"51": {
+    "doc": "DC V/I Sensing",
+    "title": "getAvgDC(bool isVdc, float signalValue)",
+    "content": "Purpose: Computes and returns the moving average for the input DC voltage or current based on a pre-defined sample count. Psuedocode: . | Decide which sampling array will be utilized based on user input | Store the most recent value received in the buffer | Add the readings to the running total | Increment the sampling array index | Check if read index is above the buffer size . | If yes, reset buffer index | If no, continue | . | Compute the average signal using total over the number of readings | Substract the oldest reading to prepare for new readng | Return the averaged signal | . Implementation in Atinverter.cpp: . float Atinverter::getAvgDC(bool isVdc, float signalValue) { const int num_readings = isVdc ? Vdc_num_readings : Idc_num_readings; float* readings = isVdc ? Vdc_readings : Idc_readings; int&amp; read_index = isVdc ? Vdc_read_index : Idc_read_index; float&amp; total = isVdc ? Vdc_total : Idc_total; readings[read_index] = signalValue; total += readings[read_index]; read_index++; if (read_index &gt;= num_readings){ read_index = 0; } float avg_signal = total / num_readings; total -= readings[read_index]; return avg_signal; } . ",
+    "url": "/software/library/dc_vi_sensing.html#getavgdcbool-isvdc-float-signalvalue",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#getavgdcbool-isvdc-float-signalvalue"
+  },"52": {
+    "doc": "DC V/I Sensing",
+    "title": "DC Voltage Sensing Module Program",
+    "content": "Purpose: Demonstrates the use of the DC Voltage Sensing methods in an Arduino sketch. Psuedocode: . | Create a new Atinverter instance with desired frequency (50Hz or 60Hz) | Initialize the serial monitor for displaying DC voltage readings | Begin PWM operation at desired frequency | Configure Timer 2 registers to enable delaying using delay2 method | Read the raw input DC voltage | Print raw input DC voltage to the serial monitor | Pass the most recent reading to the getAvgDC method to calculate the running average | Print averaged input DC voltage to the serial monitor | Wait a designated delay before printing the next reading | . Implementation of Vdc_Sensing.ino: . #include \"Atinverter.h\" Atinverter atinverter (60); void setup() { Serial.begin(9600); Serial.println(F(\"Initialize Input DC Voltage Sensing.\")); atinverter.startPWM(false); atinverter.initTimer2Delay(); } void loop() { float raw_Vdc = atinverter.getVdc(); Serial.print(F(\"Raw Vdc : \")); Serial.print(raw_Vdc); Serial.println(F(\"V\")); float avg_Vdc = atinverter.getAvgDC(true, raw_Vdc); Serial.print(F(\"Avg Vdc : \")); Serial.print(avg_Vdc); Serial.println(F(\"V\")); Serial.println(); atinverter.delay2(500); } . ",
+    "url": "/software/library/dc_vi_sensing.html#dc-voltage-sensing-module-program",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#dc-voltage-sensing-module-program"
+  },"53": {
+    "doc": "DC V/I Sensing",
+    "title": "DC Current Sensing Module Program",
+    "content": "Purpose: Demonstrates the use of the DC Current Sensing methods in an Arduino sketch. Psuedocode: . | Create a new Atinverter instance with desired frequency (50Hz or 60Hz) | Initialize the serial monitor for displaying DC current readings | Begin PWM operation at desired frequency | Configure Timer 2 registers to enable delaying using delay2 method | Read the raw input DC current | Print raw input DC current to the serial monitor | Pass the most recent reading to the getAvgDC method to calculate the running average | Print averaged input DC current to the serial monitor | Wait a designated delay before printing the next reading | . Implementation of Idc_Sensing.ino: . #include \"Atinverter.h\" Atinverter atinverter (60); void setup() { Serial.begin(9600); Serial.println(F(\"Initialize Input DC Current Sensing.\")); atinverter.startPWM(false); atinverter.initTimer2Delay(); } void loop() { float raw_Idc = atinverter.getIdc(); Serial.print(F(\"Raw Idc : \")); Serial.print(raw_Idc); Serial.println(F(\"A\")); float avg_Idc = atinverter.getAvgDC(false, raw_Idc); Serial.print(F(\"Avg Idc : \")); Serial.print(avg_Idc); Serial.println(F(\"A\")); Serial.println(); atinverter.delay2(500); } . ",
+    "url": "/software/library/dc_vi_sensing.html#dc-current-sensing-module-program",
+    
+    "relUrl": "/software/library/dc_vi_sensing.html#dc-current-sensing-module-program"
+  },"54": {
     "doc": "DC V/I Sensing",
     "title": "DC V/I Sensing",
-    "content": " ",
+    "content": ". ",
     "url": "/software/library/dc_vi_sensing.html",
     
     "relUrl": "/software/library/dc_vi_sensing.html"
-  },"26": {
+  },"55": {
     "doc": "Hardware",
     "title": "Hardware",
     "content": ". Atinverter V1 Atinverter V2 . ",
     "url": "/hardware/hardware.html",
     
     "relUrl": "/hardware/hardware.html"
-  },"27": {
+  },"56": {
     "doc": "Home",
     "title": "Atinverter Documentation",
     "content": "Explore the documentation to learn more about this open source power converter! . Vision Hardware Software . ",
     "url": "/#atinverter-documentation",
     
     "relUrl": "/#atinverter-documentation"
-  },"28": {
+  },"57": {
     "doc": "Home",
     "title": "Home",
     "content": " ",
     "url": "/",
     
     "relUrl": "/"
-  },"29": {
+  },"58": {
+    "doc": "Library",
+    "title": "Atinverter V2 Library",
+    "content": ". Click on any of the following sections to the learn more about the Atinverter V2 Library! . ",
+    "url": "/software/library/library.html#atinverter-v2-library",
+    
+    "relUrl": "/software/library/library.html#atinverter-v2-library"
+  },"59": {
     "doc": "Library",
     "title": "Library",
     "content": " ",
     "url": "/software/library/library.html",
     
     "relUrl": "/software/library/library.html"
-  },"30": {
+  },"60": {
     "doc": "Reference",
     "title": "Atinverter V2 Library Reference",
-    "content": ". The Atinverter library is comprised of two files: Atinverter.h and Atinverter.cpp. The header file serves as the blueprint containing the Atinverter class definition, along with its method declarations and member variables. The implementation for the Atinverter class and initilization of member variables are defined in Atinverter.cpp. At a high level, the Atinverter is essentially just two files as illustrated below: . Upon further inspection of the Atinverter Library, we can observe that it is organized into five main sections based on functionality. To learn more about each section and their respective methods, refer to Software Modules. ",
+    "content": ". The Atinverter library is comprised of two files: Atinverter.h and Atinverter.cpp. The header file serves as the blueprint containing the Atinverter class definition, along with its method declarations and member variables. The implementation for the Atinverter class and initilization of member variables are defined in Atinverter.cpp. At a high level, the Atinverter is essentially just two files as illustrated below: . Figure X. Atinverter Library High Level . Upon further inspection of the Atinverter Library, we can observe that it is organized into five main sections based on functionality. The nodes for the five main section of the library are interactive—click to explore specific software functionality and learn more about its design. Additionally, the code is thoroughly documented within the program files, so these sections will focus primarily on providing an overview of the design and any algorithms that were implemented. Figure X. Atinverter Library Expanded View . ",
     "url": "/software/library/library_reference.html#atinverter-v2-library-reference",
     
     "relUrl": "/software/library/library_reference.html#atinverter-v2-library-reference"
-  },"31": {
+  },"61": {
     "doc": "Reference",
     "title": "Reference",
     "content": " ",
     "url": "/software/library/library_reference.html",
     
     "relUrl": "/software/library/library_reference.html"
-  },"32": {
+  },"62": {
     "doc": "Set Up",
     "title": "Atinverter Library Set Up",
     "content": "A guide to help your Arduino IDE recognize and use the Atinverter user-defined library . You might be thinking: . 💭 “Okay, I downloaded the software files from the GitHub repository — now what? Can I just open some random file like blink.ino and run the code?” . You’re almost there! There is just one important step that needs to happen first; We need ensure that the Arduino IDE knows where to find the Atinverter library files (Atinverter.cpp, Atinverter.h), or else you’ll run into the notorious: . fatal error: Atinverter.h: No such file or directory . ",
     "url": "/software/library/library_setup.html#atinverter-library-set-up",
     
     "relUrl": "/software/library/library_setup.html#atinverter-library-set-up"
-  },"33": {
+  },"63": {
     "doc": "Set Up",
     "title": "📁 How Arduino Handles Libraries",
     "content": "The Arduino IDE looks for user-defined libraries in a specific directory on your computer. Simply placing .cpp or .h files in the same directory as the .ino files you wish to run isn’t enough. Here’s where those locations are: . 🔍 If you’re on Windows, it’ll be in: . C:\\Users&lt;YourUsername&gt;\\Documents\\Arduino\\libraries\\ . 🔍 If you’re on macOS or Linux, it’ll be in: . ~/Documents/Arduino/libraries/ . ",
     "url": "/software/library/library_setup.html#-how-arduino-handles-libraries",
     
     "relUrl": "/software/library/library_setup.html#-how-arduino-handles-libraries"
-  },"34": {
+  },"64": {
     "doc": "Set Up",
     "title": "✅ What To Do",
     "content": ". | Navigate to the Atinverter library folder in the repository. It contains the source files Atinverter.cpp, Atinverter.h, and the metadata file library.properties. It is located in: . \\AtInverter\\software\\Library . | Copy the Atinverter folder to your Arduino libraries folder as described in How Arduino Handles Libraries . | . 📸 You should expect to see something like this in your Arduino libraries folder: . ",
     "url": "/software/library/library_setup.html#-what-to-do",
     
     "relUrl": "/software/library/library_setup.html#-what-to-do"
-  },"35": {
+  },"65": {
     "doc": "Set Up",
     "title": "🚀 You’re Good to Go",
     "content": "Once the Atinverter library is in the right place, you can use it any sketch with: . #include \"Atinverter.h\" . ",
     "url": "/software/library/library_setup.html#-youre-good-to-go",
     
     "relUrl": "/software/library/library_setup.html#-youre-good-to-go"
-  },"36": {
+  },"66": {
     "doc": "Set Up",
     "title": "Set Up",
     "content": " ",
     "url": "/software/library/library_setup.html",
     
     "relUrl": "/software/library/library_setup.html"
-  },"37": {
+  },"67": {
     "doc": "UML Diagram",
     "title": "Atinverter UML Diagram",
     "content": ". classDiagram class Atinverter { + LED1R_PIN : int + LED1G_PIN : int + LED2R_PIN : int + LED2G_PIN : int - VI_AC_CS_PIN : int - VI_AC_MOSI_PIN : int - VI_AC_MISO_PIN : int - VI_AC_SCLK_PIN : int - V_DC_PIN : int - I_DC_PIN : int - PWM_A_PIN : int - PWM_B_PIN : int - I2C_SDA_PIN : int - I2C_SCL_PIN : int - PRORESET_PIN : int - GATESD_PIN : int - Rvs1 : unsigned long - Rsv2 : unsigned int - num_readings : int - readings : float[num_readings] - read_index : int - total : float - is50Hz : bool - sin_i : int - pwm_i : int - OK : int - sin50HzPWM : int[312] - sin60HzPWM : int[261] + Atinverter() + setUpPinMode() : void + readVdc() : float + readAvgVdc(Vdc : float) : float + readIdc() : float + readAvgIdc(Idc : float) : float + setUpSPI() : void + readADC() : int + set1LED(led : int, state : int) : void + set2LED(t_delay : int) : void + enablePWM() : void + disablePWM() : void + startPWM(is50HzMode : bool) : void + pwmISR() : void } . ",
     "url": "/software/library/library_uml.html#atinverter-uml-diagram",
     
     "relUrl": "/software/library/library_uml.html#atinverter-uml-diagram"
-  },"38": {
+  },"68": {
     "doc": "UML Diagram",
     "title": "UML Diagram",
     "content": " ",
     "url": "/software/library/library_uml.html",
     
     "relUrl": "/software/library/library_uml.html"
-  },"39": {
+  },"69": {
     "doc": "Main",
     "title": "Main Software",
     "content": ". | To be documented in the future | . ",
     "url": "/software/library/main.html#main-software",
     
     "relUrl": "/software/library/main.html#main-software"
-  },"40": {
+  },"70": {
     "doc": "Main",
     "title": "Main",
     "content": " ",
     "url": "/software/library/main.html",
     
     "relUrl": "/software/library/main.html"
-  },"41": {
-    "doc": "Modules",
-    "title": "Modules",
-    "content": " ",
-    "url": "/software/modules/modules.html",
-    
-    "relUrl": "/software/modules/modules.html"
-  },"42": {
+  },"71": {
     "doc": "Atinverter V1/2 Power Rating",
     "title": "Hardware",
     "content": ". MOSFETs (IRFB4020PBF): . | Continuous Drain Current (ID): 18 A at 25°C | Drain-to-Source Voltage (VDSS): 200 V | Maximum Power Dissipation (PD): 100 W at 25°C | . Inductors (AIRD-02-221K): . | Inductance: 220 µH ​ | Current Rating: . | Continuous: 2.8 A | Saturation: 7 A | . | . Capacitors (1189-4160-1-ND): . | Rated Voltage 250V | Ripple Current @ Low Frequency: 188 mA @ 120 Hz | Ripple Current @ High Frequency: 470 mA @ 100 kHz | . Theoretical max: . | Pmax = Vmax * Imax = 200V * 2.8A = 560W | . BUUUTTTT — that’s theoretical! Needn to consider: . | Need to consider proper heatsinking for the MOSFETs (18 A is at 25°C, derates with temp) | Ripple current through cap &lt; 470mA | Safe design margin: do not run at 100% ratings | Consider switching trajectory | . Reasonably speaking somwhere up to 450W . ",
     "url": "/hardware/power_rating.html#hardware",
     
     "relUrl": "/hardware/power_rating.html#hardware"
-  },"43": {
+  },"72": {
     "doc": "Atinverter V1/2 Power Rating",
     "title": "Atinverter V1/2 Power Rating",
     "content": " ",
     "url": "/hardware/power_rating.html",
     
     "relUrl": "/hardware/power_rating.html"
-  },"44": {
+  },"73": {
     "doc": "PWM Inversion",
     "title": "PWM 50Hz and 60Hz Inversion Software",
     "content": ". The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be \\(f_{sw} = 31,372Hz\\). The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave. The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains. Let’s understand the way in which the PWM code operates. ",
     "url": "/software/library/pwm_inversion.html#pwm-50hz-and-60hz-inversion-software",
     
     "relUrl": "/software/library/pwm_inversion.html#pwm-50hz-and-60hz-inversion-software"
-  },"45": {
+  },"74": {
     "doc": "PWM Inversion",
     "title": "PWM 50Hz",
     "content": "\\(f_{sw} = 31,372Hz\\) \\(f_{sw} = \\frac{1}{f_{sw}} = 31.875\\mu s\\) . ",
     "url": "/software/library/pwm_inversion.html#pwm-50hz",
     
     "relUrl": "/software/library/pwm_inversion.html#pwm-50hz"
-  },"46": {
+  },"75": {
     "doc": "PWM Inversion",
     "title": "PWM Inversion",
     "content": ". ",
     "url": "/software/library/pwm_inversion.html",
     
     "relUrl": "/software/library/pwm_inversion.html"
-  },"47": {
+  },"76": {
     "doc": "Scratchpad",
     "title": "Testing",
     "content": "First Term This is the definition of the first term. Second Term This is one definition of the second term. This is another definition of the second term. The world is flat. We now know that the world is round. This sentence uses $ delimiters to show math inline: $\\sqrt{3x-1}+(1+x)^2$ . highlight . X2 . Use `code` in your Markdown file. H20 . I need to highlight these very important words. ",
     "url": "/scratchpad.html#testing",
     
     "relUrl": "/scratchpad.html#testing"
-  },"48": {
+  },"77": {
     "doc": "Scratchpad",
     "title": "Callouts",
     "content": "A paragraph . A paragraph . Another paragraph . The last paragraph . Highlight yellow . Highlight blue . Highlight green . Highlight red . Highlight greylt . Test 2 . A paragraph . A paragraph . Another paragraph . The last paragraph . New title . “Why not simply use the delay() or millis() functions to accomplish this?” . ",
     "url": "/scratchpad.html#callouts",
     
     "relUrl": "/scratchpad.html#callouts"
-  },"49": {
+  },"78": {
     "doc": "Scratchpad",
     "title": "Italicizing and Bolding",
     "content": "Lorem ipsum . Lorem ipsum . lorem ipsum . Gone camping! :tent: Be back soon. That is so funny! :joy: . :smile: 😀 . ",
     "url": "/scratchpad.html#italicizing-and-bolding",
     
     "relUrl": "/scratchpad.html#italicizing-and-bolding"
-  },"50": {
+  },"79": {
     "doc": "Scratchpad",
     "title": "Tables",
     "content": "| head1 | head two | three |:————-|:——————|:——| ok | good swedish fish | nice | out of stock | good and plenty | nice | ok | good oreos | hmm | ok | good zoute drop | yumm | . ",
     "url": "/scratchpad.html#tables",
     
     "relUrl": "/scratchpad.html#tables"
-  },"51": {
+  },"80": {
     "doc": "Scratchpad",
     "title": "Code  blocks",
     "content": "This is code . const a = 10; static var; . ",
     "url": "/scratchpad.html#code--blocks",
     
     "relUrl": "/scratchpad.html#code--blocks"
-  },"52": {
+  },"81": {
     "doc": "Scratchpad",
     "title": "Creating a Link",
     "content": "Relative link within the directories: This is a link External Link: Arduino Docs . ",
     "url": "/scratchpad.html#creating-a-link",
     
     "relUrl": "/scratchpad.html#creating-a-link"
-  },"53": {
+  },"82": {
     "doc": "Scratchpad",
     "title": "Images",
-    "content": ". hey test . oh my . sheesh . ",
+    "content": ". hey test . oh my . sheesh . The nodes for the library and modules are also interactive—click to explore specific software functionality and learn more about its design. ",
     "url": "/scratchpad.html#images",
     
     "relUrl": "/scratchpad.html#images"
-  },"54": {
+  },"83": {
     "doc": "Scratchpad",
     "title": "Putting lines in between",
     "content": "hi . there . ",
     "url": "/scratchpad.html#putting-lines-in-between",
     
     "relUrl": "/scratchpad.html#putting-lines-in-between"
-  },"55": {
+  },"84": {
     "doc": "Scratchpad",
     "title": "Creating an ordered list of items",
     "content": ". | bananas | apples | durian | . ",
     "url": "/scratchpad.html#creating-an-ordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-ordered-list-of-items"
-  },"56": {
+  },"85": {
     "doc": "Scratchpad",
     "title": "Creating an unordered list of items",
     "content": ". | bananas | apples | durian . | cherries | . | . ",
     "url": "/scratchpad.html#creating-an-unordered-list-of-items",
     
     "relUrl": "/scratchpad.html#creating-an-unordered-list-of-items"
-  },"57": {
+  },"86": {
     "doc": "Scratchpad",
     "title": "Tables",
-    "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . graph TD; accTitle: the diamond pattern accDescr: a graph with four nodes: A points to B and C, while B and C both point to D A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; C--&gt;A; D--&gt;E; E--&gt;A; E--&gt;B; . flowchart LR User(circle) --tcp/80 --&gt; LoadBalancer&gt;random shape] --tcp/1337 ---&gt; Webserver{rhombus} . flowchart LR subgraph PublicInternet User end subgraph LoadBalancingZone LoadBalancer end subgraph WebserverZone WebserverA WebserverB end User --tcp/80 --&gt; LoadBalancer LoadBalancer --&gt; WebserverA LoadBalancer --&gt; WebserverB WebserverA --&gt; DatabaseserverA WebserverA -.-&gt; DatabaseserverB WebserverB --&gt; DatabaseserverA WebserverB -.-&gt; DatabaseserverB . pie title A piechart \"SliceA\" : 5 \"SliceB\" : 15 . sankey-beta day, sleep, 8 day, work, 8 day, fun, 2 . A paragraph . Another paragraph . The last paragraph . | Understanding how to communicate between the ADC122S021 and the ATMEGA328P using the SPI protocol for serial transfer of AC voltage data. | . ",
+    "content": "| Col 1 | Col 2 | —– | :—–: | . | hello, this is a todo item | hello, this is another todo item | goodbye, this item is done | . graph TD; accTitle: the diamond pattern accDescr: a graph with four nodes: A points to B and C, while B and C both point to D A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; C--&gt;A; D--&gt;E; E--&gt;A; E--&gt;B; . flowchart LR User(circle) --tcp/80 --&gt; LoadBalancer&gt;random shape] --tcp/1337 ---&gt; Webserver{rhombus} . flowchart LR subgraph PublicInternet User end subgraph LoadBalancingZone LoadBalancer end subgraph WebserverZone WebserverA WebserverB end User --tcp/80 --&gt; LoadBalancer LoadBalancer --&gt; WebserverA LoadBalancer --&gt; WebserverB WebserverA --&gt; DatabaseserverA WebserverA -.-&gt; DatabaseserverB WebserverB --&gt; DatabaseserverA WebserverB -.-&gt; DatabaseserverB . pie title A piechart \"SliceA\" : 5 \"SliceB\" : 15 . sankey-beta day, sleep, 8 day, work, 8 day, fun, 2 . A paragraph . Another paragraph . The last paragraph . | Understanding how to communicate between the ADC122S021 and the ATMEGA328P using the SPI protocol for serial transfer of AC voltage data. | . Configuring SPI Protocol . This section describes SPI pins and clock frequency configuration to ensure successful communication. To set the CS, MOSI, and SCLK pins to their desired state, use the following command . #include &lt;SPI.h&gt; . SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms . ",
     "url": "/scratchpad.html#tables-1",
     
     "relUrl": "/scratchpad.html#tables-1"
-  },"58": {
+  },"87": {
     "doc": "Scratchpad",
     "title": "Scratchpad",
     "content": " ",
     "url": "/scratchpad.html",
     
     "relUrl": "/scratchpad.html"
-  },"59": {
+  },"88": {
     "doc": "Software",
     "title": "Atinverter V2 Software",
-    "content": ". The Atinverter codebase is composed of various modules that utilize the Atinverter Library. The library provides essentential methods and variables that used by the modules to showcase the different features of the hardware. The following diagram provides a visual representation of the available capabilities of the Atinverter codebase where each node in the diagram highlights a specific feature of the design. The nodes for the library and modules are also interactive—click to explore specific software functionality and learn more about its design. ",
+    "content": ". The Atinverter codebase is composed of a Library folder as well as well various module folders (Blink, Main, PWM_Inverting, and VI_Sensing). The Atinverter library contains the object-oriented coding framework that allows for intuitive intialization, control, and sensing of the Atinverter V2 hardware. The various ready-to-run and deployable modules serve the purpose of showcasing the different features of the hardware by incorporating and applying the Atinverter library. The following diagram provides a visual representation of the software hierarchy and the available C++ and Arduino .ino files that the user can utilize to enable Atinverter V2 hardware operation. graph LR; %% Node Definitions A(**software**) style A fill:skyblue,stroke:white,stroke-width:2px B(**Blink**) style B fill:skyblue,stroke:white,stroke-width:2px C(**Library**) style C fill:skyblue,stroke:white,stroke-width:2px D(**Main**) style D fill:skyblue,stroke:white,stroke-width:2px E(**PWM_Inverting**) style E fill:skyblue,stroke:white,stroke-width:2px F(**VI_Sensing**) style F fill:skyblue,stroke:white,stroke-width:2px G(**Blink.ino**) style G fill:skyblue,stroke:white,stroke-width:2px H(**Atinverter.cpp**) style H fill:skyblue,stroke:white,stroke-width:2px I(**Atinverter.h**) style I fill:skyblue,stroke:white,stroke-width:2px J(**Main.ino**) style J fill:skyblue,stroke:white,stroke-width:2px K(**50Hz_PWM_Inverter.ino**) style K fill:skyblue,stroke:white,stroke-width:2px L(**60Hz_PWM_Inverter.ino**) style L fill:skyblue,stroke:white,stroke-width:2px M(**Vdc_Sensing.ino**) style M fill:skyblue,stroke:white,stroke-width:2px N(**Idc_Sensing.ino**) style N fill:skyblue,stroke:white,stroke-width:2px O(**Vac_Sensing.ino**) style O fill:skyblue,stroke:white,stroke-width:2px P(**Iac_Sensing.ino**) style P fill:skyblue,stroke:white,stroke-width:2px %% Node Connections A --&gt; B A --&gt; C A --&gt; D A --&gt; E A --&gt; F B --&gt; G C --&gt; H C --&gt; I D --&gt; J E --&gt; K E --&gt; L F --&gt; M F --&gt; N F --&gt; O F --&gt; P %% Change color of arrow heads %%{init: {'themeVariables': {'lineColor': 'white'}}}%% %% Apply color to the arrows %% 0: 1st arrow (A --&gt; B) 1: 2nd arrow (A --&gt; C) 2: 3rd arrow (A --&gt; D) 3: 4th arrow (A --&gt; E) 4: 5th arrow (A --&gt; F) linkStyle 0 stroke:white, stroke-width:3px; linkStyle 1 stroke:white, stroke-width:3px; linkStyle 2 stroke:white, stroke-width:3px; linkStyle 3 stroke:white, stroke-width:3px; linkStyle 4 stroke:white, stroke-width:3px; %% 5: 6th arrow (B --&gt; G) linkStyle 5 stroke:white, stroke-width:3px; %% 6: 7th arrow (C --&gt; H) 7: 8th arrow (C --&gt; I) linkStyle 6 stroke:white, stroke-width:3px; linkStyle 7 stroke:white, stroke-width:3px; %% 8: 9th arrow (D --&gt; J) linkStyle 8 stroke:white, stroke-width:3px; %% 9: 10th arrow (E --&gt; K) 10: 11th arrow (E --&gt; J) linkStyle 9 stroke:white, stroke-width:3px; linkStyle 10 stroke:white, stroke-width:3px; %% 11: 12th arrow (F --&gt; M) 12: 13th arrow (F --&gt; N) 13: 14th arrow (F --&gt; O) 14: 15th arrow (F --&gt; P) linkStyle 11 stroke:white, stroke-width:3px; linkStyle 12 stroke:white, stroke-width:3px; linkStyle 13 stroke:white, stroke-width:3px; linkStyle 14 stroke:white, stroke-width:3px; . Figure X. Atinverter V2 Software Modules and Files . ",
     "url": "/software/software.html#atinverter-v2-software",
     
     "relUrl": "/software/software.html#atinverter-v2-software"
-  },"60": {
-    "doc": "Software",
-    "title": "Software Block Diagram",
-    "content": ". ",
-    "url": "/software/software.html#software-block-diagram",
-    
-    "relUrl": "/software/software.html#software-block-diagram"
-  },"61": {
+  },"89": {
     "doc": "Software",
     "title": "Software",
     "content": " ",
     "url": "/software/software.html",
     
     "relUrl": "/software/software.html"
-  },"62": {
+  },"90": {
     "doc": "Timer 2 Delay",
     "title": "⏱️ Timer 2 Delay",
     "content": ". An interface is required to handle program delays for time-sensitive operations such as AC voltage sensing and serial communication, among other tasks. 💭 “Why not use the Arduino core functions delay(), millis(), or micros() to accomplish this?” . Although that might seem like the most straightforward approach, the ATMEGA328P Timer0 — used by these core functions — is also responsible for PWM generation in our hardware. This is described in detail in the PWM Control section. If we attempt to use the core delay functions (which reconfigure Timer0 registers), while simultaneously using Timer0 to handle PWM interrupts, we risk introducing conflicting register states. This also translates to erratic behavior in our PWM output which although may not be catastrophic, it is certainly not desired 😅. 💭 “Why not create a software-based delay program with an incrementer?” . unsigned long counter = 0; while (counter &lt; SOME_VALUE) { counter++; } . To implement delay2() and millis2(), it’s not practical to only rely on a simple software incrementer (e.g., counter++) inside a loop to create timing. This would be an approach that requires trial-and-error tuning of a maximum value to achieve a desired delay. In addition, this is inefficient, non-deterministic, and highly sensitive to compiler optimizations or clock speed changes. ",
     "url": "/software/library/timer2_delay.html#%EF%B8%8F-timer-2-delay",
     
     "relUrl": "/software/library/timer2_delay.html#️-timer-2-delay"
-  },"63": {
+  },"91": {
     "doc": "Timer 2 Delay",
     "title": "💡 The Workaround",
     "content": "To resolve this, we developed custom timing functions — delay2() and millis2() — based on Timer2 from the ATMEGA328P. These serve as effective substitutes for the Arduino core library timing functions, providing a millisecond-based timing mechanism that operates independently of Timer0. ",
     "url": "/software/library/timer2_delay.html#-the-workaround",
     
     "relUrl": "/software/library/timer2_delay.html#-the-workaround"
-  },"64": {
+  },"92": {
     "doc": "Timer 2 Delay",
     "title": "🧠 Understanding the Timers on the ATMEGA328P",
     "content": "The ATMEGA328P includes three timers, each with different bit widths: . | Timer0: 8-bit | Timer1: 16-bit | Timer2: 8-bit | . 💭 “What do the ‘bits’ actually mean?” . The number of bits determines how high a timer can count before it overflows and restarts. Think of it like a clock ⏱️ . | An 8-bit timer can count from 0 to 255 ($2^8 - 1$) | A 16-bit timer can count from 0 to 65,535 ($2^{16} - 1$) | . A higher bit-width means higher resolution is possible — but for a simple 1ms tick, an 8-bit timer like Timer2 is more than sufficient. ",
     "url": "/software/library/timer2_delay.html#-understanding-the-timers-on-the-atmega328p",
     
     "relUrl": "/software/library/timer2_delay.html#-understanding-the-timers-on-the-atmega328p"
-  },"65": {
+  },"93": {
     "doc": "Timer 2 Delay",
     "title": "⚙️ Timer2 Delay Initialization",
-    "content": "We need to configure the handy Timer 2 such that its interrupts will fire every 1ms. 💭 “Why trigger the interrupts every 1ms? Can’t you use another time frame?” . Yes, you can definitely use another timer frame, but why would you reasonably do that? Consider these reasons why 1ms interrupts are most appropriate: . | ☑️ Arduino’s built-in millis() and delay() functions are based on 1ms resolution. | 🔄 Simpler math and high enough resolution (1:1 mapping) . | 500 ticks $\\rightarrow$ count to 500 ticks where each counter tick is 1ms instead of 2000 ticks $\\rightarrow$ count to 2000 ticks where each tick is 0.25ms | . | ⚙️ Low CPU Overhead . | Operating the CPU at higher frequency can overwhelm the CPU and be more power intensive | . | . Okay now that I hopefully convinced you of why we need 1ms interrupts, here is how we do it: As per the registers described in pages 127-134 of the ATMEGA328P datasheet, these are what we will need to configure. There are 9 registers in total, but we do not need to configure all of them. The registers of interest and what is needed to do is as follows: . 🔧 TCCR2A – Timer/Counter Control Register A . Reset TCCR2A: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2A = 0; // Reset Timer2 TCCR2A control register . What It Controls: . | Compare Output Modes COM2A[1:0], COM2B[1:0] — what happens to OC2A/OC2B (digital 11/3) pins on compare match with TCNT2 | Waveform Generation Mode WGM2[1:0] — selects the timer’s counting behavior (Normal, PWM/Phase Correct, CTC, or Fast PWM) | . What To Set: . | Clear Timer on Compare Match (CTC) mode using WGM21 bit | . TCCR2A |= (1 &lt;&lt; WGM21); // Set CTC mode . 🔧 TCCR2B – Timer/Counter Control Register B . Reset TCCR2B: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2B = 0; // Reset Timer2 TCCR2B control register . What It Controls: . | Force Output Compare FOC2B, FOC2A — forcing a compare match on OC2B/OC2A (digital 3/11) pins | Waveform Generation Mode WGM22 — Used with TCCR2A for CTC or fast PWM | Clock Select CS2[2:0] — Sets the pre-scaler for the timer clock source | . What To Set: . | Prescaler of 64 using CS22 bit | . TCCR2B |= (1 &lt;&lt; CS22); // Set prescaler = 64 . 🔧 TCNT2 – Timer/Counter Register . Reset TCNT2: . Starts counter at 0, why would you start anywhere else? 😅 . TCNT2 = 0; // Reset Timer2 TCNT2 control register . What It Controls: . | Timer Counter 2 TCNT2[7:0] — The current value of Timer2’s counter (0-255) | . What To Set: . | Nothing, the timer runs autonomously | . 🔧 TIMSK2 – Timer/Counter2 Interrupt Mask Register . Reset TIMSK2: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TIMSK2 = 0; // Reset Timer2 TIMSK2 control register . What It Controls: . | Output Compare Match Interrupt Enables OCIE2B, OCIE2A — Enables an interrupt when the timer value TCNT2 matches the value in OCR2B or OCR2A. | Waveform Generation Mode TOIE2 — Enables an interrupt when timer overflows | . What To Set: . | Enable interrupt on Compare Match A using the OCIE2A bit. | . TIMSK2 = (1 &lt;&lt; OCIE2A); // enable compare interrupt . 🔧 OCR2A – Output Compare Register A . What It Controls: . | Holds the top value the TCNT2 counts up to in CTC mode. | When TCNT2 == OCR2A, an interrupt is fired (if enabled), and the counter resets to 0 on the next tick. | . What To Set: . | OCR2A register to 249 | . OCR2A = 249; . Why Set it To 249: . | This value can be computed based on the equation provided in page 121 of the ATMEGA328P datasheet. | . (1) General CTC equation (when toggling pin): . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{2 \\times N \\times (1 + OCRnx)}\\] where: . | $OCRnx$ is the output compare register value | $f_{OCnx}$ is the output frequency of the timer/counter | $f_{clk_{I/O}}$ Clock input frequency (16 MHz for ATmega328P) | N is the timer prescale factor (1, 8, 32, 64, 128, 256, or 1024) | “2” in denominator only needed when toggling a pin to generate a waveform | . 🔍Important Note: In interrupt-only CTC mode (no pin toggling), the “2” in the denominator is not included because the interrupt occurs once per timer cycle. Hence, this constant can be ignored. (2) CTC Interrupt-Only Frequency Equation: . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{ N \\times (1 + OCRnx)}\\] Now, we can solve for the OCR2A value that produces an interrupt at a frequency of 1kHz (1ms period) by restructuring this equation. (3) CTC Interrupt-Only OCR2A Equation: . \\[OCRnx = \\frac{f_{clk_{I/O}}}{N \\times f_{OCnx}} - 1\\] 🔢 Solving for OCR2A: . \\[OCRnx = \\frac{16*10^6}{64 \\times 1000} - 1 = 249\\] ✅ Result: . Setting OCR2A = 249 results in 1ms timer interrupts using a 16 MHz clock and a prescaler of 64. And we are done! Those are all the registers you need to set. Now when you look at the Timer 2 register initialization, it should now make more sense 😊 . Add a note on non-blocking vs blocking: delay2 vs millis2() . ",
+    "content": "We need to configure the handy Timer 2 such that its interrupts will fire every 1ms. 💭 “Why trigger the interrupts every 1ms? Can’t you use another time frame?” . Yes, you can definitely use another timer frame, but why would you reasonably do that? Consider these reasons why 1ms interrupts are most appropriate: . | ☑️ Arduino’s built-in millis() and delay() functions are based on 1ms resolution. | 🔄 Simpler math and high enough resolution (1:1 mapping) . | 500 ticks $\\rightarrow$ count to 500 ticks where each counter tick is 1ms instead of 2000 ticks $\\rightarrow$ count to 2000 ticks where each tick is 0.25ms | . | ⚙️ Low CPU Overhead . | Operating the CPU at higher frequency can overwhelm the CPU and be more power intensive | . | . Okay now that I hopefully convinced you of why we need 1ms interrupts, here is how we do it: As per the registers described in pages 127-134 of the ATMEGA328P datasheet, these are what we will need to configure. There are 9 registers in total, but we do not need to configure all of them. The registers of interest and what is needed to do is as follows: . 🔧 TCCR2A – Timer/Counter Control Register A . Reset TCCR2A: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2A = 0; // Reset Timer2 TCCR2A control register . What It Controls: . | Compare Output Modes COM2A[1:0], COM2B[1:0] — what happens to OC2A/OC2B (digital 11/3) pins on compare match with TCNT2 | Waveform Generation Mode WGM2[1:0] — selects the timer’s counting behavior (Normal, PWM/Phase Correct, CTC, or Fast PWM) | . What To Set: . | Clear Timer on Compare Match (CTC) mode using WGM21 bit | . TCCR2A |= (1 &lt;&lt; WGM21); // Set CTC mode . 🔧 TCCR2B – Timer/Counter Control Register B . Reset TCCR2B: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TCCR2B = 0; // Reset Timer2 TCCR2B control register . What It Controls: . | Force Output Compare FOC2B, FOC2A — forcing a compare match on OC2B/OC2A (digital 3/11) pins | Waveform Generation Mode WGM22 — Used with TCCR2A for CTC or fast PWM | Clock Select CS2[2:0] — Sets the pre-scaler for the timer clock source | . What To Set: . | Prescaler of 64 using CS22 bit | . TCCR2B |= (1 &lt;&lt; CS22); // Set prescaler = 64 . 🔧 TCNT2 – Timer/Counter Register . Reset TCNT2: . Starts counter at 0, why would you start anywhere else? 😅 . TCNT2 = 0; // Reset Timer2 TCNT2 control register . What It Controls: . | Timer Counter 2 TCNT2[7:0] — The current value of Timer2’s counter (0-255) | . What To Set: . | Nothing, the timer runs autonomously | . 🔧 TIMSK2 – Timer/Counter2 Interrupt Mask Register . Reset TIMSK2: . Avoids unexpected behavior from previously set states and allows for a known clean slate. TIMSK2 = 0; // Reset Timer2 TIMSK2 control register . What It Controls: . | Output Compare Match Interrupt Enables OCIE2B, OCIE2A — Enables an interrupt when the timer value TCNT2 matches the value in OCR2B or OCR2A. | Waveform Generation Mode TOIE2 — Enables an interrupt when timer overflows | . What To Set: . | Enable interrupt on Compare Match A using the OCIE2A bit. | . TIMSK2 = (1 &lt;&lt; OCIE2A); // enable compare interrupt . 🔧 OCR2A – Output Compare Register A . What It Controls: . | Holds the top value the TCNT2 counts up to in CTC mode. | When TCNT2 == OCR2A, an interrupt is fired (if enabled), and the counter resets to 0 on the next tick. | . What To Set: . | OCR2A register to 249 | . OCR2A = 249; . Why Set it To 249: . | This value can be computed based on the equation provided in page 121 of the ATMEGA328P datasheet. | . (1) General CTC equation (when toggling pin): . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{2 \\times N \\times (1 + OCRnx)}\\] where: . | $OCRnx$ is the output compare register value | $f_{OCnx}$ is the output frequency of the timer/counter | $f_{clk_{I/O}}$ Clock input frequency (16 MHz for ATmega328P) | N is the timer prescale factor (1, 8, 32, 64, 128, 256, or 1024) | “2” in denominator only needed when toggling a pin to generate a waveform | . 🔍Important Note: In interrupt-only CTC mode (no pin toggling), the “2” in the denominator is not included because the interrupt occurs once per timer cycle. Hence, this constant can be ignored. (2) CTC Interrupt-Only Frequency Equation: . \\[f_{OCnx} = \\frac{f_{clk_{I/O}}}{ N \\times (1 + OCRnx)}\\] Now, we can solve for the OCR2A value that produces an interrupt at a frequency of 1kHz (1ms period) by restructuring this equation. (3) CTC Interrupt-Only OCR2A Equation: . \\[OCRnx = \\frac{f_{clk_{I/O}}}{N \\times f_{OCnx}} - 1\\] 🔢 Solving for OCR2A: . \\[OCRnx = \\frac{16*10^6}{64 \\times 1000} - 1 = 249\\] ✅ Result: . Setting OCR2A = 249 results in 1ms timer interrupts using a 16 MHz clock and a prescaler of 64. And we are done! Those are all the registers you need to set. Now when you look at the Timer 2 register initialization, it should now make more sense 😊 . ",
     "url": "/software/library/timer2_delay.html#%EF%B8%8F-timer2-delay-initialization",
     
     "relUrl": "/software/library/timer2_delay.html#️-timer2-delay-initialization"
-  },"66": {
+  },"94": {
     "doc": "Timer 2 Delay",
     "title": "Timer 2 Delay",
     "content": ". ",
     "url": "/software/library/timer2_delay.html",
     
     "relUrl": "/software/library/timer2_delay.html"
-  },"67": {
+  },"95": {
     "doc": "To-Do",
     "title": "TO-DO",
-    "content": ". | Order NOR gate and verify that logic protection circuitry is operational | Fix schematic and GPIO pin of Rpi connected to DTR line which has a 5V pull up (bad since Rpi is 3.3V logic) | Verify that schematic, PCB, and 3D model is not missing anything (run DRC again just in case) | Load testing captures | Modify the startPWM method such that it does not pass a boolean parameter to select between 50Hz or 60Hz PWM (not intuive for the “false” parameter to indicate start 60Hz, sounds more like false means off) | Remove seperate pwmISR() method in Timer1ISR since that actually results in longer program operation which is not ideal in the ISR (ideally minize time in ISR) | . ",
+    "content": ". | Order NOR gate and verify that logic protection circuitry is operational | Verify that schematic, PCB, and 3D model is not missing anything (run DRC again just in case) | Load testing captures | . ",
     "url": "/todo.html#to-do",
     
     "relUrl": "/todo.html#to-do"
-  },"68": {
+  },"96": {
     "doc": "To-Do",
     "title": "To-Do",
     "content": " ",
     "url": "/todo.html",
     
     "relUrl": "/todo.html"
-  },"69": {
+  },"97": {
     "doc": "Vision",
     "title": "Vision",
     "content": " ",
     "url": "/vision.html",
     
     "relUrl": "/vision.html"
-  },"70": {
+  },"98": {
     "doc": "Vision",
     "title": "Microgrid Significance",
     "content": "Electricity traverses through a large network of interconnected transmission or distribution systems known as the power grid. With the ever-growing demand for electricity and reliable power grid consumption, grid congestion has been a more prominent phenomenon. This occurs when the power grid is unable to deliver the required power to meet demand, particularly from urban area or high demand loads. To alleviate stress on the power grid, microgrids-smaller localized electrical systems-can be employed. A microgrid typically consists of distributed generators and loads as well as energy storage systems, and can operate either in grid-connected or islanded mode. ",
     "url": "/vision.html#microgrid-significance",
     
     "relUrl": "/vision.html#microgrid-significance"
-  },"71": {
+  },"99": {
     "doc": "Vision",
     "title": "EV Inspired PDA Microgrid and Open Source Platforms",
     "content": "As Electric Vehicle (EV) infrastructure continues to develop and gain wider global acceptance, there is growing motivation not only to utilize these systems for transportation but, more importantly, to harness their microgrid capabilities. To more clearly understand this concept, we can consider a power distribution architecture (PDA) for EVs that can: . | intelligently transact power with the grid, | provide important grid-forming and grid-supporting services | share power in a peer-to-peer fashion with other EVs | act as a standalone microgrid that can interface with external AC and DC sources and loads. | operate and communicate between various open source power converters | . ",
