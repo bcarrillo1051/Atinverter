@@ -1,6 +1,6 @@
 /****************************************************************************** 
- * File:        60Hz_PWM_Inverter.c
- * Author:      eprojectszone and Bryan Carrillo
+ * File:        60Hz_PWM_Inverter.ino
+ * Author:      Bryan Carrillo
  * Date:        10-16-23
  * Description: This program generates a 60Hz sinusoidal waveform using PWM. It
  *              uses an array of discrete sinusoid samples and alternates
@@ -29,8 +29,7 @@
 
 #include "Atinverter.h"
 
-// Atinverter class instance
-Atinverter atinverter;
+Atinverter atinverter (60); // Atinverter 60Hz class instance
 
 void setup() {
   atinverter.startPWM(false); // false = 60Hz, true = 50Hz

@@ -1,8 +1,8 @@
 ---
 title: PWM Inversion
 layout: default
-parent: Library
-nav_order: 7
+parent: Features
+nav_order: 4
 mathjax: true
 ---
 
@@ -30,7 +30,7 @@ mathjax: true
   </script>
 {% endif %}
 
-# **PWM 50Hz and 60Hz Inversion Software**
+# **PWM 50Hz and 60Hz Inversion Library Feature**
 ***
 
 The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. 

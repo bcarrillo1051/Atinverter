@@ -1,11 +1,11 @@
 ---
 title: Main
 layout: default
-parent: Library
-nav_order: 9
+parent: Modules
+nav_order: 2
 ---
 
-# **Main Software**
+# **Main Module Program**
 ---
 
 - To be documented in the future

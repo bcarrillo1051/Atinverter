@@ -26316,8 +26316,8 @@
 				)
 			)
 		)
-		(fp_text user "RTS"
-			(at 3.048 12.7 -90)
+		(fp_text user "DTR"
+			(at 3.048 12.7 270)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "c7bd6030-f7d3-44d6-ae7e-cd38f60b9d31")

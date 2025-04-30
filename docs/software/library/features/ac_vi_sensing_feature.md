@@ -1,8 +1,8 @@
 ---
 title: AC V/I Sensing
 layout: default
-parent: Library
-nav_order: 6
+parent: Features
+nav_order: 3
 mathjax: true
 ---
 
@@ -30,14 +30,16 @@ mathjax: true
   </script>
 {% endif %}
 
-# **AC Voltage and Current Sensing Software**
+# **AC V/I Sensing Library Feature**
 ---
 
-# Overview
+## 📋 Overview  
+
+The AC Voltage and Current Sensing feature enables real-time monitoring of the PWM inverter's output voltage and current. It leverages the ATMEGA328P's SPI peripheral to interface with the ADC122S021 which samples conditioned analog signals. This feature includes methods for configuring the SPI bus, acquiring ADC readings, correcting DC offset, computing RMS values, and setting the sensitivity factor that scales the AC RMS readings.
 
 As mentioned in the [AC Voltage Sensing](../../hardware/a_v2_hw) hardware section, to achieve AC RMS voltage measurement across the load of the power inverter ($V_{\mathrm{AC_load}}$), the signal is:
 1. Transformed from a 12V-48$V_{pk}$ AC signal to a composite signal containing both DC and AC components.
-2. Scaled down to a 2.5V DC, 0-1V AC peak signal (effectively ranges from 1.5V to 3.5V), to maintain compatibilibity with the ADC122S021 input channels
+2. Scaled down to a 2.5V DC, 0-1V AC peak signal (effectively ranges from 1.5V to 3.5V), to maintain compatibility with the ADC122S021 input channels
 
 Now that this signal is conditioned appropriately for sampling, the next step is properly configure the SPI bus on the ATMEGA328P to interface with the ADC122S021.
 <br>
@@ -45,29 +47,29 @@ Now that this signal is conditioned appropriately for sampling, the next step is
 
 ---
 
-# Outline of SPI Communication
+## 🔄 Outline of SPI Communication
 
-The ATMEGA328P operates as the master/controller and the ADC122S021 as the slave/peripheral. As it conventional in SPI communication, the ATMEGA328P initiates communication by setting **CS** low. The communication is conducted in 16 clock pulses of the **SCLK** frequency, corresponding to two byte data frames. 
+The ATMEGA328P operates as the master/controller and the ADC122S021 as the slave/peripheral. As it is conventional in SPI communication, the ATMEGA328P initiates communication by setting **CS** low. The communication is conducted in 16 clock pulses of the **SCLK** frequency, corresponding to two byte data frames. 
 
 Since SPI inherently is **full-duplex**, these two data frames are used for:
 1. Sending control data through MOSI (**DIN of ADC122S021**) to specify the channel to read from 
 2. Receiving conversion data through MISO (**DOUT of ADC122S021**)
 
-It should be highlighted that the only useful data for **DIN** and **DOUT** are the first 8 most signicant bits (MSB) and the last 12 least significant bits (LSB) respectively. 
+It should be highlighted that the only useful data for **DIN** and **DOUT** are the first 8 most significant bits (MSB) and the last 12 least significant bits (LSB) respectively. 
 
-Given that ADC122S021 utilizes a successive approximation register (SARs) topology, it employs the use of a track and hold mechanism. The voltage samples are tracked for the first 4 clock cycles and held for data transmission during the subsequent 12 clock cycles.
+The ADC122S021 uses a successive approximation register (SAR) topology with a track-and-hold mechanism. The voltage samples are tracked for the first 4 clock cycles and held for data transmission during the subsequent 12 clock cycles.
 
 Once the 12-bit conversion data is received by the ATMEGA328P, the CS line is enabled high to terminate communication with the ADC122S021.
 
 The timing diagram of the ADC122S021 provides an insightful visual representation of the SPI communication and reflects the information covered.
 
-![ADC122S021 Operational Timing Diagram](../../images/ADC122S021_timing_diagram.png)
+![ADC122S021 Operational Timing Diagram](../../../images/ADC122S021_timing_diagram.png)
 
 <br>
 
 ---
 
-# Choosing the Appropriate SPI Clock Source ⌚
+## ⌚ Choosing the Appropriate SPI Clock Source
 
 Ensuring suitable communication with the ADC122S021 relies on providing a clock source from the ATMEGA328P that falls within the allowable frequency range of the device. The clock signal is critical as it maps to the sampling rate of the ADC122S021 which is also constrained to a specific range. The table below summarizes the ranges of allowable clock frequencies and their corresponding sample rates:
 
@@ -117,16 +119,16 @@ While just marginally satisfying the Nyquist Rate condition may be appropriate i
 In practical applications such as sampling sinusoidal signals, it is recommended that $f_{s}$ is at least 5 to 10 times the sinusoidal signal $f_{sinusoid}$. 
 
 <p align="center">
-<img src="../../images/ADC_sampling_rate_sinusoid.png" alt="ADC Sampling Rate Effects" width="600"/>
+<img src="../../../images/ADC_sampling_rate_sinusoid.png" alt="ADC Sampling Rate Effects" width="600"/>
 </p>
 
 Higher ADC sample rates yield finer resolution in the digitized sinusoidal waveform, whereas lower sampling raters result in a degraded signal in terms of resolution and signal shape.
 
-In this design, the ADC122S021 is tasked with sampling the output voltage and current signals of PWM inverter, both of which are 50Hz or 60Hz sinusoidal signals depending on the PWM generation technique. Considering how these signals are far lower in frequency relative to the sampling capabilities of the ADC122S021, a clock rate of 1MHz (pre-scaler 16) was selected. This aims to reduce software overhead and memory load as well as mantain an adequate sampling rate for proper signal digitization.
+In this design, the ADC122S021 is tasked with sampling the output voltage and current signals of PWM inverter, both of which are 50Hz or 60Hz sinusoidal signals depending on the PWM generation technique. Considering how these signals are far lower in frequency relative to the sampling capabilities of the ADC122S021, a clock rate of 1MHz (pre-scaler 16) was selected. This aims to reduce software overhead and memory load as well as maintain an adequate sampling rate for proper signal digitization.
 
-$$f_{s} = \frac{1 \times 10^6MHz}{16} = 62.5kHz$$
+$$f_{s} = \frac{1 \times 10^6Hz}{16} = 62.5kHz$$
 
-$$\frac{f_{s}}{f_{max}} = \frac{62.5kHz}{60Hz} ≈ 1042$$
+$$\frac{f_{s}}{f_{max}} = \frac{62.5 \times 10^3Hz}{60Hz} ≈ 1042$$
 
 The sampling frequeny is substantially larger than the recommended amount so a high fidelity signal is to be expected.
 
@@ -141,7 +143,7 @@ is used to specify key metrics of the SPI communication protocol. The `CLOCK_FRE
 
 ---
 
-# Pin Assignments
+## 📌 Pin Assignments
 
 The following table delineates the pins used for the SPI protocol and their desired states:
 
@@ -152,13 +154,13 @@ The following table delineates the pins used for the SPI protocol and their desi
 | MISO     | 12                    | INPUT   | 
 | SCLK     | 13                    | OUTPUT  |
 
-Configuring all SPI pins on the ATMEGA328P can be performed by using `SPI.begin()` from the Arduino built-in `SPI.h` library. In this case, since the `SPI.h` library is included in the user-defined header file `Atinverter.h`, no need to include it separately in the module program.
+Configuring all SPI pins on the ATMEGA328P can be performed by using `SPI.begin()` from the Arduino built-in `SPI.h` library. Since the `SPI.h` library is included in the user-defined header file `Atinverter.h`, no need to include it separately in the module program.
 
 <br>
 
 ---
 
-# Library Structure
+## 📂 Library Structure
 
 **Implementation in `Atinverter.h`:**
 
@@ -195,13 +197,13 @@ float getRmsAC(uint8_t loopCount, bool isVac);
 
 ---
 
-# Method Descriptions
+## 📝 Method Descriptions
 
 ## `void setUpSPI()`
 
 **Purpose:** Initializes the SPI interface and configures the relevant pins.
 
-**Psuedocode:**
+**Pseudocode:**
 1. Configure CS, MOSI, and SCLK pins to their desired state
 
 ```Atinverter.cpp``` Code:
@@ -216,13 +218,12 @@ void Atinverter::setUpSPI() {
 
 **Purpose:** Calculates the zero-point (DC offset) value of the ADC readings over a full sampling period. This value is used to remove the DC bias from the AC signal before performing RMS calculations.
 
-**Psuedocode:**
-1. Initialize Variables
-- ADC readings summation to 0
-- ADC readings measurement count to 0
-- Record the start time using `millis2()`
-2. Main Loop
-- Whil the elapsed time is less than the period:
+**Parameters:**
+- `control_byte` – ADC command byte: `0x00` selects channel 1; `0x08` selects channel 2
+
+**Pseudocode:**
+1. Initialize accumulators and timing
+2. While the elapsed time is less than the period:
   - Read the ADC value from the specified control_byte channel
   - Accumulate the ADC value
   - Increment the measurement count
@@ -253,7 +254,7 @@ int Atinverter::getZeroPoint(uint8_t control_byte) {
 
 The sensitivity factor is applied in the `getRmsAC()` method after calculating the RMS value of the ADC samples. It ensures that the returned value reflects the actual physical signal magnitude, not just the ADC voltage level.
 
-**Psuedocode:**
+**Pseudocode:**
 1. Take the user-defined sensitivity input.
 2. Store it as the internal sensitivity scaling variable.
 
@@ -267,17 +268,29 @@ void Atinverter::setSensitivity(float value) {
 
 ## `int getADC(uint8_t control_byte)`
 
-**Purpose:** 
+**Purpose:** Initiates an SPI transaction with the ADC122S021 to retrieve a 12-bit digital conversion result from the specified input channel.
 
+**Parameters:**
+- `control_byte` – ADC command byte: `0x00` selects channel 1; `0x08` selects channel 2
 
-**Psuedocode:**
-
+**Pseudocode:**
+1. Pull CS low and configure SPI parameters to begin SPI transmission
+2. Conduct 1st byte transfer
+  - Send control byte to specify channel
+  - Receive 8 MSB conversion bits (only 4 LSB are significant)
+3. Shift first 8 bits received by 8 bits to make that MSB data
+4. Conduct a 2nd byte transfer
+  - Send dummy byte (0x00)
+  - Receive 8 LSB bits of conversion
+5. Combine the 2 received bytes (MSB + LSB)
+6. Mask the lower 12 bits to get valid ADC data
+7. Pull CS high to end transaction
+8. Return 12-bit ADC sample
 
 **Implementation in `Atinverter.cpp`:**
 ```cpp
 int Atinverter::getADC(uint8_t control_byte) {
   
-
   digitalWrite(VI_AC_CS_PIN, LOW);
   SPI.beginTransaction(SPISettings(CLOCK_FREQUENCY, MSBFIRST, SPI_MODE0));
   
@@ -297,11 +310,26 @@ int Atinverter::getADC(uint8_t control_byte) {
 
 ## `float getRmsAC(uint8_t loopCount, bool isVac)`
 
-**Purpose:** 
+**Purpose:** Calculates the RMS value of either AC voltage or current over multiple user-defined sampling cycles. The value is offset-corrected using the zero-point and scaled using a sensitivity factor to reflect the actual signal amplitude.
 
+**Parameters:**
+- `loopCount` – number of sampling cycles to average over for increased accuracy
+- `isVac` – `true` to measure AC voltage; `false` to measure AC current
 
-**Psuedocode:**
-
+**Pseudocode:**
+1. Determine the ADC channel based on `isVac`
+  - `true` to use voltage channel
+  - `false`to use current channel
+2. Iterate `loopCount` times:
+  - Compute DC offset using `getZeroPoint()`
+  - Initialize accumulators and timing
+  - While elapsed time is less than the period:
+    - Sample ADC
+    - Remove DC offset and square the result
+    - Accumulate the sum and measurement count
+   - Compute RMS value using the root mean square formula: $X_{RMS} = \sqrt{\frac{1}{N} \sum x^2}$
+   - Scale result using `sensitivity` to convert to physical units
+3. Average all loop results and return the final RMS value
 
 **Implementation in `Atinverter.cpp`:**
 ```cpp
@@ -339,74 +367,5 @@ float Atinverter::getRmsAC(uint8_t loopCount, bool isVac) {
 	return readingVoltage / loopCount;
 }
 ```
-<br>
 
----
-
-# AC Voltage Sensing Module Program
-
-**Purpose:** Demonstrates the use of the AC Voltage Sensing methods in an Arduino sketch.
-
-**Psuedocode:**
-
-**Implementation of `Vac_Sensing.ino`:**
-
-```cpp
-#include "Atinverter.h"
-#define LOOP_RUNS 20
-
-// Atinverter class instance
-Atinverter atinverter(60);
-
-void setup() {
-  Serial.begin(9600);
-  Serial.println(F("Initialize Output AC Voltage Sensing."));
-  atinverter.setSensitivity(SENSITIVITY);
-  atinverter.setUpSPI();
-  atinverter.startPWM(false);
-  atinverter.initTimer2Delay();
-}
-
-void loop() {
-    float Vac_RMS = atinverter.getRmsAC(true, LOOP_RUNS);
-    Serial.print(F("Vac(RMS): ")); Serial.print(Vac_RMS); Serial.println("V");
-    atinverter.delay2(2000);
-}
-```
-<br>
-
----
-
-# AC Current Sensing Module Program
-
-**Purpose:** Demonstrates the use of the AC Current Sensing methods in an Arduino sketch.
-
-**Psuedocode:**
-
-**Implementation of `Iac_Sensing.ino`:**
-```cpp
-#include "Atinverter.h"
-
-#define LOOP_RUNS 20
-
-// Atinverter class instance
-Atinverter atinverter(60);
-
-void setup() {
-  // Initialize Serial Monitor
-  Serial.begin(9600);
-  Serial.println(F("Initialize Output AC Voltage Sensing."));
-  atinverter.setSensitivity(SENSITIVITY);
-
-  atinverter.startPWM(false); // 60Hz, true 50Hz
-  atinverter.setUpSPI(); // Configures SCK, CS, and MOSI to outputs
-  atinverter.initTimer2Delay(); // Set up Timer2 registers to proper init values
-}
-
-void loop() {
-    float Iac_RMS = atinverter.getRmsAC(false, LOOP_RUNS); // true = Vac, false = Iac, 20 
-    Serial.print(F("Iac(RMS): ")); Serial.print(Iac_RMS); Serial.println("A");
-    atinverter.delay2(2000);
-}
-```
 

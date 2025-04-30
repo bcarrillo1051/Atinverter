@@ -1,22 +1,20 @@
 ---
 title: Blink
 layout: default
-parent: Library
-nav_order: 4
+parent: Features
+nav_order: 1
 ---
 
-# **Blink Software**
+# **Blink Library Feature**
 ---
 
-# Overview
+## 📋 Overview
 
-This feature of the library is primarily useful for testing the bootloaded state of the ATMEGA328P or for basic LED blinking operations.
-<br>
-<br>
+The Blink feature abstracts low-level pin operations for LED control functionality within the Atinverter library. It includes methods for setting up GPIO pins as outputs, controlling individual LEDs, and cycling through multiple LEDs in a predefined sequence.
 
 ---
 
-# Pin Assignments
+## 📌 Pin Assignments
 
 This table shows the mapping of the LEDs and their corresponding ATMEGA328P pin assignments:
 
@@ -31,7 +29,7 @@ This table shows the mapping of the LEDs and their corresponding ATMEGA328P pin 
 
 ---
 
-# Library Structure
+## 📂 Library Structure
 
 **Implementation in `Atinverter.h`:**
 ```cpp
@@ -50,13 +48,13 @@ void cycleLEDs(int t_delay);
 
 ---
 
-# Method Descriptions
+## 📝 Method Descriptions
 
 ## `void setUpLEDs()`
 
 **Purpose:** Configures all LED pins as outputs.
 
-**Psuedocode:**
+**Pseudocode:**
 1. Configure the state of all 4 LED pins as outputs for driving.
 
 **Implementation in `Atinverter.cpp`:**
@@ -113,48 +111,5 @@ void Atinverter::cycleLEDs(int t_delay) {
   delay(t_delay);
   digitalWrite(LED1G_PIN, LOW);
   delay(t_delay);
-}
-```
-<br>
-
----
-
-# Blink Module Program
-
-**Purpose:** Demonstrates the use of the Blink methods in an Arduino sketch.
-
-**Pseudocode:**
-1. Create a new Atinverter instance
-2. Set up the period of time for delaying LED operations
-3. Set the GPIO pins for LEDs as outputs
-4. Turn on LED 1
-5. Turn on LED 2
-6. Wait for the defined period
-7. Turn off LED 1
-8. Turn off LED 2
-9. Wait for the defined period
-10. Cycle through LEDs with delay
-
-**Implementation of `Blink.ino`:**
-```cpp
-#include "Atinverter.h"
-
-Atinverter atinverter;
-int PERIOD = 1000;
-
-void setup() {
-  atinverter.setUpLEDs();
-}
-
-void loop() {
-  atinverter.set1LED(atinverter.LED1R_PIN, HIGH);
-  atinverter.set1LED(atinverter.LED2G_PIN, HIGH);
-  delay(PERIOD);
-
-  atinverter.set1LED(atinverter.LED1R_PIN, LOW);
-  atinverter.set1LED(atinverter.LED2G_PIN, LOW);
-  delay(PERIOD);
-
-  atinverter.cycleLEDs(PERIOD);
 }
 ```

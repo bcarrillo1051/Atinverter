@@ -1,8 +1,8 @@
 ---
 title: DC V/I Sensing
 layout: default
-parent: Library
-nav_order: 5
+parent: Features
+nav_order: 2
 mathjax: true
 ---
 
@@ -30,18 +30,18 @@ mathjax: true
   </script>
 {% endif %}
 
-# **DC Voltage and Current Sensing Software**
+# **DC V/I Sensing Library Feature**
 ---
 
-# Overview
+## 📋 Overview
 
-The input DC voltage and current sensing is achieved seamlessly through onboard ADC pins of the ATMEGA328P, along with TMCS1108A4BQDR current sensor. These values can be obtained through a computation using raw readouts of the ADC or for improved accuracy, through a running average sampling method.
+The DC Voltage and Current Sensing feature provides an interface for monitoring the input voltage and current of the PWM inverter. It utilizes the onboard ADC pins of the ATMEGA328P, along with TMCS1108A4BQDR Hall-effect current sensor. Voltage is measured through a resistive voltage divider, while current is measured using the analog output of the current sensor. These signals can be obtained through methods which use raw readouts of the ADC or for improved accuracy, through a running average sampling method.
 <br>
 <br>
 
 ---
 
-# Pin Assignments
+## 📌 Pin Assignments
 
 This table expresses the dedicated analog pins used for the design and their respective state.
 
@@ -54,7 +54,7 @@ This table expresses the dedicated analog pins used for the design and their res
 
 ---
 
-# Library Structure
+## 📂 Library Structure
 
 **Implementation in `Atinverter.h`:**
 ```cpp
@@ -99,13 +99,13 @@ float getAvgDC(bool isVdc, float signalValue);
 
 ---
 
-# Method Descriptions
+## 📝 Method Descriptions
 
 ## `getVdc()`
 
 **Purpose:** Senses and returns the input DC voltage.
 
-**Psuedocode:**
+**Pseudocode:**
 1. Read raw ADC value from ATMEGA328P analog pin connected to sensing voltage
 2. Translate the digital ADC reading into its analog voltage equivalent
 - $$Sensed\ Voltage = \left( \frac{Reference\ Voltage \times ADC\ Reading}{2^{(ADC\ Bits)} - 1} \right)$$
@@ -128,7 +128,7 @@ float Atinverter::getVdc() {
 
 **Purpose:** Senses and returns the input DC current.
 
-**Psuedocode:**
+**Pseudocode:**
 1. Read raw ADC value from ATMEGA328P analog pin connected to TMCS1108 analog output
 2. Translate the digital ADC reading into its analog voltage equivalent
 - $$Output\ Voltage = \left( \frac{Reference\ Voltage \times ADC\ Reading}{2^{(ADC\ Bits)} - 1} \right)$$
@@ -148,11 +148,11 @@ float Atinverter::getIdc() {
 ```
 <br>
 
-## getAvgDC(bool isVdc, float signalValue)
+## `getAvgDC(bool isVdc, float signalValue)`
 
 **Purpose:** Computes and returns the moving average for the input DC voltage or current based on a pre-defined sample count.
 
-**Psuedocode:**
+**Pseudocode:**
 1. Decide which sampling array will be utilized based on user input
 2. Store the most recent value received in the buffer
 3. Add the readings to the running total
@@ -184,91 +184,5 @@ float Atinverter::getAvgDC(bool isVdc, float signalValue) {
   total -= readings[read_index];
 
   return avg_signal;
-}
-```
-<br>
-
----
-
-# DC Voltage Sensing Module Program
-
-**Purpose:** Demonstrates the use of the DC Voltage Sensing methods in an Arduino sketch.
-
-**Psuedocode:**
-1. Create a new Atinverter instance with desired frequency (50Hz or 60Hz)
-2. Initialize the serial monitor for displaying DC voltage readings
-3. Begin PWM operation at desired frequency
-4. Configure Timer 2 registers to enable delaying using `delay2` method
-5. Read the raw input DC voltage
-6. Print raw input DC voltage to the serial monitor
-7. Pass the most recent reading to the `getAvgDC` method to calculate the running average
-8. Print averaged input DC voltage to the serial monitor
-9. Wait a designated delay before printing the next reading
-
-**Implementation of `Vdc_Sensing.ino`:**
-```cpp
-#include "Atinverter.h"
-
-Atinverter atinverter (60);
-
-void setup() {
-  Serial.begin(9600);
-  Serial.println(F("Initialize Input DC Voltage Sensing."));
-  atinverter.startPWM(false);
-  atinverter.initTimer2Delay();
-}
-
-void loop() {
-  float raw_Vdc = atinverter.getVdc();
-  Serial.print(F("Raw Vdc : ")); Serial.print(raw_Vdc); Serial.println(F("V"));
-
-  float avg_Vdc = atinverter.getAvgDC(true, raw_Vdc);
-  Serial.print(F("Avg Vdc : ")); Serial.print(avg_Vdc); Serial.println(F("V"));
-
-  Serial.println();
-  atinverter.delay2(500);
-}
-```
-<br>
-
----
-
-# DC Current Sensing Module Program
-
-**Purpose:** Demonstrates the use of the DC Current Sensing methods in an Arduino sketch.
-
-**Psuedocode:**
-1. Create a new Atinverter instance with desired frequency (50Hz or 60Hz)
-2. Initialize the serial monitor for displaying DC current readings
-3. Begin PWM operation at desired frequency
-4. Configure Timer 2 registers to enable delaying using `delay2` method
-5. Read the raw input DC current
-6. Print raw input DC current to the serial monitor
-7. Pass the most recent reading to the `getAvgDC` method to calculate the running average
-8. Print averaged input DC current to the serial monitor
-9. Wait a designated delay before printing the next reading
-
-**Implementation of `Idc_Sensing.ino`:**
-```cpp
-#include "Atinverter.h"
-
-Atinverter atinverter (60);
-
-void setup() {
-  Serial.begin(9600);
-  Serial.println(F("Initialize Input DC Current Sensing."));
-  atinverter.startPWM(false);
-  atinverter.initTimer2Delay();
-}
-
-void loop() {
-  float raw_Idc = atinverter.getIdc();
-  Serial.print(F("Raw Idc : ")); Serial.print(raw_Idc); Serial.println(F("A"));
-
-  float avg_Idc = atinverter.getAvgDC(false, raw_Idc);
-  Serial.print(F("Avg Idc : ")); Serial.print(avg_Idc); Serial.println(F("A"));
-  
-  Serial.println();
-  atinverter.delay2(500);
 }
 ```

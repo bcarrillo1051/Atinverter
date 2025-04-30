@@ -1,8 +1,8 @@
 ---
 title: Timer 2 Delay
 layout: default
-parent: Library
-nav_order: 8
+parent: Features
+nav_order: 5
 mathjax: true
 ---
 
@@ -31,7 +31,7 @@ mathjax: true
 {% endif %}
 
 
-# **⏱️ Timer 2 Delay**
+# **⏱️ Timer 2 Delay Library Feature**
 ***
 
 An interface is required to handle **program delays** for time-sensitive operations such as **AC voltage sensing** and **serial communication**, among other tasks.
