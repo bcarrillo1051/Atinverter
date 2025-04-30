@@ -116,18 +116,12 @@ class Atinverter {
 	// - Member Variables -
 
 	// --- AC Voltage and Current Sensing ---
-	// AC Voltage and Current Pin Definitions
+	// Pin Definitions
 	static const int VI_AC_CS_PIN = 10;   // SPI chip select pin | PB2
 	static const int VI_AC_MOSI_PIN = 11; // Send control bits data pin | PB3
 	static const int VI_AC_MISO_PIN = 12; // Receive AC output V/I sense pin | PB4
 	static const int VI_AC_SCLK_PIN = 13; // SPI clock signal pin | PB5
-	// Parameters for PWM
-	static bool is50Hz;               // Frequency mode: true for 50Hz, false for 60Hz
-	static int sin_i;                 // Index for sinPWM array value
-	static int pwm_i;                 // Index for PWM value
-	static int OK;                    // Flag to toggle between pins 5 and 6
-	static const int sin50HzPWM[312]; // Sinusoidal 50Hz array samples
-	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples
+
 	// Parameters AC Sensing
 	uint32_t period; // Period of PWM type (50Hz or 60Hz)
 	float 	 sensitivity = DEFAULT_SENSITIVITY; // Tune this value to achieve proper sensing
@@ -151,10 +145,19 @@ class Atinverter {
 	float Idc_total = 0;                            // Running total of Idc readings
 
 	// --- PWM 50Hz/60Hz Inversion ---
+	// PWM Pin Definitions=
 	const int PWM_A_PIN = 5;    // Positive half cycle PWM pin | PD5
 	const int PWM_B_PIN = 6;    // Negative half cycle PWM pin | PD6
 	const int GATESD_PIN = 8;   // Gate driver shut down mechanism pin | PB0
 	const int PRORESET_PIN = 9; // Overvoltage and Reset Circuitry Reset pin | PB1
+	
+	// Parameters for PWM
+	static bool is50Hz;               // Frequency mode: true for 50Hz, false for 60Hz
+	static int sin_i;                 // Index for sinPWM array value
+	static int pwm_i;                 // Index for PWM value
+	static int OK;                    // Flag to toggle between pins 5 and 6
+	static const int sin50HzPWM[312]; // Sinusoidal 50Hz array samples
+	static const int sin60HzPWM[261]; // Sinusoidal 60Hz array samples
 
 	// --- I2C Communication ---
 	const int I2C_SDA_PIN = A4;  // Data line between ATMEGA328P and Raspberry Pi pin | PC4

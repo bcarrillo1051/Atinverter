@@ -30,27 +30,96 @@ mathjax: true
   </script>
 {% endif %}
 
-# **PWM 50Hz and 60Hz Inversion Library Feature**
+# **50Hz/60Hz PWM Inversion Library Feature**
 ***
 
-The main objective of the PWM code is generate the necessary PWM signals that will allow us to produce a 50Hz or 60Hz sine wave. 
+## 📋 Overview
 
 
+---
 
+## 📌 Pin Assignments
 
-How this is actually accomplished is specifically through two main stages: An H-bridge and an LC filter network. 
+This table demonstrates PWM pins and their corresponding ATMEGA328P pin states:
 
-In the H-bridge, the switching signals are delivered from the ATMEGA328P to the gate drivers which drive the MOSFETs. The characteristic frequency of the switching signals (AKA switching frequency) was chosen to be $$f_{sw} = 31,372Hz$$. The supplied switching signals also have a variable duty cycle that aims to emulate the progressive increasing and decreasing behavior of a sine wave.
+| Pin Description | Pin Name (Code) | Pin Number | Pin State |
+|:---------------:|:---------------:|:----------:|:---------:|
+| PWM A Side      | PWM_A_PIN       | 5          | OUTPUT    |
+| PWM B Side      | PWM_B_PIN       | 6          | OUTPUT    |
+| Red LED 2       | GATESD_PIN      | 8          | INPUT     |
+| Green LED 2     | PRORESET_PIN    | 9          | OUTPUT    |
 
+<br>
 
-The H-bridge is the stage that allows us to have complimentary switching. A switching control signal controls a power signal that is provided to the load. 
+---
 
-The signal is averaged is through the LC filter. The LC filter removes the switching frequency and the fundamental frequency remains.
+## 📂 Library Structure
 
+**Implementation in `Atinverter.h`:**
+```cpp
+// PWM Pin Definitions=
+const int PWM_A_PIN = 5;
+const int PWM_B_PIN = 6;
+const int GATESD_PIN = 8;
+const int PRORESET_PIN = 9;
 
+// Parameters for PWM
+static bool is50Hz;
+static int sin_i;
+static int pwm_i;
+static int OK;
+static const int sin50HzPWM[312];
+static const int sin60HzPWM[261];
 
+// Methods
+void startPWM(bool is50HzMode);
+static void pwmISR();
+void enablePWM();
+void disablePWM();
+```
+<br>
 
-Let's understand the way in which the PWM code operates. 
+---
+
+## 📝 Method Descriptions
+
+## ``
+
+**Purpose:**
+
+**Pseudocode:**
+1.
+
+**Implementation in `Atinverter.cpp`:**
+```cpp
+
+```
+<br>
+
+## ``
+
+**Purpose:** Sets a user-selected LED pin as on or off.
+
+**Pseudocode:**
+1.
+
+**Implementation in `Atinverter.cpp`:**
+```cpp
+```
+<br>
+
+## ``
+
+**Purpose:** 
+
+**Pseudocode:**
+
+**Implementation in `Atinverter.cpp`:**
+```cpp
+
+}
+```
+
 
 ## PWM 50Hz
 $$f_{sw} = 31,372Hz$$

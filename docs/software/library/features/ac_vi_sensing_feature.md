@@ -206,7 +206,7 @@ float getRmsAC(uint8_t loopCount, bool isVac);
 **Pseudocode:**
 1. Configure CS, MOSI, and SCLK pins to their desired state
 
-```Atinverter.cpp``` Code:
+**Implementation in `Atinverter.cpp`:**
 ```cpp
 void Atinverter::setUpSPI() {
   SPI.begin();

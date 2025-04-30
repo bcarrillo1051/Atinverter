@@ -31,15 +31,17 @@ mathjax: true
 {% endif %}
 
 
-# **⏱️ Timer 2 Delay Library Feature**
+# **Timer 2 Delay Library Feature**
 ***
+
+## 📋 Overview  
 
 An interface is required to handle **program delays** for time-sensitive operations such as **AC voltage sensing** and **serial communication**, among other tasks.
 
 {: .highlight-yellow }
 > 💭 "Why not use the Arduino core functions `delay()`, `millis()`, or `micros()` to accomplish this?"
 
-Although that might seem like the most straightforward approach, the **ATMEGA328P Timer0** — used by these core functions — is also responsible for **PWM generation** in our hardware. This is described in detail in the [PWM Control](PWM_control) section.
+Although that might seem like the most straightforward approach, the **ATMEGA328P Timer0** — used by these core functions — is also responsible for **PWM generation** in our hardware. This is described in detail in the [PWM Inversion](pwm_inversion_feature) section.
 
 If we attempt to use the core delay functions (which reconfigure Timer0 registers), while simultaneously using Timer0 to handle PWM interrupts, we risk introducing **conflicting register states**. This also translates to erratic behavior in our PWM output which although may not be catastrophic, it is certainly not desired 😅.
 
@@ -63,7 +65,7 @@ To resolve this, we developed custom timing functions — `delay2()` and `millis
 
 ---
 
-## 🧠 Understanding the Timers on the ATMEGA328P
+## ⏱️ Understanding the Timers on the ATMEGA328P
 
 The ATMEGA328P includes **three timers**, each with different bit widths:
 
@@ -76,7 +78,7 @@ The ATMEGA328P includes **three timers**, each with different bit widths:
 
 The number of **bits** determines how high a timer can count before it overflows and restarts.
 
-Think of it like a clock ⏱️
+Think of it like a clock:
 - An **8-bit timer** can count from `0` to `255` ($2^8 - 1$)
 - A **16-bit timer** can count from `0` to `65,535` ($2^{16} - 1$)
 
@@ -84,14 +86,121 @@ A higher bit-width means higher resolution is possible — but for a simple 1ms 
 
 ---
 
+## 📂 Library Structure
+
+**Implementation in `Atinverter.h`:**
+
+```cpp
+// Timer 2 Increment
+static volatile unsigned long timer2Millis;
+
+// Methods
+void initTimer2Delay();
+void delay2(unsigned long ms);
+unsigned long millis2();
+```
+
+---
+
+## 📝 Method Descriptions
+
+## `void initTimer2Delay()`
+
+**Purpose:** Initializes Timer 2 to generate an interrupt every 1 millisecond.
+
+**Pseudocode:**
+1. Disable global interrupts
+2. Reset all Timer 2 related registers
+3. Set compare match value for 1ms at 16MHz with 64 prescaler (249)
+4. Set Clear Timer on Compare (CTC) mode
+5. Set pre-scaler to 64
+6. Enable interrupts on compare match
+7. Enable global interrupts
+
+**Implementation in `Atinverter.cpp`:**
+```cpp
+void Atinverter::initTimer2Delay() {
+  cli();
+
+  TCCR2A = 0;
+  TCCR2B = 0;
+  TCNT2  = 0;
+
+  OCR2A = 249;
+
+  TCCR2A |= (1 << WGM21);
+
+  TCCR2B |= (1 << CS22);
+
+  TIMSK2 = (1 << OCIE2A);
+
+  sei();
+}
+```
+<br>
+
+## `void delay2(unsigned long ms)`
+
+**Purpose:** Pauses execution for a specified duration in milliseconds.
+
+**Pseudocode:**
+1. Record the current millisecond count from timer2Millis
+2. Continuously check if the elapsed time has reached the specified delay
+3. Exit once the condition is met
+
+**Implementation in `Atinverter.cpp`:**
+```cpp
+void Atinverter::delay2(unsigned long ms) {
+  unsigned long start = timer2Millis;
+  while ((timer2Millis - start) < ms) {
+  }
+}
+```
+<br>
+
+## `unsigned long millis2()`
+
+**Purpose:** Returns the number of milliseconds elapsed since Timer 2 was initialized.
+
+**Pseudocode:**
+1. Return the current value of timer2Millis
+
+**Implementation in `Atinverter.cpp`:**
+```cpp
+unsigned long Atinverter::millis2() {
+  return timer2Millis;
+}
+```
+<br>
+
+---
+
+## ⏹️ ISR Description
+
+## `ISR(TIMER2_COMPA_vect)`
+
+**Purpose:** Interrupt Service Routine (ISR) for Timer 2 Compare Match A. It increments a global millisecond counter each time Timer 2 reaches its compare value (every 1ms).
+
+**Pseudocode:**
+1. Increment the timer2Millis counter
+
+**Implementation in `Atinverter.cpp`:**
+```cpp
+ISR(TIMER2_COMPA_vect) {
+  Atinverter::timer2Millis++;
+}
+```
+
+---
+
 ## ⚙️ Timer2 Delay Initialization
 
-We need to configure the handy Timer 2 such that its interrupts will fire every 1ms. 
+A thorough analysis on how to configure Timer 2 such that its interrupts fire every 1ms. 
 
 {: .highlight-yellow }
 > 💭 "Why trigger the interrupts every 1ms? Can't you use another time frame?"
 
-Yes, you can definitely use another timer frame, but why would you reasonably do that? Consider these reasons why 1ms interrupts are most appropriate:
+Yes, you can definitely use another time frame, but why would you reasonably do that? Consider these reasons why 1ms interrupts are most appropriate:
 1. ☑️ Arduino's built-in `millis()` and `delay()` functions are based on 1ms resolution.
 2. 🔄 Simpler math and high enough resolution (1:1 mapping)
     - 500 ticks $\rightarrow$ count to 500 ticks where each counter tick is 1ms instead of 2000 ticks $\rightarrow$ count to 2000 ticks where each tick is 0.25ms

@@ -9,46 +9,47 @@ mathjax: true
 # **50Hz/60Hz PWM Inversion Module Programs**
 ---
 
-**Purpose:** The 50Hz PWM Inversion feature demonstrates how to generate low-level pin operations for LED control functionality within the Atinverter library. It includes methods for setting up GPIO pins as outputs, controlling individual LEDs, and cycling through multiple LEDs in a predefined sequence.
+**Purpose:** These two standalone programs (`50Hz_PWM_Inverter.ino` and `60Hz_PWM_Inverter.ino`) exhibits how to utilize the Atinverter library’s PWM generation functionality for the PWM inverter. Each file initializes the PWM for at a switching frequency of 31,372kHz and fundamental frequency of 50Hz or 60Hz, which are required for AC waveform generation.
 
 ## `50Hz_PWM_Inverter.ino`
 
 **Pseudocode:**
+1. Include the Atinverter library
+2. Create an Atinverter instance set to 50Hz mode
+3. Start PWM generation in 50Hz mode
 
 **Implementation:**
 ```cpp
 #include "Atinverter.h"
 
-Atinverter atinverter(50); // Atinverter 50Hz class instance
+Atinverter atinverter(50);
 
 void setup(){
-  atinverter.startPWM(true); // true = 50Hz, false = 60Hz
+  atinverter.startPWM(true);
 }
 
 void loop(){
 
 }
 ```
-<br>
 
 ---
 
-# AC Current Sensing Module Program
-
 ## `60Hz_PWM_Inverter.ino`
 
-**Purpose:**
-
 **Psuedocode:**
+1. Include the Atinverter library
+2. Create an Atinverter instance set to 60Hz mode
+3. Start PWM generation in 60Hz mode
 
 **Implementation:**
 ```cpp
 #include "Atinverter.h"
 
-Atinverter atinverter (60); // Atinverter 60Hz class instance
+Atinverter atinverter (60);
 
 void setup() {
-  atinverter.startPWM(false); // false = 60Hz, true = 50Hz
+  atinverter.startPWM(false);
 }
 
 void loop() {

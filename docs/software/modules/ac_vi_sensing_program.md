@@ -15,13 +15,21 @@ These two standalone programs (`Vac_Sensing.ino` and `Iac_Sensing.ino`) demonstr
 ## `Vac_Sensing.ino`
 
 **Pseudocode:**
+1. Include the Atinverter library
+2. Create a new Atinverter instance set to 50Hz or 60Hz mode
+3. Initialize the serial monitor for displaying AC voltage readings
+4. Set sensitivity factor that scales the AC RMS readings
+5. Set up SPI interface and associated pins
+6. Begin PWM operation at 50Hz or 60Hz mode
+7. Initialize Timer 2 for time-based delay functionality
+8. Continuously read the averaged output AC voltage
+9. Wait a designated delay before printing the next reading
 
 **Implementation:**
 ```cpp
 #include "Atinverter.h"
 #define LOOP_RUNS 20
 
-// Atinverter class instance
 Atinverter atinverter(60);
 
 void setup() {
@@ -44,7 +52,16 @@ void loop() {
 
 ## `Iac_Sensing.ino`
 
-**Psuedocode:**
+**Pseudocode:**
+1. Include the Atinverter library
+2. Create a new Atinverter instance set to 50Hz or 60Hz mode
+3. Initialize the serial monitor for displaying AC current readings
+4. Set sensitivity factor that scales the AC RMS readings
+5. Set up SPI interface and associated pins
+6. Begin PWM operation at 50Hz or 60Hz mode
+7. Configure Timer 2 registers to enable delaying using `delay2` method
+8. Continuously read the averaged output AC current
+9. Wait a designated delay before printing the next reading
 
 **Implementation:**
 ```cpp
@@ -72,4 +89,3 @@ void loop() {
     atinverter.delay2(2000);
 }
 ```
-

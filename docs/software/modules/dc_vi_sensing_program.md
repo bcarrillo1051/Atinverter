@@ -14,15 +14,16 @@ mathjax: true
 ## `Vdc_Sensing.ino`
 
 **Pseudocode:**
-1. Create a new Atinverter instance with desired frequency (50Hz or 60Hz)
-2. Initialize the serial monitor for displaying DC voltage readings
-3. Begin PWM operation at desired frequency
-4. Configure Timer 2 registers to enable delaying using `delay2` method
-5. Read the raw input DC voltage
-6. Print raw input DC voltage to the serial monitor
-7. Pass the most recent reading to the `getAvgDC` method to calculate the running average
-8. Print averaged input DC voltage to the serial monitor
-9. Wait a designated delay before printing the next reading
+1. Include the Atinverter library
+2. Create a new Atinverter instance set to 50Hz or 60Hz mode
+3. Initialize the serial monitor for displaying DC voltage readings
+4. Begin PWM operation at desired frequency
+5. Initialize Timer 2 for time-based delay functionality
+6. Read the raw input DC voltage
+7. Print raw input DC voltage to the serial monitor
+8. Pass the most recent reading to the `getAvgDC` method to calculate the running average
+9. Print averaged input DC voltage to the serial monitor
+10. Wait a designated delay before printing the next reading
 
 **Implementation:**
 ```cpp
@@ -54,15 +55,16 @@ void loop() {
 ## `Idc_Sensing.ino`
 
 **Pseudocode:**
-1. Create a new Atinverter instance with desired frequency (50Hz or 60Hz)
-2. Initialize the serial monitor for displaying DC current readings
-3. Begin PWM operation at desired frequency
-4. Configure Timer 2 registers to enable delaying using `delay2` method
-5. Read the raw input DC current
-6. Print raw input DC current to the serial monitor
-7. Pass the most recent reading to the `getAvgDC` method to calculate the running average
-8. Print averaged input DC current to the serial monitor
-9. Wait a designated delay before printing the next reading
+1. Include the Atinverter library
+2. Create a new Atinverter instance set to 50Hz or 60Hz mode
+3. Initialize the serial monitor for displaying DC current readings
+4. Begin PWM operation at desired frequency
+5. Initialize Timer 2 for time-based delay functionality
+6. Read the raw input DC current
+7. Print raw input DC current to the serial monitor
+8. Pass the most recent reading to the `getAvgDC` method to calculate the running average
+9. Print averaged input DC current to the serial monitor
+10. Wait a designated delay before printing the next reading
 
 **Implementation:**
 ```cpp
