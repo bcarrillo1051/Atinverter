@@ -241,3 +241,7 @@ To set the CS, MOSI, and SCLK pins to their desired state, use the following com
 ```cpp
 SPI.beginTransaction(SPISettings(1500000, MSBFIRST, SPI_MODE0)); // Configure and start comms
 ```
+
+## 🔢 PWM Timing Calculation (for 50Hz output)
+$$f_{sw} = 31,372Hz$$
+$$f_{sw} = \frac{1}{f_{sw}} = 31.875\mu s$$ 

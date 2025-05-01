@@ -149,8 +149,7 @@ class Atinverter {
 	const int PWM_A_PIN = 5;    // Positive half cycle PWM pin | PD5
 	const int PWM_B_PIN = 6;    // Negative half cycle PWM pin | PD6
 	const int GATESD_PIN = 8;   // Gate driver shut down mechanism pin | PB0
-	const int PRORESET_PIN = 9; // Overvoltage and Reset Circuitry Reset pin | PB1
-	
+	const int PRORESET_PIN = 9; // Protection circuitry reset pin | PB1
 	// Parameters for PWM
 	static bool is50Hz;               // Frequency mode: true for 50Hz, false for 60Hz
 	static int sin_i;                 // Index for sinPWM array value
