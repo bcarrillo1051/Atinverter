@@ -30,8 +30,11 @@ mathjax: true
   </script>
 {% endif %}
 
+# **Boost Converter Hardware**
+---
+
 ## Programming the Output Voltage
-***
+
 The output voltage of the boost converter is given by the following equation:
 
 $$R_{1} = \left( \frac{V_{OUT}}{V_{REF}} - 1 \right) \times R_{2}$$
@@ -44,8 +47,10 @@ Desire an output voltage of 12V, internal reference voltage is 795mV, choose R2,
 
 $$R_{1} \approx 1M\Omega$$
 
+---
+
 ## Inductor Selection
-***
+
 To determine the inductor current (input current draw):
 
 $$I_{L(DC)} = \frac{V_{OUT} \times I_{OUT}}{V_{IN} \times \eta}$$
