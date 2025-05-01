@@ -295,7 +295,6 @@ const int Atinverter::sin60HzPWM[] = {
  * @brief Initializes PWM and Timers for 50Hz or 60Hz and begins operation
  */
 void Atinverter::startPWM(bool is50HzMode) {
-
   cli(); // Disable interrupts during setup
   is50Hz = is50HzMode; // Set the correct frequency mode
 
@@ -321,7 +320,7 @@ void Atinverter::startPWM(bool is50HzMode) {
   TCCR1A = is50Hz ? 0b1000010 : 0; // Reset control register A
   TCCR1B = 0; // Reset control register B
   TCNT1 = 0; // Reset the counter
-  OCR1A = is50Hz ? 624 : 509; // Compare match value, 50Hz = 63, 60Hz = 509
+  OCR1A = is50Hz ? 624 : 509; // Compare match value, 50Hz = 624, 60Hz = 509
   TCCR1B = 0b00001001; // CTC Mode, No prescaler (clear timer on compare match)
 
   TIMSK1 |= (1 << OCIE1A); // Enable Timer1 compare match interrupts
