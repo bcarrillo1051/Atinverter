@@ -16,7 +16,7 @@ mathjax: true
 **Pseudocode:**
 1. Include the Atinverter library
 2. Create an Atinverter instance set to 50Hz mode
-3. Start PWM generation in 50Hz mode
+3. Begin PWM generation
 
 **Implementation:**
 ```cpp
@@ -25,7 +25,7 @@ mathjax: true
 Atinverter atinverter(50);
 
 void setup(){
-  atinverter.startPWM(true);
+  atinverter.startPWM();
 }
 
 void loop(){
@@ -40,16 +40,16 @@ void loop(){
 **Psuedocode:**
 1. Include the Atinverter library
 2. Create an Atinverter instance set to 60Hz mode
-3. Start PWM generation in 60Hz mode
+3. Begin PWM generation
 
 **Implementation:**
 ```cpp
 #include "Atinverter.h"
 
-Atinverter atinverter (60);
+Atinverter atinverter(60);
 
 void setup() {
-  atinverter.startPWM(false);
+  atinverter.startPWM();
 }
 
 void loop() {

@@ -37,7 +37,7 @@ mathjax: true
 
 The AC Voltage and Current Sensing feature enables real-time monitoring of the PWM inverter's output voltage and current. It leverages the ATMEGA328P's SPI peripheral to interface with the ADC122S021 which samples conditioned analog signals. This feature includes methods for configuring the SPI bus, acquiring ADC readings, correcting DC offset, computing RMS values, and setting the sensitivity factor that scales the AC RMS readings.
 
-As mentioned in the [AC Voltage Sensing](../../hardware/a_v2_hw) hardware section, to achieve AC RMS voltage measurement across the load of the power inverter ($V_{\mathrm{AC_load}}$), the signal is:
+As mentioned in the [AC Voltage Sensing](../../../hardware/atinverter_v2/ac_volt_sensing_hw) hardware section, to achieve AC RMS voltage measurement across the load of the power inverter ($V_{\mathrm{AC_load}}$), the signal is:
 1. Transformed from a 12V-48$V_{pk}$ AC signal to a composite signal containing both DC and AC components.
 2. Scaled down to a 2.5V DC, 0-1V AC peak signal (effectively ranges from 1.5V to 3.5V), to maintain compatibility with the ADC122S021 input channels
 

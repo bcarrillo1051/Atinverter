@@ -20,7 +20,7 @@ These two standalone programs (`Vac_Sensing.ino` and `Iac_Sensing.ino`) demonstr
 3. Initialize the serial monitor for displaying AC voltage readings
 4. Set sensitivity factor that scales the AC RMS readings
 5. Set up SPI interface and associated pins
-6. Begin PWM operation at 50Hz or 60Hz mode
+6. Begin PWM operation
 7. Initialize Timer 2 for time-based delay functionality
 8. Continuously read the averaged output AC voltage
 9. Wait a designated delay before printing the next reading
@@ -37,7 +37,7 @@ void setup() {
   Serial.println(F("Initialize Output AC Voltage Sensing."));
   atinverter.setSensitivity(SENSITIVITY);
   atinverter.setUpSPI();
-  atinverter.startPWM(false);
+  atinverter.startPWM();
   atinverter.initTimer2Delay();
 }
 
@@ -58,7 +58,7 @@ void loop() {
 3. Initialize the serial monitor for displaying AC current readings
 4. Set sensitivity factor that scales the AC RMS readings
 5. Set up SPI interface and associated pins
-6. Begin PWM operation at 50Hz or 60Hz mode
+6. Begin PWM operation
 7. Configure Timer 2 registers to enable delaying using `delay2` method
 8. Continuously read the averaged output AC current
 9. Wait a designated delay before printing the next reading
@@ -69,22 +69,20 @@ void loop() {
 
 #define LOOP_RUNS 20
 
-// Atinverter class instance
 Atinverter atinverter(60);
 
 void setup() {
-  // Initialize Serial Monitor
   Serial.begin(9600);
   Serial.println(F("Initialize Output AC Voltage Sensing."));
   atinverter.setSensitivity(SENSITIVITY);
 
-  atinverter.startPWM(false); // 60Hz, true 50Hz
-  atinverter.setUpSPI(); // Configures SCK, CS, and MOSI to outputs
-  atinverter.initTimer2Delay(); // Set up Timer2 registers to proper init values
+  atinverter.startPWM();
+  atinverter.setUpSPI();
+  atinverter.initTimer2Delay();
 }
 
 void loop() {
-    float Iac_RMS = atinverter.getRmsAC(false, LOOP_RUNS); // true = Vac, false = Iac, 20 
+    float Iac_RMS = atinverter.getRmsAC(false, LOOP_RUNS);
     Serial.print(F("Iac(RMS): ")); Serial.print(Iac_RMS); Serial.println("A");
     atinverter.delay2(2000);
 }

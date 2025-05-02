@@ -72,7 +72,7 @@ static const int sin50HzPWM[312];
 static const int sin60HzPWM[261];
 
 // Methods
-void startPWM(bool is50HzMode);
+void startPWM();
 static void pwmISR();
 void enablePWM();
 void disablePWM();
@@ -118,29 +118,27 @@ const int Atinverter::sin60HzPWM[] = {
 
 ## 📝 Method Descriptions
 
-## `void startPWM(bool is50HzMode)`
+## `void startPWM()`
 
 **Purpose:** Begins PWM and initializes all required timers and registers for 50Hz or 60Hz PWM generation.
 
 **Pseudocode:**
 1. Disable global interrupts
-2. Set 50Hz or 60Hz mode based on user input flag
-3. Configure PWM pins as outputs
-4. Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on
-5. Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers
-6. Reset control register A, B, and the counter
-7. Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler
+2. Configure PWM pins as outputs
+3. Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on
+4. Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers
+5. Reset Timer0 control register A, B, and the counter
+6. Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler
+7. Reset Timer1 control register B and the counter
+8. Set compare match value depending on frequency mode flag
 8. Set up Timer1 for CTC mode to trigger the waveform stepping ISR
-9. Set compare match value depending on input flag
 10. Enable Timer1 Compare A interrupt
 11. Re-enable global interrupts
 
 **Implementation in `Atinverter.cpp`:**
 ```cpp
-void Atinverter::startPWM(bool is50HzMode) {
+void Atinverter::startPWM() {
   cli();
-
-  is50Hz = is50HzMode;
 
   pinMode(PWM_A_PIN, OUTPUT);
   pinMode(PWM_B_PIN, OUTPUT);
@@ -158,6 +156,7 @@ void Atinverter::startPWM(bool is50HzMode) {
   TCCR0B = 0b00000001;
 
   TCCR1A = is50Hz ? 0b1000010 : 0;
+
   TCCR1B = 0;
   TCNT1 = 0;
 

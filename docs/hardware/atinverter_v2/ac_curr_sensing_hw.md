@@ -43,4 +43,4 @@ Sensing the current from the AC load is similarly achieved to sensing the DC inp
     <h7><b>Figure X.</b> AC Current Sensing Block Diagram </h7>
 </div>
 
-To gain more insight into how the algorithm for computing the AC load current is performed using the ADC122S021 sampling, please refer to the section on [AC Current Sensing](../software/modules/ac_current_sensing).
+To gain more insight into how the algorithm for computing the AC load current is performed using the ADC122S021 sampling, please refer to the section on [AC Current Sensing](../../software/library/features/ac_vi_sensing_feature).

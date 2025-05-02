@@ -806,7 +806,7 @@
   },"115": {
     "doc": "PWM Inversion",
     "title": "📂 Library Structure",
-    "content": "Implementation in Atinverter.h: . // PWM Pin Definitions= const int PWM_A_PIN = 5; const int PWM_B_PIN = 6; const int GATESD_PIN = 8; const int PRORESET_PIN = 9; // Parameters for PWM static bool is50Hz; static int sin_i; static int pwm_i; static int OK; static const int sin50HzPWM[312]; static const int sin60HzPWM[261]; // Methods void startPWM(bool is50HzMode); static void pwmISR(); void enablePWM(); void disablePWM(); . ",
+    "content": "Implementation in Atinverter.h: . // PWM Pin Definitions= const int PWM_A_PIN = 5; const int PWM_B_PIN = 6; const int GATESD_PIN = 8; const int PRORESET_PIN = 9; // Parameters for PWM static bool is50Hz; static int sin_i; static int pwm_i; static int OK; static const int sin50HzPWM[312]; static const int sin60HzPWM[261]; // Methods void startPWM(); static void pwmISR(); void enablePWM(); void disablePWM(); . ",
     "url": "/software/library/features/pwm_inversion_feature.html#-library-structure",
     
     "relUrl": "/software/library/features/pwm_inversion_feature.html#-library-structure"
@@ -826,11 +826,11 @@
     "relUrl": "/software/library/features/pwm_inversion_feature.html#-method-descriptions"
   },"118": {
     "doc": "PWM Inversion",
-    "title": "void startPWM(bool is50HzMode)",
-    "content": "Purpose: Begins PWM and initializes all required timers and registers for 50Hz or 60Hz PWM generation. Pseudocode: . | Disable global interrupts | Set 50Hz or 60Hz mode based on user input flag | Configure PWM pins as outputs | Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on | Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers | Reset control register A, B, and the counter | Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler | Set up Timer1 for CTC mode to trigger the waveform stepping ISR | Set compare match value depending on input flag | Enable Timer1 Compare A interrupt | Re-enable global interrupts | . Implementation in Atinverter.cpp: . void Atinverter::startPWM(bool is50HzMode) { cli(); is50Hz = is50HzMode; pinMode(PWM_A_PIN, OUTPUT); pinMode(PWM_B_PIN, OUTPUT); pinMode(PRORESET_PIN, OUTPUT); digitalWrite(PRORESET_PIN, LOW); pinMode(GATESD_PIN, INPUT); TCCR0A = 0; TCCR0B = 0; TCNT0 = 0; TCCR0A = 0b10100001; TCCR0B = 0b00000001; TCCR1A = is50Hz ? 0b1000010 : 0; TCCR1B = 0; TCNT1 = 0; OCR1A = is50Hz ? 624 : 509; TCCR1B = 0b00001001; TIMSK1 |= (1 &lt;&lt; OCIE1A); sei(); } . ",
-    "url": "/software/library/features/pwm_inversion_feature.html#void-startpwmbool-is50hzmode",
+    "title": "void startPWM()",
+    "content": "Purpose: Begins PWM and initializes all required timers and registers for 50Hz or 60Hz PWM generation. Pseudocode: . | Disable global interrupts | Configure PWM pins as outputs | Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on | Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers | Reset Timer0 control register A, B, and the counter | Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler | Reset Timer1 control register B and the counter | Set compare match value depending on frequency mode flag | Set up Timer1 for CTC mode to trigger the waveform stepping ISR | Enable Timer1 Compare A interrupt | Re-enable global interrupts | . Implementation in Atinverter.cpp: . void Atinverter::startPWM() { cli(); pinMode(PWM_A_PIN, OUTPUT); pinMode(PWM_B_PIN, OUTPUT); pinMode(PRORESET_PIN, OUTPUT); digitalWrite(PRORESET_PIN, LOW); pinMode(GATESD_PIN, INPUT); TCCR0A = 0; TCCR0B = 0; TCNT0 = 0; TCCR0A = 0b10100001; TCCR0B = 0b00000001; TCCR1A = is50Hz ? 0b1000010 : 0; TCCR1B = 0; TCNT1 = 0; OCR1A = is50Hz ? 624 : 509; TCCR1B = 0b00001001; TIMSK1 |= (1 &lt;&lt; OCIE1A); sei(); } . ",
+    "url": "/software/library/features/pwm_inversion_feature.html#void-startpwm",
     
-    "relUrl": "/software/library/features/pwm_inversion_feature.html#void-startpwmbool-is50hzmode"
+    "relUrl": "/software/library/features/pwm_inversion_feature.html#void-startpwm"
   },"119": {
     "doc": "PWM Inversion",
     "title": "static void pwmISR()",
