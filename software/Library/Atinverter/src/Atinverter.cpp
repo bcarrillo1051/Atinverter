@@ -12,6 +12,7 @@
  */
 Atinverter::Atinverter(uint16_t frequency) {
   period = 1000 / frequency; // Computes period in ms
+  is50Hz = (frequency == 50); // Set the flag that indicates frequency mode
 }
 
 // --- LED Blinking ---
@@ -294,9 +295,8 @@ const int Atinverter::sin60HzPWM[] = {
 /**
  * @brief Initializes PWM and Timers for 50Hz or 60Hz and begins operation
  */
-void Atinverter::startPWM(bool is50HzMode) {
+void Atinverter::startPWM() {
   cli(); // Disable interrupts during setup
-  is50Hz = is50HzMode; // Set the correct frequency mode
 
   // Set PWM pins as outputs 
   pinMode(PWM_A_PIN, OUTPUT);

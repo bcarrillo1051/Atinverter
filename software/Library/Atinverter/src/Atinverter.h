@@ -77,7 +77,7 @@ class Atinverter {
 	float getRmsAC(uint8_t loopCount, bool isVac);
 
 	// --- PWM 50Hz/60Hz Inversion ---
-	void startPWM(bool is50HzMode);
+	void startPWM();
 	static void pwmISR();
 	void enablePWM();
 	void disablePWM();

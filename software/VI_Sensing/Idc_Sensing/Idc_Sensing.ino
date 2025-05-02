@@ -17,9 +17,12 @@
 Atinverter atinverter (60);
 
 void setup() {
-  Serial.begin(9600); // Initialize Serial Monitor
+  // Initialize Serial Monitor
+  Serial.begin(9600);
   Serial.println(F("Initialize Input DC Current Sensing."));
-  atinverter.startPWM(false); // 60Hz, true 50Hz
+
+  atinverter.startPWM(); // Begin PWM Generation
+  
   atinverter.initTimer2Delay(); // Initialize timer 2 registers
 }
 

@@ -16,8 +16,10 @@ Atinverter atinverter (60);
 void setup() {
   Serial.begin(9600);
   Serial.println(F("Initialize Input DC Voltage Sensing."));
-  atinverter.startPWM(false);
-  atinverter.initTimer2Delay();
+  
+  atinverter.startPWM(); // Begin PWM generation
+
+  atinverter.initTimer2Delay(); // Initialize timer 2 registers
 }
 
 // Main loop: read and print both raw and averaged Vdc values

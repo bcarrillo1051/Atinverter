@@ -4,7 +4,6 @@
  * Date:        2025-3-25
  * Description: Allows for blinking either a red or green LED
  *              Serves the purpose of testing MCU to verify control of GPIOs
- *
  ******************************************************************************/
 #include "Atinverter.h"
 
