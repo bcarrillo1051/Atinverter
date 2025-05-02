@@ -3,8 +3,10 @@ title: Atinverter V2 Hardware
 layout: default
 parent: Hardware
 nav_order: 2
-mathjax: true
+has_toc: false
 ---
+
+{: .no_toc }
 
 <!-- To enable math equation formatting -->
 {% if page.mathjax %}
@@ -40,11 +42,15 @@ The **Atinverter Version 2 (V2)** incorporates a multitude of subsystems that wo
 
 With the aim of highlighting the relationship between the ATMEGA328P MCU and the power inverter circuitry, the name is based on: "ATMEGA328P" + "Inverter" = "Atinverter"
 
-To better visualize the core components and the interconnections of the design, consider the following the **high-level block diagram**: 
+To better visualize the core components and the interconnections of the design, consider the following diagram: 
 
 <p align="center">
-<img src="../images/atinverter_v2_block_diagram.png" alt="Atinverter V2 Block Diagram" width="700"/>
+<img src="../../images/atinverter_v2_block_diagram.png" alt="Atinverter V2 Block Diagram" width="700"/>
 </p>
+
+<div style="text-align: center;">
+    <h7><b>Figure X.</b> Atinverter High Level Block Diagram </h7>
+</div>
 
 ## **Systems**
 To better understand the full scope of the Atinverter V2, it's helpful to explore the various systems in more detail. Click on each section to dive deeper into how each subsystem contributes to the overall design.

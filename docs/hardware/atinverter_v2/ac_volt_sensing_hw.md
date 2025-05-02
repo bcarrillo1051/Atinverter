@@ -33,7 +33,7 @@ mathjax: true
 # **AC Voltage Sensing Hardware**
 ---
 
-To achieve the sensing of the AC voltage at the output of the power inverter, the approach is more involved than the DC voltage sensing methodology described earlier. Not only does a step down mechanism need to be implemented to provide a low power sensed signal to a processing device, but also a method to handle or correct for the the bipolar nature of the AC wave, namely the negative swing. More specifically, the AC voltage sensing network needs to be able to scale a 12V-48Vpk signal to 0-5V signal in order to be compatible with the ADC122S021, which is used for output voltage and current sampling. The ADC122S021 serves as the intermediary between the ATMEGA328P and the AC sensed signal. It samples the output produced by the AC voltage sensing network and transmits the data to the ATMEGA328P via SPI communication. The ATMEGA328P receives the sensed data by requesting channel 1 of the ADC122S021 and uses it to compute the RMS reading of the voltage.
+To achieve the sensing of the AC voltage at the output of the power inverter, the approach is more involved than the DC voltage sensing methodology. Not only does a step down mechanism need to be implemented to provide a low power sensed signal to a processing device, but also a method to handle or correct for the the bipolar nature of the AC wave, namely the negative swing. More specifically, the AC voltage sensing network needs to be able to scale a 12V-48Vpk signal to 0-5V signal in order to be compatible with the ADC122S021, which is used for output voltage and current sampling. The ADC122S021 serves as the intermediary between the ATMEGA328P and the AC sensed signal. It samples the output produced by the AC voltage sensing network and transmits the data to the ATMEGA328P via SPI communication. The ATMEGA328P receives the sensed data by requesting channel 1 of the ADC122S021 and uses it to compute the RMS reading of the voltage.
 
 <p align="center">
 <img src="../../images/AC_voltage_sensing_block_diagram.png" alt="AC Voltage Sensing Blocl Diagram" width="800"/>
@@ -43,7 +43,7 @@ To achieve the sensing of the AC voltage at the output of the power inverter, th
     <h7><b>Figure X.</b> AC Voltage Sensing Block Diagram </h7>
 </div>
 
-This section covers the hardware implementation for the AC sensing framework as illustrated above. To learn more about how the voltage RMS computation is performed and other key considerations for the software design, see the section [AC Voltage Sensing](../software/modules/ac_voltage_sensing).
+This section covers the hardware implementation for the AC sensing framework as illustrated above. To learn more about how the voltage RMS computation is performed and other key considerations for the software design, see the section [AC Voltage Sensing Library Feature](../../software/library/features/ac_vi_sensing_feature).
 
 ## **AC Voltage Sensing Network**
 
@@ -64,11 +64,11 @@ The design is comprised of two main stages:
 - Tunable gain set by a potentiometer that aims to reduce potential saturation or improve resolution at AC sensing output
 - Active low-pass filter attenuates high frequecy noise and improve signal integrity
 
-### ZMPT101B Transformer
+## ZMPT101B Transformer
 
 The first stage is based on the ZMPT101B current transformer. It is a 1:1, 1000V, 2mA rated transformer. For a more thorough documentation of the component, please review the [ZMPT101B datasheet](https://5nrorwxhmqqijik.leadongcdn.com/attachment/kjilKBmoioSRqlkqjoipSR7ww7fgzb73m/ZMPT101B-specification.pdf).
 
-The input to output voltage relation describing the transformer operation is stated in ***Figure II***:
+The input to output voltage relation describing the transformer operation is stated in ***Figure II*** of the datasheet:
 
 $$U_{2} = \frac{U_{1}}{R'} \times R$$
 
@@ -82,7 +82,7 @@ In efforts to maintain consistency with the previous AC Voltage Circuit diagram,
 
 $$V_{\mathrm{AC_samp}} = \frac{V_{\mathrm{AC_in}}}{R_{lim}} \times R_{samp}$$
 
-### 🔢 Calculating $R_{lim}$
+## 🔢 Calculating $R_{lim}$
 
 To achieve higher levels of Signal-to-Noise Ratio (SNR), better ADC range, and noise immunity, a current limiting resistor $R_{lim}$ should be selected such that the magnitude is near the rated current but not exceeding. Choosing a current limiting resistor is based on the highest expected voltage that will be delivered to the input primary side of the transformer. Recalling that the maximum peak voltage for the power inverter is 48V, and considering that the transformer has a rated current of 2mA, a max current value of 1.5mA is chosen. This ensures that $V_{\mathrm{AC\_in}}$ is maximized in signal strength to improve resolution, but also provides buffer from operating the part at rated conditions. 
 
@@ -92,7 +92,7 @@ $$R_{lim} = \frac{48V}{1.5mA} = 32k\Omega$$
 
 - Choose $33k\Omega$ based on standard resistor values
 
-### 🔢 Calculating $R_{samp}$
+## 🔢 Calculating $R_{samp}$
 
 The sampling resistance linearly influences the transformer AC voltage output as per the equation in ***Figure II***. By rearragning the ZMPT101B expression, this renders the following equation usable for solving the sampling resistor in a passive configuration where no amplication is present.
 
@@ -102,7 +102,7 @@ $$R_{samp} = \frac{V_{\mathrm{AC_samp}}}{V_{\mathrm{AC_in}}} \times R_{lim}$$
 
 However, this expression is not directly applicable since it makes use of an active configuration. Nonetheless, it can be adapted to suit the needs of the current design as detailed in the next section.
 
-### Signal Conditioning and Amplification
+## Signal Conditioning and Amplification
 
 The second stage of the **AC Voltage Sensing Network** is a combination of two inverting amplication phases that serve the purpose of amplifying the low voltage signal produced across the sampling resistor. Each level provides an amplication factor of 10, yielding a net gain of 100. To develop a transfer function that accounts for this two op-amp amplification chain in the AC voltage sensing network, this gain stage can be modeled by a variable $G_{amp}$. This net gain is also equivalent to the product of the two intermediate gains $G_{1} \times G_{2}$.
 
@@ -146,7 +146,7 @@ $$R_{samp} = \frac{1}{48 \times 100 \times 1} \times 33k = 6.87\Omega$$
 
 - Choose $6.8\Omega$ based on standard resistor values, as this accomodates for both 12V and 48V $V_{\mathrm{AC_in}}$. The effective resolution of the sensed signal can then be improved by reducing $R_{tune}$, as this increases the output swing without exceeding the op-amp’s output swing range.
 
-### Simulation
+## Simulation
 
 The AC voltage sensing topology was simulated using LTSpice to verify operation. Since the LM358 is not an available in the component library, the OP07 amplifier was used as a suitable substitute. 
 
