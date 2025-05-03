@@ -44,7 +44,7 @@ void setup() {
   atinverter60.setUpSPI();
 
   // Begins PWM at 60 Hz
-  atinverter60.startPWM(isFiftyHz);
+  atinverter60.startPWM();
   //Serial.println("Setup Done");
 }
 
@@ -114,7 +114,7 @@ void loop() {
     isFiftyHz = true;
     if (fifty_once == false) {
       atinverter50.enablePWM(); // Enables PWM if it is off
-      atinverter50.startPWM(isFiftyHz); // Begins 50 Hz PWM signal
+      atinverter50.startPWM(); // Begins 50 Hz PWM signal
       atinverter50.turnOnGates(); // Confirms gate driver is on
       atinverter60.set1LED(2, LOW); // Sets LED low to match GateShutdown signal
       fifty_once = true;
@@ -127,7 +127,7 @@ void loop() {
     isFiftyHz = false;
     if (sixty_once == false) {
       atinverter60.enablePWM(); // Enables PWM if it is off
-      atinverter60.startPWM(isFiftyHz); // Begins 50 Hz PWM signal
+      atinverter60.startPWM(); // Begins 60 Hz PWM signal
       atinverter60.turnOnGates(); // Confirms gate driver is on
       atinverter60.set1LED(2, LOW); // Sets LED low to match GateShutdown signal
       sixty_once = true;
