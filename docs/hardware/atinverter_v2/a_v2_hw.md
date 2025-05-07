@@ -35,14 +35,14 @@ has_toc: false
 # **Atinverter V2 Hardware**
 ***
 
-The **Atinverter Version 2 (V2)** incorporates a multitude of subsystems that work in tandem to support the board's main function as a **power inverter**. A power inverter, not to be confused with a digital logic inverter, is a type of converter that takes a DC signal and transforms it to an AC signal. 
+The **Atinverter Version 2 (V2)** incorporates a multitude of subsystems that work in tandem to support the board’s main function as a **power inverter**. A power inverter, not to be confused with a digital logic inverter, is a type of converter that takes a **DC input** and transforms it to an **AC output**.
 
 {: .highlight-yellow }
 > 💭 "Why Atinverter?"
 
-With the aim of highlighting the relationship between the ATMEGA328P MCU and the power inverter circuitry, the name is based on: "ATMEGA328P" + "Inverter" = "Atinverter"
+The name “Atinverter” reflects the close relationship between the ATMEGA328P microcontroller (MCU) and the inverter circuitry, combining "ATMEGA328P" and "inverter" into a single term.
 
-To better visualize the core components and the interconnections of the design, consider the following diagram: 
+The diagram below illustrates the core components and the interconnections of the design:
 
 <p align="center">
 <img src="../../images/atinverter_v2_block_diagram.png" alt="Atinverter V2 Block Diagram" width="700"/>
@@ -55,12 +55,13 @@ To better visualize the core components and the interconnections of the design, 
 ## **Systems**
 To better understand the full scope of the Atinverter V2, it's helpful to explore the various systems in more detail. Click on each section to dive deeper into how each subsystem contributes to the overall design.
 
-- 🔌 [Power Inverter](atinverter_v2/power_inverter_hw)
-- 💡 [LED Blinking](atinverter_v2/LED_blinking_hw)
-- 📟 [DC Voltage Sensing](atinverter_v2/dc_volt_sensing_hw)
-- 📟 [DC Current Sensing](atinverter_v2/dc_curr_sensing_hw)
-- 📟 [AC Voltage Sensing](atinverter_v2/ac_volt_sensing_hw)
-- 📟 [AC Current Sensing](atinverter_v2/ac_curr_sensing_hw)
-- 🔁 [Inter-Board Communication](atinverter_v2/inter_board_comms)
-- 🔼 [Boost Converter](atinverter_v2/boost_conv_hw)
-- 🔽 [Buck Converter](atinverter_v2/buck_conv_hw)
+- 🔌 [Power Inverter](power_inverter_hw)
+- 📟 [DC Voltage Sensing](dc_volt_sensing_hw)
+- 📟 [DC Current Sensing](dc_curr_sensing_hw)
+- 📟 [AC Voltage Sensing](ac_volt_sensing_hw)
+- 📟 [AC Current Sensing](ac_curr_sensing_hw)
+- ⚡ [Overvoltage and Reset Protection](ov_reset_prot)
+- 🔽 [Buck Converter](buck_conv_hw)
+- 🔼 [Boost Converter](boost_conv_hw)
+- 💡 [LED Blinking](LED_blinking_hw)
+- 🔁 [Inter-Board Communication](inter_board_comms)

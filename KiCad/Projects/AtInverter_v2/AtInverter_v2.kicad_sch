@@ -12984,7 +12984,7 @@
 		)
 		(uuid "10305e64-2197-4125-ac9e-46d1371719ce")
 	)
-	(text "Overvoltage and Reset Circuitry"
+	(text "Overvoltage and Reset Protection"
 		(exclude_from_sim no)
 		(at 102.87 56.134 0)
 		(effects
@@ -19969,7 +19969,7 @@
 		(dnp no)
 		(uuid "685e597b-d2d5-433b-9c18-fd5eb1e87f62")
 		(property "Reference" "U3"
-			(at 139.7 80.01 0)
+			(at 139.7 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19977,7 +19977,7 @@
 			)
 		)
 		(property "Value" "LM393"
-			(at 139.7 82.55 0)
+			(at 139.954 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -22789,7 +22789,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "74LVC1G32"
+		(property "Value" "SN74LVC1G32DBVR"
 			(at 125.0441 78.74 0)
 			(effects
 				(font

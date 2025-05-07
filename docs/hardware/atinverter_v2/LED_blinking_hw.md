@@ -44,4 +44,4 @@ The LED circuit is effectively **four LEDs** that are independently controlled u
 </div>
 
 
-These LEDs are cycled on and off using a blink program providing a trivial aesthetic effect, but its primary purpose is a **functional verfication** of ATMEGA328P. Using a visual indictator allows us to determine if the MCU is bootloaded, which is a necessary step when working with a **brand-new chip**.
+These LEDs are cycled on and off using a simple blink program providing a trivial aesthetic effect, but its primary purpose is the **functional verification** of the ATMEGA328P. The visual indicator allows the user to determine if the microcontroller is **bootloaded**, which means it is capable of receiving code uploads. This check is particularly important as discrete ATMEGA328P chips are typically sold **without** a pre-installed bootloader. 

@@ -2028,7 +2028,7 @@
 			)
 		)
 		(property ki_fp_filters "SOIC*3.9x4.9mm*P1.27mm* DIP*W7.62mm* SOP*5.28x5.23mm*P1.27mm* VSSOP*3.0x3.0mm*P0.65mm* TSSOP*4.4x3mm*P0.65mm*")
-		(path "/a903bf04-0d6e-44e6-bdfd-8b5cdab819bb")
+		(path "/685e597b-d2d5-433b-9c18-fd5eb1e87f62")
 		(sheetname "Root")
 		(sheetfile "AtInverter_v2.kicad_sch")
 		(attr smd)
@@ -10601,7 +10601,7 @@
 				)
 			)
 		)
-		(property "Value" "74LVC1G32"
+		(property "Value" "SN74LVC1G32DBVR"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -13882,7 +13882,7 @@
 				)
 			)
 		)
-		(property "Value" "100Ω"
+		(property "Value" "6.8Ω"
 			(at 0 1.82 0)
 			(layer "F.Fab")
 			(uuid "c2b0a29e-dc1e-4728-af74-3dee430880b1")
@@ -26317,7 +26317,7 @@
 			)
 		)
 		(fp_text user "DTR"
-			(at 3.048 12.7 270)
+			(at 3.048 12.7 -90)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "c7bd6030-f7d3-44d6-ae7e-cd38f60b9d31")

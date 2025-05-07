@@ -33,7 +33,7 @@ mathjax: true
 # **AC Current Sensing Hardware**
 ---
 
-Sensing the current from the AC load is similarly achieved to sensing the DC input. On the AC side, the TMCS1108 hall-effect current sensor is likewise employed. What differs is how the signal is analyzed after being sampled by current sensor. In this case, the output analog voltage that maps to the load current is not being delivered directly to ATMEGA328P for processing and calculation, but rather to the second input channel of the ADC122S021.
+Sensing the current from the AC output load is conceptually similar to sensing the DC input current, but includes an additional intermediate step. Instead of directly providing analog voltage samples that correspond to a current reading from the TMCS1108 to the ATMEGA328P, the samples are first delivered to the second input channel of the ADC122S021.
 
 <p align="center">
 <img src="../../images/AC_current_sensing_block_diagram.png" alt="AC Current Sensing Block Diagram" width="800"/>
@@ -43,4 +43,7 @@ Sensing the current from the AC load is similarly achieved to sensing the DC inp
     <h7><b>Figure X.</b> AC Current Sensing Block Diagram </h7>
 </div>
 
-To gain more insight into how the algorithm for computing the AC load current is performed using the ADC122S021 sampling, please refer to the section on [AC Current Sensing](../../software/library/features/ac_vi_sensing_feature).
+The ADC122S021 offers higher levels of resolution and better sampling performance compared to the ATMEGA328P’s built-in ADC channels. This improvement is particularly beneficial for monitoring the AC output current signal, which carries greater importance for waveform control and feedback than the DC input current. The control loop feedback, which is to be implemented in future iterations of the board, is fundamentally reliant on an accurate and high-resolution output current sampling mechanism. Ultimately, by leveraging a higher-performance ADC, the system will be better equipped to support real-time control decisions and more precise actuation of the inverter output.
+
+
+To gain more insight into how the algorithm for computing the AC load current is performed using the ADC122S021, please refer to the [AC V/I Sensing Library Feature](../../software/library/features/ac_vi_sensing_feature) section.

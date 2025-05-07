@@ -43,7 +43,7 @@ To achieve the sensing of the AC voltage at the output of the power inverter, th
     <h7><b>Figure X.</b> AC Voltage Sensing Block Diagram </h7>
 </div>
 
-This section covers the hardware implementation for the AC sensing framework as illustrated above. To learn more about how the voltage RMS computation is performed and other key considerations for the software design, see the section [AC Voltage Sensing Library Feature](../../software/library/features/ac_vi_sensing_feature).
+This section covers the hardware implementation for the AC sensing framework as illustrated above. To learn more about how the voltage RMS computation is performed and other key considerations for the software design, see the section [AC V/I Sensing Library Feature](../../software/library/features/ac_vi_sensing_feature).
 
 ## **AC Voltage Sensing Network**
 
@@ -94,7 +94,7 @@ $$R_{lim} = \frac{48V}{1.5mA} = 32k\Omega$$
 
 ## 🔢 Calculating $R_{samp}$
 
-The sampling resistance linearly influences the transformer AC voltage output as per the equation in ***Figure II***. By rearragning the ZMPT101B expression, this renders the following equation usable for solving the sampling resistor in a passive configuration where no amplication is present.
+The sampling resistance linearly influences the transformer AC voltage output as per the equation in ***Figure II***. By rearranging the ZMPT101B expression, this renders the following equation usable for solving the sampling resistor in a passive configuration where no amplification is present.
 
 $$V_{\mathrm{AC_samp}} = \frac{V_{\mathrm{AC_in}}}{R_{lim}} \times R_{samp}$$
 
@@ -104,7 +104,7 @@ However, this expression is not directly applicable since it makes use of an act
 
 ## Signal Conditioning and Amplification
 
-The second stage of the **AC Voltage Sensing Network** is a combination of two inverting amplication phases that serve the purpose of amplifying the low voltage signal produced across the sampling resistor. Each level provides an amplication factor of 10, yielding a net gain of 100. To develop a transfer function that accounts for this two op-amp amplification chain in the AC voltage sensing network, this gain stage can be modeled by a variable $G_{amp}$. This net gain is also equivalent to the product of the two intermediate gains $G_{1} \times G_{2}$.
+The second stage of the **AC Voltage Sensing Network** is a combination of two inverting amplification phases that serve the purpose of amplifying the low voltage signal produced across the sampling resistor. Each level provides an amplification factor of 10, yielding a net gain of 100. To develop a transfer function that accounts for this two op-amp amplification chain in the AC voltage sensing network, this gain stage can be modeled by a variable $G_{amp}$. This net gain is also equivalent to the product of the two intermediate gains $G_{1} \times G_{2}$.
 
 The AC voltage from output to input then can be described as:
 
@@ -144,24 +144,4 @@ $$R_{samp} = \frac{1}{12 \times 100 \times 1} \times 33k = 27.5\Omega$$
 
 $$R_{samp} = \frac{1}{48 \times 100 \times 1} \times 33k = 6.87\Omega$$
 
-- Choose $6.8\Omega$ based on standard resistor values, as this accomodates for both 12V and 48V $V_{\mathrm{AC_in}}$. The effective resolution of the sensed signal can then be improved by reducing $R_{tune}$, as this increases the output swing without exceeding the op-amp’s output swing range.
-
-## Simulation
-
-The AC voltage sensing topology was simulated using LTSpice to verify operation. Since the LM358 is not an available in the component library, the OP07 amplifier was used as a suitable substitute. 
-
-<p align="center">
-<img src="../../images/AC_voltage_sensor_network_simulation.png" alt="AC Voltage Sensing Network Simulation" width="800"/>
-</p>
-
-<div style="text-align: center;">
-    <h7><b>Figure X.</b> AC Voltage Sensor Network Simulation Circuit </h7>
-</div>
-
-<p align="center">
-<img src="../../images/AC_voltage_sensor_network_simulation_plot.png" alt="AC Voltage Sensing Network Simulation Plot " width="800"/>
-</p>
-
-<div style="text-align: center;">
-    <h7><b>Figure X.</b> AC Voltage Sensor Network Simulation Signals Plot </h7>
-</div>
+- A $6.8\Omega$ resistor was selected based on standard resistor values, as this accommodates for both 12V and 48V $V_{\mathrm{AC_in}}$. A smaller resistance results in a smaller voltage drop, which is subsequently amplified less—making the output signal less prone to op-amp saturation. The effective amplitude of the sensed signal can then be increased by reducing $R_{tune}$, allowing the op-amp output to span a larger portion of its available swing without exceeding its limits. This maximizes the effective use of the ADC's input range, making the signal easier to sample accurately.
