@@ -26,7 +26,7 @@ While the majority of the inverter architecture was carried over from the origin
 As most of the design was previously developed in the Atinverter V1 iteration, a detailed reference can be found in [citation]. Nonetheless, a brief description of each stage of the power inverter is covered.
 
 ## 〰️ PWM Generation
-The power inverter operation is catalyzed by the **PWM generation** from the **ATMEGA328P**. This MCU generates **pulse-width modulated (PWM) square waves** that, when combined with an appropriate switching circuit and filtering stage, can approximate the output of a **pure sine wave power inverter.** 
+The power inverter operation is catalyzed by the **PWM generation** from the **ATMEGA328P**. This MCU generates **pulse-width modulated (PWM) square waves** at a frequency of 31,372Hz that, when combined with an appropriate switching circuit and filtering stage, can approximate the output of a 50Hz or 60Hz **pure sine wave power inverter.** 
 
 While there are other simpler approaches that can be employed to achieve inversion, such as square wave or modified square wave inverters, this one achieves **higher levels of waveform fidelity**. In other words, this modulation technique allows our output waveform to behave and appear more like a **real sine wave.**
 
