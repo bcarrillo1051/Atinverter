@@ -12,3 +12,4 @@ nav_order: 6
 - [ ] Load testing captures
 - [ ] Update UML diagram
 - [ ] Update the Vision section, too sparse right now
+- [ ] Modify DC voltage diagram to include full view of power inverter

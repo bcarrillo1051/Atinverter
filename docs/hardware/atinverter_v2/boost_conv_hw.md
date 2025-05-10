@@ -55,7 +55,7 @@ As per the illustrated figure from the IRFB4020PBF datasheet, operating the MOSF
 
 ---
 
-## WEBENCH Boost Converter Design
+## WEBENCH Design
 
 The design of the boost converter was developed using Texas Instrument's free, online WEBENCH Power Design tool which generate a complete and customizable power converter depending on user criteria. The TLV61046ADBVR boost converter IC was selected, and the finalized design is accessible for review and customization via [Texas Instruments' WEBENCH interface](https://webench.ti.com/power-designer/switching-regulator/customize/10).
 
@@ -84,6 +84,8 @@ Once these parameters are provided to the WEBENCH interface, the following boost
     <h7><b>Figure X.</b> TLV61046ADBVR Boost Converter Schematic </h7>
 </div>
 <br>
+
+## WEBENCH Simulation
 
 One convenient feature of the WEBENCH Power Designer interface is that it automatically calculates a wide range of performance metrics and displays them within the "Operating Values" window. These metrics are organized into categories such as System Information, Inductor, Power, and others. A few key operating values and diagnostic plots relevant to this design are shown below:
 
@@ -151,17 +153,19 @@ One convenient feature of the WEBENCH Power Designer interface is that it automa
 | IC Pd          | 18.29 mW   | Power              | IC power dissipation                                               |
 | Vout Actual    | 11.91 V    | System Information | Vout Actual calculated based on selected voltage divider resistors |
 
-## Load Current Calculation
+## Output Load Current Requirement
 
 The boost converter's intended operation is to only drive two IR2302 gate drivers. Thus, the current drawn by both gate drivers defined the total output load current of the converter. 
 
-The current consumption of a gate driver can be comprises both static and dynamic current components. According to the the [IR2302 datasheet](https://www.infineon.com/dgdl/ir2302.pdf?fileId=5546d462533600a4015355c988b216de), the maximum quiescent from the $V_{cc}$ supply which also describes the static current of a gate driver is: 
+The current consumption of a gate driver comprises both static and dynamic current components. According to the the [IR2302 datasheet](https://www.infineon.com/dgdl/ir2302.pdf?fileId=5546d462533600a4015355c988b216de), the maximum quiescent from the $V_{cc}$ supply which also describes the static current of a gate driver is: 
 
 $$I_{static} = I_{QCC} = 1.6mA$$
 
 Since the power inverter network integrates two gate drivers, this results in a total static current of:
 
-$$I_{static(total)} = 2 \times I_{static}​ = 3.2mA$$
+$$I_{static(total)} = 2 \times I_{static}​
+
+$$I_{static(total)} = 2 \times I_{static} = 3.2mA$$
 
 The dynamic current is a characteristic of the MOSFET's total gate charge and its switching frequency:
 
@@ -183,9 +187,9 @@ $$I_{out}​ = I_{static(total)} ​+ I_{dynamic(total)}$$
 
 $$I_{out}​ = 3.2mA ​+ 1.82mA = 5.02mA$$
 
-Although the selected load current for the TLV61046ADBVR boost converter is 10mA, this provides a comfortable margin to ensuresufficient current delivery to the IR2302 gate drivers, while also designing close to ideal component operating values.
+Although the selected load current for the WEBENCH boost converter design is selected as 10mA, this provides a comfortable margin to ensure sufficient current delivery to the IR2302 gate drivers, while also designing close to ideal component operating values.
 
-## Programming the Output Voltage
+## Setting the Output Voltage
 
 The output voltage of the boost converter can be programmed using a resistor divider network connected to the feedback (FB) pin of the TLV61046ADBVR IC. The relationship between the output voltage and the resistor values is given by:
 

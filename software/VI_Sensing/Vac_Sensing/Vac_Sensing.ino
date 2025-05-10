@@ -28,7 +28,7 @@ void setup() {
 void loop() {
   // Sample AC RMS readings continuously with delay
   float Vac_RMS = atinverter.getRmsAC(true, LOOP_RUNS); // true = Vac, false = Iac, 20 periods
-  Serial.print(F("Vac(RMS): ")); Serial.print(Vac_RMS); Serial.println("V");
-  atinverter.delay2(2000);
+  Serial.print(F("Vac(RMS): ")); Serial.print(Vac_RMS); Serial.println("V\n");
+  atinverter.delay2(1000);
 }
 

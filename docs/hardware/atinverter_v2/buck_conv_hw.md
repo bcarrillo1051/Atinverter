@@ -20,6 +20,17 @@ mathjax: true
 # **Buck Converter Hardware**
 ---
 
+The buck converter network is main power source that supplies power to most of the Atinverter V2 chips. Specifically, it delivers power to these devices:
+
+- ATMEGA328P
+- Two TMCS1108A4BQDR (for DC and AC Current Sensing)
+- LM358N and Two Bias Resistor Networks (for AC Voltage Sensing)
+- SN74LVC1G32DBVR (for Overvoltage and Reset Protection)
+- ADC122S021CIMM (for AC V/I Sampling)
+- Four pull up and 1 bias resistor network (Resistor Arrays, I2C Level Shifter, and FTDI to USB Connector)
+
+The buck converter chosen is 
+
 ## Determining the DC/DC Converter Output Current Needed
 Requirements
 {: .label } 

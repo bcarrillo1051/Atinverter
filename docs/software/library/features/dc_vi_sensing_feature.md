@@ -59,13 +59,13 @@ This table expresses the dedicated analog pins used for the design and their res
 **Implementation in `Atinverter.h`:**
 ```cpp
 // TMCS1108 Current Sensor Parameters
-#define SENSOR_GAIN_MV_PER_A 400.0f // Sensitivity for A4 variant (400 mV per A)
-#define MV_TO_V 1000.0f // Scaling factor from mV to V
-#define VOUT_0A 2.5f // Zero current output voltage
+#define SENSOR_GAIN_MV_PER_A 400.0f
+#define MV_TO_V 1000.0f
+#define VOUT_0A 2.5f
 
 // ADC Parameters
-#define VREF 5.0f // Reference voltage for both ADCs
-#define ADC_ATMEGA328P_MAX_VALUE 1023.0f // For ATMEGA328P (internal ADC)
+#define VREF 5.0f
+#define ADC_ATMEGA328P_MAX_VALUE 1023.0f
 
 // Moving Average Samples
 #define MA_SAMPLES 10
