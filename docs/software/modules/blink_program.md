@@ -30,6 +30,7 @@ nav_order: 1
 #include "Atinverter.h"
 
 Atinverter atinverter;
+
 int PERIOD = 1000;
 
 void setup() {

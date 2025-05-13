@@ -175,6 +175,14 @@ Configuring all SPI pins on the ATMEGA328P can be performed by using `SPI.begin(
 // ADC Parameters
 #define VREF 5.0f
 #define ADC_122S021_MAX_VALUE 4095.0f
+#define VAC_ADC_CHANNEL 0x00
+#define IAC_ADC_CHANNEL 0x08
+#define CLOCK_FREQUENCY 1000000
+
+// --- AC RMS Parameters ---
+#define MS_PER_SECOND 1000
+#define DEFAULT_SENSITIVITY 500.0f
+#define SENSITIVITY 37.81f
 
 // Parameters AC Sensing
 uint32_t period;

@@ -7,12 +7,10 @@
 #include "Atinverter.h"
 
 /**
- * @brief Constructor for the AtinverterE class.
+ * @brief Constructor for the Atinverter class.
  *        Initializes any necessary components or variables.
  */
-Atinverter::Atinverter(uint16_t frequency) {
-  period = 1000 / frequency; // Computes period in ms
-  is50Hz = (frequency == 50); // Set the flag that indicates frequency mode
+Atinverter::Atinverter() {
 }
 
 // --- LED Blinking ---
@@ -293,10 +291,28 @@ const int Atinverter::sin60HzPWM[] = {
   79,76,73,71,68,65,62,59,56,53,50,47,44,41,38,35,32,29,26,24,21,18,15,12,9,6,3,1};
 
 /**
- * @brief Initializes PWM and Timers for 50Hz or 60Hz and begins operation
+ * @brief Initializes PWM and Timers for 50Hz or 60Hz and begins operation.
+ * 
+ * This method sets up the necessary timers and pin modes to begin PWM waveform generation 
+ * using the ATMEGA328P's hardware resources. It supports configurable operation at either 
+ * 50Hz or 60Hz and prepares related parameters used in AC sensing routines.
+ * 
+ * @param is50HzMode A boolean flag indicating the desired fundamental frequency mode.
+ *                   This parameter influences:
+ *                   1. Timer register configuration for PWM generation in startPWM().
+ *                   2. Selection of the correct sample array in pwmISR().
+ *                   3. Computation of the time window used in getRmsAC() and getZeroPoint().
  */
-void Atinverter::startPWM() {
+void Atinverter::startPWM(uint16_t frequency) {
   cli(); // Disable interrupts during setup
+
+  if (frequency != 50 && frequency != 60) { // If input frequency not 50Hz or 60Hz
+    frequency = 50; // Set to default frequency of 50Hz
+  }
+
+  is50Hz = (frequency == 50); // Set global frequency mode flag used by pwmISR() for waveform selection
+
+  period = MS_PER_SECOND / frequency; // Computes period in ms for getRmsAC() and get getZeroPoint()
 
   // Set PWM pins as outputs 
   pinMode(PWM_A_PIN, OUTPUT);

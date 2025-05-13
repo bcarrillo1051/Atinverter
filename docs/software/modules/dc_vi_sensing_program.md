@@ -15,9 +15,9 @@ mathjax: true
 
 **Pseudocode:**
 1. Include the Atinverter library
-2. Create a new Atinverter instance set to 50Hz or 60Hz mode
+2. Create a new Atinverter instance
 3. Initialize the serial monitor for displaying DC voltage readings
-4. Begin PWM operation
+4. Begin PWM operation at a specified frequency of 50Hz or 60Hz
 5. Initialize Timer 2 for time-based delay functionality
 6. Read the raw input DC voltage
 7. Print raw input DC voltage to the serial monitor
@@ -29,12 +29,12 @@ mathjax: true
 ```cpp
 #include "Atinverter.h"
 
-Atinverter atinverter(60);
+Atinverter atinverter;
 
 void setup() {
   Serial.begin(9600);
   Serial.println(F("Initialize Input DC Voltage Sensing."));
-  atinverter.startPWM();
+  atinverter.startPWM(60);
   atinverter.initTimer2Delay();
 }
 
@@ -58,7 +58,7 @@ void loop() {
 1. Include the Atinverter library
 2. Create a new Atinverter instance set to 50Hz or 60Hz mode
 3. Initialize the serial monitor for displaying DC current readings
-4. Begin PWM operation
+4. Begin PWM operation at a specified frequency of 50Hz or 60Hz
 5. Initialize Timer 2 for time-based delay functionality
 6. Read the raw input DC current
 7. Print raw input DC current to the serial monitor
@@ -70,12 +70,12 @@ void loop() {
 ```cpp
 #include "Atinverter.h"
 
-Atinverter atinverter (60);
+Atinverter atinverter;
 
 void setup() {
   Serial.begin(9600);
   Serial.println(F("Initialize Input DC Current Sensing."));
-  atinverter.startPWM();
+  atinverter.startPWM(60);
   atinverter.initTimer2Delay();
 }
 

@@ -13,15 +13,14 @@
 
 #include "Atinverter.h"
 
-// Atinverter class instance
-Atinverter atinverter (60);
+Atinverter atinverter; // Atinverter class instance
 
 void setup() {
   // Initialize Serial Monitor
   Serial.begin(9600);
   Serial.println(F("Initialize Input DC Current Sensing."));
 
-  atinverter.startPWM(); // Begin PWM Generation
+  atinverter.startPWM(60); // Set registers and begin PWM generation at 50Hz or 60Hz
   
   atinverter.initTimer2Delay(); // Initialize timer 2 registers
 }

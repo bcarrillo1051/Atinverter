@@ -72,7 +72,7 @@ static const int sin50HzPWM[312];
 static const int sin60HzPWM[261];
 
 // Methods
-void startPWM();
+void startPWM(uint16_t frequency);
 static void pwmISR();
 void enablePWM();
 void disablePWM();
@@ -118,27 +118,39 @@ const int Atinverter::sin60HzPWM[] = {
 
 ## 📝 Method Descriptions
 
-## `void startPWM()`
+## `void startPWM(uint16_t frequency)`
 
 **Purpose:** Begins PWM and initializes all required timers and registers for 50Hz or 60Hz PWM generation.
 
 **Pseudocode:**
 1. Disable global interrupts
-2. Configure PWM pins as outputs
-3. Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on
-4. Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers
-5. Reset Timer0 control register A, B, and the counter
-6. Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler
-7. Reset Timer1 control register B and the counter
-8. Set compare match value depending on frequency mode flag
-8. Set up Timer1 for CTC mode to trigger the waveform stepping ISR
-10. Enable Timer1 Compare A interrupt
-11. Re-enable global interrupts
+2. if the frequency input is not 50Hz or 60Hz
+  - Set a default frequency of 50Hz
+3. Set global frequency mode flag used by pwmISR based on frequency input for sample array selection
+4. Compute the sampling time window used in getRmsAC() and getZeroPoint()
+5. Configure PWM pins as outputs
+6. Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on
+7. Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers
+8. Reset Timer0 control register A, B, and the counter
+9. Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler
+10. Reset Timer1 control register B and the counter
+11. Set compare match value depending on frequency mode flag
+12. Set up Timer1 for CTC mode to trigger the waveform stepping ISR
+13. Enable Timer1 Compare A interrupt
+14. Re-enable global interrupts
 
 **Implementation in `Atinverter.cpp`:**
 ```cpp
 void Atinverter::startPWM() {
   cli();
+
+  if (frequency != 50 && frequency != 60) {
+    frequency = 50;
+  }
+
+  is50Hz = (frequency == 50);
+
+  period = MS_PER_SECOND / frequency;
 
   pinMode(PWM_A_PIN, OUTPUT);
   pinMode(PWM_B_PIN, OUTPUT);

@@ -21,7 +21,7 @@ The Atinverter V2 library is comprised of two files: `Atinverter.h` and `Atinver
 Upon further inspection of the Atinverter Library, we can observe that it is organized into five main sections based on functionality. The nodes for the five features of the library are interactive—click to explore specific software functionality and learn more about its design. Additionally, the code is thoroughly documented within the program files, so these sections will focus primarily on providing an overview of the design and any algorithms that were implemented.
 
 <p align="center">
-   <object data="../../images/atinverter_library_expanded_view.svg" type="image/svg+xml" width="600"></object>
+   <object data="../../images/atinverter_library_features.svg" type="image/svg+xml" width="600"></object>
 </p>
 
 <div style="text-align: center;">

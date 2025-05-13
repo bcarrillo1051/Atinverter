@@ -24,7 +24,7 @@
 #define CLOCK_FREQUENCY 1000000 // Clock used to drive ADC122S021
 
 // --- AC RMS Parameters ---
-#define DEFAULT_FREQUENCY 60.0f // When no frequency is specified for Atinverter instance
+#define MS_PER_SECOND 1000 // For computing the sampling period in ms
 #define DEFAULT_SENSITIVITY 500.0f // When no sensitivity is specified for AC RMS calculation
 #define SENSITIVITY 37.81f // Tuned value after testing, adjust as needed
 
@@ -56,7 +56,7 @@ class Atinverter {
   public:
   	// - Constructor -
 
-	Atinverter(uint16_t frequency = DEFAULT_FREQUENCY);
+	Atinverter();
 
 	// - Methods -
 
@@ -77,7 +77,7 @@ class Atinverter {
 	float getRmsAC(uint8_t loopCount, bool isVac);
 
 	// --- PWM 50Hz/60Hz Inversion ---
-	void startPWM();
+	void startPWM(uint16_t frequency);
 	static void pwmISR();
 	void enablePWM();
 	void disablePWM();

@@ -9,8 +9,7 @@
 
 #define LOOP_RUNS 20
 
-// Atinverter class instance
-Atinverter atinverter(60);
+Atinverter atinverter; // Atinverter class instance
 
 void setup() {
   // Initialize Serial Monitor
@@ -19,7 +18,7 @@ void setup() {
 
   atinverter.setSensitivity(SENSITIVITY); // Scale RMS ADC values to real-world signal amplitude
   atinverter.setUpSPI(); // Set up SPI interface and associated pins
-  atinverter.startPWM(); // Set registers and begin PWM generation
+  atinverter.startPWM(60); // Set registers and begin PWM generation at 50Hz or 60Hz
 
   // Timer 2 Setup
   atinverter.initTimer2Delay(); // Set timer 2 registers to proper init values

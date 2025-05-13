@@ -9,6 +9,14 @@
 <span class="c1">// ADC Parameters</span>
 <span class="cp">#define VREF 5.0f
 #define ADC_122S021_MAX_VALUE 4095.0f
+#define VAC_ADC_CHANNEL 0x00
+#define IAC_ADC_CHANNEL 0x08
+#define CLOCK_FREQUENCY 1000000
+</span>
+<span class="c1">// --- AC RMS Parameters ---</span>
+<span class="cp">#define MS_PER_SECOND 1000
+#define DEFAULT_SENSITIVITY 500.0f
+#define SENSITIVITY 37.81f
 </span>
 <span class="c1">// Parameters AC Sensing</span>
 <span class="kt">uint32_t</span> <span class="n">period</span><span class="p">;</span>

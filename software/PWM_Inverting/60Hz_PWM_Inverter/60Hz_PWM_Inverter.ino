@@ -13,10 +13,10 @@
 
 #include "Atinverter.h"
 
-Atinverter atinverter(60); // Atinverter 60Hz class instance
+Atinverter atinverter; // Atinverter class instance
 
 void setup() {
-  atinverter.startPWM(); // Begin PWM generation
+  atinverter.startPWM(60); // Set up registers and begin PWM generation at 60Hz
 }
 
 void loop() {
