@@ -25,5 +25,5 @@ Upon further inspection of the Atinverter Library, we can observe that it is org
 </p>
 
 <div style="text-align: center;">
-    <h7><b>Figure X.</b> Atinverter Library Expanded View</h7>
+    <h7><b>Figure X.</b> Atinverter Library Features </h7>
 </div>

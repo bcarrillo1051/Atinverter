@@ -40,13 +40,17 @@ This section aims to document the functionality of the Atinverter library’s PW
 
 ## 📌 Pin Assignments
 
-This table demonstrates PWM pins and their corresponding ATMEGA328P pin states:
+<br>
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> ATMEGA328P Pin Configuration for PWM Control </h7>
+</div>
 
 | Pin Description  | Pin Name (Code) | Pin Number | Pin State |
 |:----------------:|:---------------:|:----------:|:---------:|
 | PWM A Side       | PWM_A_PIN       | 5          | OUTPUT    |
 | PWM B Side       | PWM_B_PIN       | 6          | OUTPUT    |
-| Gate Shutdown   | GATESD_PIN      | 8          | INPUT     |
+| Gate Shutdown    | GATESD_PIN      | 8          | INPUT     |
 | Protection Reset | PRORESET_PIN    | 9          | OUTPUT    |
 
 <br>
@@ -57,7 +61,10 @@ This table demonstrates PWM pins and their corresponding ATMEGA328P pin states:
 
 **Implementation in `Atinverter.h`:**
 ```cpp
-// PWM Pin Definitions=
+// AC RMS Sampling Period
+#define MS_PER_SECOND 1000
+
+// PWM Pin Definitions
 const int PWM_A_PIN = 5;
 const int PWM_B_PIN = 6;
 const int GATESD_PIN = 8;
@@ -141,7 +148,7 @@ const int Atinverter::sin60HzPWM[] = {
 
 **Implementation in `Atinverter.cpp`:**
 ```cpp
-void Atinverter::startPWM() {
+void Atinverter::startPWM(uint16_t frequency) {
   cli();
 
   if (frequency != 50 && frequency != 60) {

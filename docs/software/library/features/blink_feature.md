@@ -16,7 +16,11 @@ The Blink feature abstracts low-level pin operations for LED control functionali
 
 ## 📌 Pin Assignments
 
-This table shows the mapping of the LEDs and their corresponding ATMEGA328P pin assignments:
+<br>
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> ATMEGA328P Pin Configuration for LED Control </h7>
+</div>
 
 | Pin Description | Pin Name (Code) | Pin Number | Pin State |
 |:---------------:|:---------------:|:----------:|:---------:|
@@ -24,8 +28,6 @@ This table shows the mapping of the LEDs and their corresponding ATMEGA328P pin 
 | Green LED 1     | LED1G_PIN       | 3          | OUTPUT    |
 | Red LED 2       | LED2R_PIN       | 4          | OUTPUT    |
 | Green LED 2     | LED2G_PIN       | 7          | OUTPUT    |
-
-<br>
 
 ---
 

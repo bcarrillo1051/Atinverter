@@ -81,6 +81,8 @@ In the following sections, a series of captures and data are displayed to report
 
 ## 5V Buck and 12V Boost Power Supplies
 
+A functioning board depends fundamentally on its power supplies. Before evaluating the rest of the hardware and software systems, the onboard power sources were inspected to verify appropriate voltage levels.
+
 <br>
 <p align="center">
 <img src="../../images/experimentation/power_supplies/5V_buck_output.png" alt="R-78HE5.0-0.3 5V Buck Output" width="600"/>
@@ -109,11 +111,11 @@ In the following sections, a series of captures and data are displayed to report
 <br>
 
 - Power supplies are functional, marginal deviations from the expected value.
-- 12V Boost converter peak=to-peak ripple is significantly larger than the simulated value (72.88 mV as per the [Boost Converter](\bost_conv_hw) section), but not an issue since the output is still within the power supply conditions of the IR2302 (5V-20V).
+- 12V Boost converter peak-to-peak ripple is significantly larger than the simulated value (72.88 mV as per the [Boost Converter](\bost_conv_hw) section), but not an issue since the output is still within the power supply conditions of the IR2302 (5V-20V).
 
 ## ATMEGA328P Bootloaded Status
 
-- Verification of `Blink.ino` software and ATMEGA328P bootloaded state
+To confirm successful bootloading and basic functionality of the ATMEGA328P microcontroller, the `Blink.ino` was executed. 
 
 <br>
 <p align="center">
@@ -124,11 +126,11 @@ In the following sections, a series of captures and data are displayed to report
 </div>
 <br>
 
-- ATMEGA328P is operational and performs LED blinking as expected
+- ATMEGA328P is operational and performs LED blinking in accordance with the program routine.
 
 ## PWM Inversion
 
-This sections focuses on the verification of `50Hz_PWM_Inverter.ino` and `60Hz_PWM_Inverter.ino` software and ATMEGA328P bootloaded state.
+This section verifies 50Hz and 60Hz PWM inversion employing the `50Hz_PWM_Inverter.ino` and `60Hz_PWM_Inverter.ino` software. Given the sequential waveform behavior across different stages of the power inverter, the section is organized into subsections to highlight waveforms specific to each stage.
 
 ### PWM Generation
 
@@ -270,7 +272,7 @@ This sections focuses on the verification of `50Hz_PWM_Inverter.ino` and `60Hz_P
 
 ## Sensing Networks
 
-This portion of the report addresses the four sensing operations for the power inverter and insights discovered after testing. Although this section does not make the distinction between the 50Hz or 60Hz fundamental frequency testing, this is intentional as the sensed values are not expected to vary significantly with frequency. Testing was performed for the DC input voltage of 12V - 48V with representative results for both 12V and 48V documented in this section.
+This portion of the report addresses and experiments with the four sensing operations for the power inverter using the software modules `Vdc_Sensing.ino`, `Idc_Sensing.ino`, `Vac_Sensing.ino`, and `Iac_Sensing.ino`. Although this section does not make the distinction between the 50Hz or 60Hz fundamental frequency testing, this is intentional as the sensed values are not expected to vary significantly with frequency. Testing was performed for the DC input voltage of 12V - 48V with representative results for both 12V and 48V documented in this section.
 
 <br>
 <p align="center">
@@ -297,7 +299,7 @@ This portion of the report addresses the four sensing operations for the power i
 <img src="../../images/experimentation/dc_voltage_sensing/Vdc_readings_12Vin_start_up.png" alt="12V DC Input DC Voltage Sensing Start Up" width="600"/>
 </p>
 <div style="text-align: center;">
-    <h7><b>Figure X.</b> Arduino IDE Serial Monitor DC Voltage Sensing Start Up with $V_{DC_{in}} = 12V$ </h7>
+    <h7><b>Figure X.</b> Start-Up DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 12V$ </h7>
 </div>
 <br>
 
@@ -306,7 +308,7 @@ This portion of the report addresses the four sensing operations for the power i
 <img src="../../images/experimentation/dc_voltage_sensing/Vdc_readings_12Vin_steady_state.png" alt="12V DC Input DC Voltage Sensing Steady State" width="600"/>
 </p>
 <div style="text-align: center;">
-    <h7><b>Figure X.</b> Arduino IDE Serial Monitor DC Voltage Sensing Steady State with $V_{DC_{in}} = 12V$</h7>
+    <h7><b>Figure X.</b> Steady-State DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 12V$</h7>
 </div>
 <br>
 
@@ -315,7 +317,7 @@ This portion of the report addresses the four sensing operations for the power i
 <img src="../../images/experimentation/dc_voltage_sensing/Vdc_readings_48Vin_start_up.png" alt="48V DC Input DC Voltage Sensing Start Up" width="600"/>
 </p>
 <div style="text-align: center;">
-    <h7><b>Figure X.</b> Arduino IDE Serial Monitor DC Voltage Sensing Start Up with $V_{DC_{in}} = 48V$ </h7>
+    <h7><b>Figure X.</b> Start-Up DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 48V$ </h7>
 </div>
 <br>
 
@@ -324,7 +326,7 @@ This portion of the report addresses the four sensing operations for the power i
 <img src="../../images/experimentation/dc_voltage_sensing/Vdc_readings_48Vin_steady_state.png" alt="48V DC Input DC Voltage Sensing Steady State" width="600"/>
 </p>
 <div style="text-align: center;">
-    <h7><b>Figure X.</b> Arduino IDE Serial Monitor DC Voltage Sensing Steady State with $V_{DC_{in}} = 48V$</h7>
+    <h7><b>Figure X.</b> Steady-State DC voltage readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 48V$</h7>
 </div>
 <br>
 
@@ -350,6 +352,32 @@ This portion of the report addresses the four sensing operations for the power i
 </div>
 <br>
 
+<br>
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> DC Current Sensing Load Tests at 12V DC Input </h7>
+</div>
+
+| Nominal Load Resistance <br>  | Nominal Load Current <br>   | Measured Load Resistance <br>   | Calculated Load Current <br> | Sensed Load Current <br> |   
+|:-----------------------------:|:---------------------------:|:-------------------------------:|:----------------------------:|:------------------------:|
+| 69.6Ω                         | 0.172A                      | 71.422Ω                         | 0.168A                       |                          |
+| 34.8Ω                         | 0.333A                      | 36.003Ω                         | 0.333A                       |                          |
+| 23.2Ω                         | 0.517A                      | 24.278Ω                         | 0.494A                       |                          |
+| 17.4Ω                         | 0.689A                      | 18.087Ω                         | 0.663A                       |                          |
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> DC Current Sensing Load Tests at 48V DC Input </h7>
+</div>
+
+| Nominal Load Resistance <br>  | Nominal Load Current <br>   | Measured Load Resistance <br>   | Calculated Load Current <br> | Sensed Load Current <br> |   
+|:-----------------------------:|:---------------------------:|:-------------------------------:|:----------------------------:|:------------------------:|
+| 69.6Ω                         | 0.689A                      | 71.422Ω                         | 0.689A                       |                          |
+| 34.8Ω                         | 1.378A                      | 36.003Ω                         | 1.333A                       |                          |
+| 23.2Ω                         | 2.068A                      | 24.278Ω                         | 1.977A                       |                          |
+| 17.4Ω                         | 2.758A                      | 18.087Ω                         | 2.653A                       |                          |
+
+- A series of four load tests were conducted to validate the performance of the DC current sensing program. The selected load resistances span a range that covers the full output current capability of the Atinverter V2 (rated up to 2.8 A), including operation at the highest DC input level of 48V.
+
 ### AC Voltage Sensing
 
 <br>
@@ -372,6 +400,32 @@ This portion of the report addresses the four sensing operations for the power i
 
 - The `Vac_Sensing.ino` program was evaluated at both 12V and 48V DC input levels which correspond to expected RMS output voltages of $\frac{12V}{\sqrt{2}} \approx 8.49V$ and $\frac{48V}{\sqrt{2}} \approx 33.94V$. Unlike the DC sensing routine, the AC voltage sensing program does not differentiate between startup and steady-state conditions, as it employs a fixed time-based sampling window instead of a running average. 
 
-- The AC voltage RMS sensing was found to be fairly accurate for 12V DC input level, with only millivolt deviations. However, for 48V DC input, data readouts were quite erroneous, with a discrepancy of about 8V. After looking into the matter, it was discovered that the a sampling resistor $R_{samp}$
+- The AC voltage RMS sensing was found to be fairly accurate for 12V DC input level, with only millivolt deviations. However, for 48V DC input, data readouts were quite erroneous, with a discrepancy of about 8V. It turns out that the sampling resistor, $R_{samp}$, was selected at a value of $100\Omega$ prior to the simulated value of $6.8\Omega$, which produces a larger sampling voltage. Due to the excessive initial magnitude, the op-amp output saturated, leading to inaccurate RMS measurements.
 
 ### AC Current Sensing
+
+<br>
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> AC Current Sensing Load Tests at 12V DC Input </h7>
+</div>
+
+| Nominal Load Resistance <br>  | Nominal Load Current <br>   | Measured Load Resistance <br>   | Calculated Load Current <br> | Sensed Load Current <br> |   
+|:-----------------------------:|:---------------------------:|:-------------------------------:|:----------------------------:|:------------------------:|
+| 69.6Ω                         | 0.172A                      | 71.422Ω                         | 0.168A                       |                          |
+| 34.8Ω                         | 0.333A                      | 36.003Ω                         | 0.333A                       |                          |
+| 23.2Ω                         | 0.517A                      | 24.278Ω                         | 0.494A                       |                          |
+| 17.4Ω                         | 0.689A                      | 18.087Ω                         | 0.663A                       |                          |
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> AC Current Sensing Load Tests at 48V DC Input </h7>
+</div>
+
+| Nominal Load Resistance <br>  | Nominal Load Current <br>   | Measured Load Resistance <br>   | Calculated Load Current <br> | Sensed Load Current <br> |   
+|:-----------------------------:|:---------------------------:|:-------------------------------:|:----------------------------:|:------------------------:|
+| 69.6Ω                         | 0.689A                      | 71.422Ω                         | 0.689A                       |                          |
+| 34.8Ω                         | 1.378A                      | 36.003Ω                         | 1.333A                       |                          |
+| 23.2Ω                         | 2.068A                      | 24.278Ω                         | 1.977A                       |                          |
+| 17.4Ω                         | 2.758A                      | 18.087Ω                         | 2.653A                       |                          |
+
+The AC load current sensing ca

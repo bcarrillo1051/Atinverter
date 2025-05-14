@@ -31,6 +31,10 @@
 // --- Moving Average Parameter ---
 #define MA_SAMPLES 10 // Default moving average sample count, adjust as needed
 
+// --- PWM Inversion Parameters ---
+#define SIN_50HZ_PWM_SIZE 313
+#define SIN_60HZ_PWM_SIZE 260
+
 // --- Safety Parameters ---
 #define MAX_DC_CURRENT 2.5
 #define MAX_AC_CURRENT 2.5

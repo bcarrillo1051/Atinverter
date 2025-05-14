@@ -73,6 +73,10 @@ The timing diagram of the ADC122S021 provides an insightful visual representatio
 
 Ensuring suitable communication with the ADC122S021 relies on providing a clock source from the ATMEGA328P that falls within the allowable frequency range of the device. The clock signal is critical as it maps to the sampling rate of the ADC122S021 which is also constrained to a specific range. The table below summarizes the ranges of allowable clock frequencies and their corresponding sample rates:
 
+<div style="text-align: left;">
+    <h7><b>Table X.</b> Allowable Clock Frequency and Sampling Rate Ranges for the ADC122S021 </h7>
+</div>
+
 | Notation     | Parameter         | Range            |
 |:------------:|:-----------------:|:----------------:|
 | $f_{sclk}$   | Clock Frequency   | 0.8MHz - 3.2MHz  |
@@ -84,7 +88,11 @@ $$f_{s} = \frac{f_{SCLK}}{16}$$
 
 This expression reflects the idea that a complete 12-bit signal conversion requires 16 clock pulses. As a result, the sampling frequency is one-sixteenth of the clock frequency.
 
-The clock source delivered to the ADC122S021 is derived from the 16MHz main clock of the ATMEGA328P and a pre-scaler value of our choosing. The available pre-scalers are displayed below:
+The clock source delivered to the ADC122S021 is derived from the 16MHz main clock of the ATMEGA328P and is configured using one of several available prescaler options. These prescalers divide the system clock to produce the appropriate SPI clock frequency, as outlined in the table below:
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> Available SPI Clock Prescalers and Resulting Frequencies Based on 16 MHz System Clock </h7>
+</div>
 
 | Prescaler     | Arduino Command      | Resulting Frequency  |
 |:-------------:|:--------------------:|:--------------------:|
@@ -145,7 +153,11 @@ is used to specify key metrics of the SPI communication protocol. The `CLOCK_FRE
 
 ## 📌 Pin Assignments
 
-The following table delineates the pins used for the SPI protocol and their desired states:
+<br>
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> ATMEGA328P Pin Configuration for SPI Communication </h7>
+</div>
 
 | Pin Type | Digital Pin Number    | State   |
 |:--------:|:---------------------:|:-------:|

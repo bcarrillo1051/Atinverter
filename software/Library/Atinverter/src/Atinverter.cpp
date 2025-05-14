@@ -368,7 +368,7 @@ ISR(TIMER1_COMPA_vect) {
  */
 void Atinverter::pwmISR() {
   const int* sinPWM = is50Hz ? sin50HzPWM : sin60HzPWM; // Use flag to select which samples to use
-  int maxIndex = is50Hz ? 313 : 260; // Use flag to select the max index for 50Hz/60Hz mode respectively
+  int maxIndex = is50Hz ? SIN_50HZ_PWM_SIZE : SIN_60HZ_PWM_SIZE; // Use flag to select the max index
 
   // Check if the end of the array is reached and toggle between pins
   if (sin_i > maxIndex && OK == 0) { // Final value from array for pin 6

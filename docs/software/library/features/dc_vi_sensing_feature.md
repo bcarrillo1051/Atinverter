@@ -43,7 +43,11 @@ The DC Voltage and Current Sensing feature provides an interface for monitoring 
 
 ## 📌 Pin Assignments
 
-This table expresses the dedicated analog pins used for the design and their respective state.
+<br>
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> ATMEGA328P Pin Configuration for DC Sensing </h7>
+</div>
 
 | Pin Description    | Pin Name (Code) | Pin Number | Pin State |
 |:------------------:|:---------------:|:----------:|:---------:|
