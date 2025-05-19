@@ -31,7 +31,7 @@ The Blink feature abstracts low-level pin operations for LED control functionali
 
 ---
 
-## 📂 Library Structure
+## 📂 Header File Definitions
 
 **Implementation in `Atinverter.h`:**
 ```cpp

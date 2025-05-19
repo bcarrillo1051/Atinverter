@@ -5,7 +5,7 @@ parent: Modules
 nav_order: 2
 ---
 
-# **Main Module Program**
+# **Main Program Module**
 ---
 
 - To be documented in the future

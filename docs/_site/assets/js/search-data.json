@@ -141,14 +141,14 @@
   },"20": {
     "doc": "AC V/I Sensing",
     "title": "🔄 Outline of SPI Communication",
-    "content": "The ATMEGA328P operates as the master/controller and the ADC122S021 as the slave/peripheral. As it is conventional in SPI communication, the ATMEGA328P initiates communication by setting CS low. The communication is conducted in 16 clock pulses of the SCLK frequency, corresponding to two byte data frames. Since SPI inherently is full-duplex, these two data frames are used for: . | Sending control data through MOSI (DIN of ADC122S021) to specify the channel to read from | Receiving conversion data through MISO (DOUT of ADC122S021) | . It should be highlighted that the only useful data for DIN and DOUT are the first 8 most significant bits (MSB) and the last 12 least significant bits (LSB) respectively. The ADC122S021 uses a successive approximation register (SAR) topology with a track-and-hold mechanism. The voltage samples are tracked for the first 4 clock cycles and held for data transmission during the subsequent 12 clock cycles. Once the 12-bit conversion data is received by the ATMEGA328P, the CS line is enabled high to terminate communication with the ADC122S021. The timing diagram of the ADC122S021 provides an insightful visual representation of the SPI communication and reflects the information covered. . ",
+    "content": "The ATMEGA328P operates as the master/controller and the ADC122S021 as the slave/peripheral. As it is conventional in SPI communication, the ATMEGA328P initiates communication by setting CS low. The communication is conducted in 16 clock pulses of the SCLK frequency, corresponding to two byte data frames. Since SPI inherently is full-duplex, these two data frames are used for: . | Sending control data through MOSI (DIN of ADC122S021) to specify the channel to read from | Receiving conversion data through MISO (DOUT of ADC122S021) | . It should be highlighted that the only useful data for DIN and DOUT are the first 8 most significant bits (MSB) and the last 12 least significant bits (LSB) respectively. The ADC122S021 uses a successive approximation register (SAR) topology with a track-and-hold mechanism. The voltage samples are tracked for the first 4 clock cycles and held for data transmission during the subsequent 12 clock cycles. Once the 12-bit conversion data is received by the ATMEGA328P, the CS line is enabled high to terminate communication with the ADC122S021. The timing diagram of the ADC122S021 provides an insightful visual representation of the SPI communication and reflects the information covered. Figure X. ADC122S021 Operational Timing Diagram . ",
     "url": "/software/library/features/ac_vi_sensing_feature.html#-outline-of-spi-communication",
     
     "relUrl": "/software/library/features/ac_vi_sensing_feature.html#-outline-of-spi-communication"
   },"21": {
     "doc": "AC V/I Sensing",
     "title": "⌚ Choosing the Appropriate SPI Clock Source",
-    "content": "Ensuring suitable communication with the ADC122S021 relies on providing a clock source from the ATMEGA328P that falls within the allowable frequency range of the device. The clock signal is critical as it maps to the sampling rate of the ADC122S021 which is also constrained to a specific range. The table below summarizes the ranges of allowable clock frequencies and their corresponding sample rates: . Table X. Allowable Clock Frequency and Sampling Rate Ranges for the ADC122S021 . | Notation | Parameter | Range | . | $f_{sclk}$ | Clock Frequency | 0.8MHz - 3.2MHz | . | $f_{s}$ | Sample Rate | 50ksps - 200ksps | . The relationship between the sample rate and the clock frequency can be understood from the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] This expression reflects the idea that a complete 12-bit signal conversion requires 16 clock pulses. As a result, the sampling frequency is one-sixteenth of the clock frequency. The clock source delivered to the ADC122S021 is derived from the 16MHz main clock of the ATMEGA328P and is configured using one of several available prescaler options. These prescalers divide the system clock to produce the appropriate SPI clock frequency, as outlined in the table below: . Table X. Available SPI Clock Prescalers and Resulting Frequencies Based on 16 MHz System Clock . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . Given that the clock signal is constrained to the range of 0.8MHz - 3.2MHz for the ADC122S021, this means we can choose to either to supply a 1MHz or 2MHz clock signal from the ATMEGA328P. Either option is in theoretically valid, but there are important tradeoffs to consider: . Choosing a higher sampling frequency (2MHz): . | Better resolution | Improved signal to noise ratio (SNR) | Spreading of ADC quantization noise over a broader bandwidth | . Choosing a lower sampling frequency (1MHz): . | Reduced software overhead (fewer clock cycles) | Less memory intensive for MCU | More power efficient | . The Nyquist Sampling Theorem states that to minimally reconstruct an analog signal without aliasing, the sampling frequency $f_{s}$ must be at least 2 times the maximum frequency component $f_{max}$ of the analog signal. This miminum requirement for the sampling rate is also known as the Nyquist Rate. \\[f_{s} \\geq 2 \\times f_{max}\\] Aliasing represents an adverse effect where the sampled waveform loses its charateristic shape and appears as a different frequency. While just marginally satisfying the Nyquist Rate condition may be appropriate in some applications, this does not always guarentee proper resolution and amplitude accuracy of the signal. In practical applications such as sampling sinusoidal signals, it is recommended that $f_{s}$ is at least 5 to 10 times the sinusoidal signal $f_{sinusoid}$. Higher ADC sample rates yield finer resolution in the digitized sinusoidal waveform, whereas lower sampling raters result in a degraded signal in terms of resolution and signal shape. In this design, the ADC122S021 is tasked with sampling the output voltage and current signals of PWM inverter, both of which are 50Hz or 60Hz sinusoidal signals depending on the PWM generation technique. Considering how these signals are far lower in frequency relative to the sampling capabilities of the ADC122S021, a clock rate of 1MHz (pre-scaler 16) was selected. This aims to reduce software overhead and memory load as well as maintain an adequate sampling rate for proper signal digitization. \\[f_{s} = \\frac{1 \\times 10^6Hz}{16} = 62.5kHz\\] \\[\\frac{f_{s}}{f_{max}} = \\frac{62.5 \\times 10^3Hz}{60Hz} ≈ 1042\\] The sampling frequeny is substantially larger than the recommended amount so a high fidelity signal is to be expected. Translating this concept into software, the command below: . SPI.beginTransaction(SPISettings(CLOCK_FREQUENCY, MSBFIRST, SPI_MODE0)); . is used to specify key metrics of the SPI communication protocol. The CLOCK_FREQUENCY is a macro that maps to 1MHz. In addition, most significant bit (MSB) transmission and SPI Mode 0 (CPOL = 0, CPHA = 0) are specified with macros in accordance with ADC122S021 device requirements. ",
+    "content": "Ensuring suitable communication with the ADC122S021 relies on providing a clock source from the ATMEGA328P that falls within the allowable frequency range of the device. The clock signal is critical as it maps to the sampling rate of the ADC122S021 which is also constrained to a specific range. The table below summarizes the ranges of allowable clock frequencies and their corresponding sample rates: . Table X. Allowable Clock Frequency and Sampling Rate Ranges for the ADC122S021 . | Notation | Parameter | Range | . | $f_{sclk}$ | Clock Frequency | 0.8MHz - 3.2MHz | . | $f_{s}$ | Sample Rate | 50ksps - 200ksps | . The relationship between the sample rate and the clock frequency can be understood from the following equation: . \\[f_{s} = \\frac{f_{SCLK}}{16}\\] This expression reflects the idea that a complete 12-bit signal conversion requires 16 clock pulses. As a result, the sampling frequency is one-sixteenth of the clock frequency. The clock source delivered to the ADC122S021 is derived from the 16MHz main clock of the ATMEGA328P and is configured using one of several available prescaler options. These prescalers divide the system clock to produce the appropriate SPI clock frequency, as outlined in the table below: . Table X. Available SPI Clock Prescalers and Resulting Frequencies Based on 16 MHz System Clock . | Prescaler | Arduino Command | Resulting Frequency | . | 2 | SPI_CLOCK_DIV2 | 8 MHz | . | 4 | SPI_CLOCK_DIV4 | 4 MHz | . | 8 | SPI_CLOCK_DIV8 | 2 MHz | . | 16 | SPI_CLOCK_DIV16 | 1 MHz | . | 32 | SPI_CLOCK_DIV32 | 500 kHz | . | 64 | SPI_CLOCK_DIV64 | 250 kHz | . | 128 | SPI_CLOCK_DIV128 | 125 kHz | . Given that the clock signal is constrained to the range of 0.8MHz - 3.2MHz for the ADC122S021, this means we can choose to either to supply a 1MHz or 2MHz clock signal from the ATMEGA328P. Either option is in theoretically valid, but there are important tradeoffs to consider: . Choosing a higher sampling frequency (2MHz): . | Better resolution | Improved signal to noise ratio (SNR) | Spreading of ADC quantization noise over a broader bandwidth | . Choosing a lower sampling frequency (1MHz): . | Reduced software overhead (fewer clock cycles) | Less memory intensive for MCU | More power efficient | . The Nyquist Sampling Theorem states that to minimally reconstruct an analog signal without aliasing, the sampling frequency $f_{s}$ must be at least 2 times the maximum frequency component $f_{max}$ of the analog signal. This miminum requirement for the sampling rate is also known as the Nyquist Rate. \\[f_{s} \\geq 2 \\times f_{max}\\] Aliasing represents an adverse effect where the sampled waveform loses its characteristic shape and appears as a different frequency. While just marginally satisfying the Nyquist Rate condition may be appropriate in some applications, this does not always guarantee proper resolution and amplitude accuracy of the signal. In practical applications such as sampling sinusoidal signals, it is recommended that $f_{s}$ is at least 5 to 10 times the sinusoidal signal $f_{sinusoid}$. Higher ADC sample rates yield finer resolution in the digitized sinusoidal waveform, whereas lower sampling raters result in a degraded signal in terms of resolution and signal shape. In this design, the ADC122S021 is tasked with sampling the output voltage and current signals of PWM inverter, both of which are 50Hz or 60Hz sinusoidal signals depending on the PWM generation technique. Considering how these signals are far lower in frequency relative to the sampling capabilities of the ADC122S021, a clock rate of 1MHz (pre-scaler 16) was selected. This aims to reduce software overhead and memory load as well as maintain an adequate sampling rate for proper signal digitization. \\[f_{s} = \\frac{1 \\times 10^6Hz}{16} = 62.5kHz\\] \\[\\frac{f_{s}}{f_{max}} = \\frac{62.5 \\times 10^3Hz}{60Hz} ≈ 1042\\] The sampling frequency is substantially larger than the recommended amount so a high fidelity signal is to be expected. Translating this concept into software, the command below: . SPI.beginTransaction(SPISettings(CLOCK_FREQUENCY, MSBFIRST, SPI_MODE0)); . is used to specify key metrics of the SPI communication protocol. The CLOCK_FREQUENCY is a macro that maps to 1MHz. In addition, most significant bit (MSB) transmission and SPI Mode 0 (CPOL = 0, CPHA = 0) are specified with macros in accordance with ADC122S021 device requirements. ",
     "url": "/software/library/features/ac_vi_sensing_feature.html#-choosing-the-appropriate-spi-clock-source",
     
     "relUrl": "/software/library/features/ac_vi_sensing_feature.html#-choosing-the-appropriate-spi-clock-source"
@@ -161,11 +161,11 @@
     "relUrl": "/software/library/features/ac_vi_sensing_feature.html#-pin-assignments"
   },"23": {
     "doc": "AC V/I Sensing",
-    "title": "📂 Library Structure",
+    "title": "📂 Header File Definitions",
     "content": "Implementation in Atinverter.h: . #include &lt;SPI.h&gt; // TMCS1108 Current Sensor Parameters #define SENSOR_GAIN_MV_PER_A 400.0f #define MV_TO_V 1000.0f #define VOUT_0A 2.5f // ADC Parameters #define VREF 5.0f #define ADC_122S021_MAX_VALUE 4095.0f #define VAC_ADC_CHANNEL 0x00 #define IAC_ADC_CHANNEL 0x08 #define CLOCK_FREQUENCY 1000000 // --- AC RMS Parameters --- #define MS_PER_SECOND 1000 #define DEFAULT_SENSITIVITY 500.0f #define SENSITIVITY 37.81f // Parameters AC Sensing uint32_t period; float sensitivity = DEFAULT_SENSITIVITY; // AC Voltage and Current Pin Definitions static const int VI_AC_CS_PIN = 10; static const int VI_AC_MOSI_PIN = 11; static const int VI_AC_MISO_PIN = 12; static const int VI_AC_SCLK_PIN = 13; // Methods void setUpSPI(); void setSensitivity(float value); int getADC(uint8_t control_byte); int getZeroPoint(uint8_t control_byte); float getRmsAC(uint8_t loopCount, bool isVac); . ",
-    "url": "/software/library/features/ac_vi_sensing_feature.html#-library-structure",
+    "url": "/software/library/features/ac_vi_sensing_feature.html#-header-file-definitions",
     
-    "relUrl": "/software/library/features/ac_vi_sensing_feature.html#-library-structure"
+    "relUrl": "/software/library/features/ac_vi_sensing_feature.html#-header-file-definitions"
   },"24": {
     "doc": "AC V/I Sensing",
     "title": "📝 Method Descriptions",
@@ -183,7 +183,7 @@
   },"26": {
     "doc": "AC V/I Sensing",
     "title": "int getZeroPoint(uint8_t control_byte)",
-    "content": "Purpose: Calculates the zero-point (DC offset) value of the ADC readings over a full sampling period. This value is used to remove the DC bias from the AC signal before performing RMS calculations. Parameters: . | control_byte – ADC command byte: 0x00 selects channel 1; 0x08 selects channel 2 | . Pseudocode: . | Initialize accumulators and timing | While the elapsed time is less than the period: . | Read the ADC value from the specified control_byte channel | Accumulate the ADC value | Increment the measurement count | . | Return . | Compute and return the average (sum divided by the count) | . | . Implementation in Atinverter.cpp: . int Atinverter::getZeroPoint(uint8_t control_byte) { uint32_t Vsum = 0; uint32_t measurements_count = 0; uint32_t t_start = this-&gt;millis2(); while (this-&gt;millis2() - t_start &lt; period) { Vsum += this-&gt;getADC(control_byte); measurements_count++; } return Vsum / measurements_count; } . ",
+    "content": "Purpose: Calculates the zero-point (DC offset) value of the ADC readings over a full sampling period. This value is used to remove the DC bias from the AC signal before performing RMS calculations. Parameters: . | control_byte – ADC command byte: 0x00 selects channel 1; 0x08 selects channel 2 | . Pseudocode: . | Initialize accumulators and timing | While the elapsed time is less than the period: . | Read the ADC value from the specified control_byte channel | Accumulate the ADC value | Increment the measurement count | . | Compute and return the average (sum divided by the count) | . Implementation in Atinverter.cpp: . int Atinverter::getZeroPoint(uint8_t control_byte) { uint32_t Vsum = 0; uint32_t measurements_count = 0; uint32_t t_start = this-&gt;millis2(); while (this-&gt;millis2() - t_start &lt; period) { Vsum += this-&gt;getADC(control_byte); measurements_count++; } return Vsum / measurements_count; } . ",
     "url": "/software/library/features/ac_vi_sensing_feature.html#int-getzeropointuint8_t-control_byte",
     
     "relUrl": "/software/library/features/ac_vi_sensing_feature.html#int-getzeropointuint8_t-control_byte"
@@ -204,7 +204,7 @@
   },"29": {
     "doc": "AC V/I Sensing",
     "title": "float getRmsAC(uint8_t loopCount, bool isVac)",
-    "content": "Purpose: Calculates the RMS value of either AC voltage or current over multiple user-defined sampling cycles. The value is offset-corrected using the zero-point and scaled using a sensitivity factor to reflect the actual signal amplitude. Parameters: . | loopCount – number of sampling cycles to average over for increased accuracy | isVac – true to measure AC voltage; false to measure AC current | . Pseudocode: . | Determine the ADC channel based on isVac . | true to use voltage channel | falseto use current channel | . | Iterate loopCount times: . | Compute DC offset using getZeroPoint() | Initialize accumulators and timing | While elapsed time is less than the period: | . | Sample ADC | Remove DC offset and square the result | Accumulate the sum and measurement count | Compute RMS value using the root mean square formula: $X_{RMS} = \\sqrt{\\frac{1}{N} \\sum x^2}$ | Scale result using sensitivity to convert to physical units | . | Average all loop results and return the final RMS value | . Implementation in Atinverter.cpp: . float Atinverter::getRmsAC(uint8_t loopCount, bool isVac) { uint8_t control_byte; if (isVac){ control_byte = VAC_ADC_CHANNEL; } else{ control_byte = IAC_ADC_CHANNEL; } double readingVoltage = 0.0f; for (uint8_t i = 0; i &lt; loopCount; i++) { int zeroPoint = this-&gt;getZeroPoint(control_byte); int32_t Vnow = 0; uint32_t Vsum = 0; uint32_t measurements_count = 0; uint32_t t_start = this-&gt;millis2(); while (this-&gt;millis2() - t_start &lt; period) { Vnow = this-&gt;getADC(control_byte) - zeroPoint; Vsum += (Vnow * Vnow); measurements_count++; } readingVoltage += sqrt(Vsum / measurements_count) / ADC_122S021_MAX_VALUE * VREF * sensitivity; } return readingVoltage / loopCount; } . ",
+    "content": "Purpose: Calculates the RMS value of either AC voltage or current over multiple user-defined sampling cycles. The value is offset-corrected using the zero-point and scaled using a sensitivity factor to reflect the actual signal amplitude. Parameters: . | loopCount – number of sampling cycles to average over for increased accuracy | isVac – true to measure AC voltage; false to measure AC current | . Pseudocode: . | Determine the ADC channel based on isVac . | true to use voltage channel, false to use current channel | . | Iterate loopCount times: . | Compute DC offset using getZeroPoint() | Initialize accumulators and timing | While elapsed time is less than the period: | . | Sample ADC | Remove DC offset and square the result | Accumulate the sum and measurement count | Compute RMS value using the root mean square formula: $X_{RMS} = \\sqrt{\\frac{1}{N} \\sum x^2}$ | Scale result using sensitivity to convert to physical units | . | Average all loop results and return the final RMS value | . Implementation in Atinverter.cpp: . float Atinverter::getRmsAC(uint8_t loopCount, bool isVac) { uint8_t control_byte; if (isVac){ control_byte = VAC_ADC_CHANNEL; } else{ control_byte = IAC_ADC_CHANNEL; } double readingVoltage = 0.0f; for (uint8_t i = 0; i &lt; loopCount; i++) { int zeroPoint = this-&gt;getZeroPoint(control_byte); int32_t Vnow = 0; uint32_t Vsum = 0; uint32_t measurements_count = 0; uint32_t t_start = this-&gt;millis2(); while (this-&gt;millis2() - t_start &lt; period) { Vnow = this-&gt;getADC(control_byte) - zeroPoint; Vsum += (Vnow * Vnow); measurements_count++; } readingVoltage += sqrt(Vsum / measurements_count) / ADC_122S021_MAX_VALUE * VREF * sensitivity; } return readingVoltage / loopCount; } . ",
     "url": "/software/library/features/ac_vi_sensing_feature.html#float-getrmsacuint8_t-loopcount-bool-isvac",
     
     "relUrl": "/software/library/features/ac_vi_sensing_feature.html#float-getrmsacuint8_t-loopcount-bool-isvac"
@@ -217,32 +217,32 @@
     "relUrl": "/software/library/features/ac_vi_sensing_feature.html"
   },"31": {
     "doc": "AC V/I Sensing",
-    "title": "AC V/I Sensing Module Program",
+    "title": "AC V/I Sensing Program Modules",
     "content": ". Purpose: These two standalone programs (Vac_Sensing.ino and Iac_Sensing.ino) demonstrate how to use the Atinverter library’s AC sensing features to measure either the RMS voltage or RMS current output of the PWM inverter. Both modules validate correct SPI communication with the ADC122S021, PWM generation for inverter operation, signal processing using the root mean square (RMS) method, and employ the Timer 2 based delaying feature. ",
-    "url": "/software/modules/ac_vi_sensing_program.html#ac-vi-sensing-module-program",
+    "url": "/software/modules/ac_vi_sensing_module.html#ac-vi-sensing-program-modules",
     
-    "relUrl": "/software/modules/ac_vi_sensing_program.html#ac-vi-sensing-module-program"
+    "relUrl": "/software/modules/ac_vi_sensing_module.html#ac-vi-sensing-program-modules"
   },"32": {
     "doc": "AC V/I Sensing",
     "title": "Vac_Sensing.ino",
     "content": "Pseudocode: . | Include the Atinverter library | Create a new Atinverter instance | Initialize the serial monitor for displaying AC voltage readings | Set sensitivity factor that scales the AC RMS readings | Set up SPI interface and associated pins | Begin PWM operation at a specified frequency of 50Hz or 60Hz | Initialize Timer 2 for time-based delay functionality | Continuously read the averaged output AC voltage | Wait a designated delay before printing the next reading | . Implementation: . #include \"Atinverter.h\" #define LOOP_RUNS 20 Atinverter atinverter; void setup() { Serial.begin(9600); Serial.println(F(\"Initialize Output AC Voltage Sensing.\")); atinverter.setSensitivity(SENSITIVITY); atinverter.setUpSPI(); atinverter.startPWM(60); atinverter.initTimer2Delay(); } void loop() { float Vac_RMS = atinverter.getRmsAC(true, LOOP_RUNS); Serial.print(F(\"Vac(RMS): \")); Serial.print(Vac_RMS); Serial.println(\"V\"); atinverter.delay2(2000); } . ",
-    "url": "/software/modules/ac_vi_sensing_program.html#vac_sensingino",
+    "url": "/software/modules/ac_vi_sensing_module.html#vac_sensingino",
     
-    "relUrl": "/software/modules/ac_vi_sensing_program.html#vac_sensingino"
+    "relUrl": "/software/modules/ac_vi_sensing_module.html#vac_sensingino"
   },"33": {
     "doc": "AC V/I Sensing",
     "title": "Iac_Sensing.ino",
     "content": "Pseudocode: . | Include the Atinverter library | Create a new Atinverter instance | Initialize the serial monitor for displaying AC current readings | Set sensitivity factor that scales the AC RMS readings | Set up SPI interface and associated pins | Begin PWM operation at a specified frequency of 50Hz or 60Hz | Configure Timer 2 registers to enable delaying using delay2 method | Continuously read the averaged output AC current | Wait a designated delay before printing the next reading | . Implementation: . #include \"Atinverter.h\" #define LOOP_RUNS 20 Atinverter atinverter; void setup() { Serial.begin(9600); Serial.println(F(\"Initialize Output AC Voltage Sensing.\")); atinverter.setSensitivity(SENSITIVITY); atinverter.startPWM(60); atinverter.setUpSPI(); atinverter.initTimer2Delay(); } void loop() { float Iac_RMS = atinverter.getRmsAC(false, LOOP_RUNS); Serial.print(F(\"Iac(RMS): \")); Serial.print(Iac_RMS); Serial.println(\"A\"); atinverter.delay2(2000); } . ",
-    "url": "/software/modules/ac_vi_sensing_program.html#iac_sensingino",
+    "url": "/software/modules/ac_vi_sensing_module.html#iac_sensingino",
     
-    "relUrl": "/software/modules/ac_vi_sensing_program.html#iac_sensingino"
+    "relUrl": "/software/modules/ac_vi_sensing_module.html#iac_sensingino"
   },"34": {
     "doc": "AC V/I Sensing",
     "title": "AC V/I Sensing",
     "content": " ",
-    "url": "/software/modules/ac_vi_sensing_program.html",
+    "url": "/software/modules/ac_vi_sensing_module.html",
     
-    "relUrl": "/software/modules/ac_vi_sensing_program.html"
+    "relUrl": "/software/modules/ac_vi_sensing_module.html"
   },"35": {
     "doc": "AC Voltage Sensing",
     "title": "AC Voltage Sensing Hardware",
@@ -322,11 +322,11 @@
     "relUrl": "/software/library/features/blink_feature.html#-pin-assignments"
   },"46": {
     "doc": "Blink",
-    "title": "📂 Library Structure",
+    "title": "📂 Header File Definitions",
     "content": "Implementation in Atinverter.h: . // LED Pin Definitions static const int LED1R_PIN = 2; static const int LED1G_PIN = 3; static const int LED2R_PIN = 4; static const int LED2G_PIN = 7; // Methods void setUpLEDs(); void set1LED(int LED, int state); void cycleLEDs(int t_delay); . ",
-    "url": "/software/library/features/blink_feature.html#-library-structure",
+    "url": "/software/library/features/blink_feature.html#-header-file-definitions",
     
-    "relUrl": "/software/library/features/blink_feature.html#-library-structure"
+    "relUrl": "/software/library/features/blink_feature.html#-header-file-definitions"
   },"47": {
     "doc": "Blink",
     "title": "📝 Method Descriptions",
@@ -364,25 +364,25 @@
     "relUrl": "/software/library/features/blink_feature.html"
   },"52": {
     "doc": "Blink",
-    "title": "Blink Module Program",
+    "title": "Blink Program Module",
     "content": ". Purpose: This program demonstrates how to utilize the Atinverter library’s LED control features in a standalone application. This module is useful for confirming the operational state of the microcontroller, hardware connections, and library integration. ",
-    "url": "/software/modules/blink_program.html#blink-module-program",
+    "url": "/software/modules/blink_module.html#blink-program-module",
     
-    "relUrl": "/software/modules/blink_program.html#blink-module-program"
+    "relUrl": "/software/modules/blink_module.html#blink-program-module"
   },"53": {
     "doc": "Blink",
     "title": "Blink.ino",
     "content": "Pseudocode: . | Include the Atinverter library | Create a new Atinverter instance | Set up the period of time for delaying LED operations | Set the GPIO pins for LEDs as outputs | Turn on LED 1 | Turn on LED 2 | Wait for the defined period | Turn off LED 1 | Turn off LED 2 | Wait for the defined period | Cycle through LEDs with delay | . Implementation: . #include \"Atinverter.h\" Atinverter atinverter; int PERIOD = 1000; void setup() { atinverter.setUpLEDs(); } void loop() { atinverter.set1LED(atinverter.LED1R_PIN, HIGH); atinverter.set1LED(atinverter.LED2G_PIN, HIGH); delay(PERIOD); atinverter.set1LED(atinverter.LED1R_PIN, LOW); atinverter.set1LED(atinverter.LED2G_PIN, LOW); delay(PERIOD); atinverter.cycleLEDs(PERIOD); } . ",
-    "url": "/software/modules/blink_program.html#blinkino",
+    "url": "/software/modules/blink_module.html#blinkino",
     
-    "relUrl": "/software/modules/blink_program.html#blinkino"
+    "relUrl": "/software/modules/blink_module.html#blinkino"
   },"54": {
     "doc": "Blink",
     "title": "Blink",
     "content": " ",
-    "url": "/software/modules/blink_program.html",
+    "url": "/software/modules/blink_module.html",
     
-    "relUrl": "/software/modules/blink_program.html"
+    "relUrl": "/software/modules/blink_module.html"
   },"55": {
     "doc": "Boost Converter",
     "title": "Boost Converter Hardware",
@@ -504,11 +504,11 @@
     "relUrl": "/software/library/features/dc_vi_sensing_feature.html#-pin-assignments"
   },"72": {
     "doc": "DC V/I Sensing",
-    "title": "📂 Library Structure",
+    "title": "📂 Header File Definitions",
     "content": "Implementation in Atinverter.h: . // TMCS1108 Current Sensor Parameters #define SENSOR_GAIN_MV_PER_A 400.0f #define MV_TO_V 1000.0f #define VOUT_0A 2.5f // ADC Parameters #define VREF 5.0f #define ADC_ATMEGA328P_MAX_VALUE 1023.0f // Moving Average Samples #define MA_SAMPLES 10 // DC Voltage and Current Pin Definitions static const int V_DC_PIN = A0; static const int I_DC_PIN = A1; // DC Voltage Sensing Resistor Values static const unsigned long Rvs1 = 120000; static const unsigned int Rsv2 = 9900; // Parameters for Vdc Moving Average static const int Vdc_num_readings = MA_SAMPLES; float Vdc_readings[MA_SAMPLES]; int Vdc_read_index = 0; float Vdc_total = 0; // Parameters for Idc Moving Average static const int Idc_num_readings = MA_SAMPLES; float Idc_readings[MA_SAMPLES]; int Idc_read_index = 0; float Idc_total = 0; // Method Declarations float getVdc(); float getIdc(); float getAvgDC(bool isVdc, float signalValue); . ",
-    "url": "/software/library/features/dc_vi_sensing_feature.html#-library-structure",
+    "url": "/software/library/features/dc_vi_sensing_feature.html#-header-file-definitions",
     
-    "relUrl": "/software/library/features/dc_vi_sensing_feature.html#-library-structure"
+    "relUrl": "/software/library/features/dc_vi_sensing_feature.html#-header-file-definitions"
   },"73": {
     "doc": "DC V/I Sensing",
     "title": "📝 Method Descriptions",
@@ -546,32 +546,32 @@
     "relUrl": "/software/library/features/dc_vi_sensing_feature.html"
   },"78": {
     "doc": "DC V/I Sensing",
-    "title": "DC V/I Sensing Module Programs",
+    "title": "DC V/I Sensing Program Modules",
     "content": ". Purpose: These two standalone programs (Vdc_Sensing.ino and Idc_Sensing.ino) showcase how to use the Atinverter library’s DC sensing features to monitor the input DC voltage and current of the PWM inverter. Both modules verify hardware connections, retrieve both raw and averaged sensor values, and employ the Timer 2 based delaying feature. ",
-    "url": "/software/modules/dc_vi_sensing_program.html#dc-vi-sensing-module-programs",
+    "url": "/software/modules/dc_vi_sensing_module.html#dc-vi-sensing-program-modules",
     
-    "relUrl": "/software/modules/dc_vi_sensing_program.html#dc-vi-sensing-module-programs"
+    "relUrl": "/software/modules/dc_vi_sensing_module.html#dc-vi-sensing-program-modules"
   },"79": {
     "doc": "DC V/I Sensing",
     "title": "Vdc_Sensing.ino",
     "content": "Pseudocode: . | Include the Atinverter library | Create a new Atinverter instance | Initialize the serial monitor for displaying DC voltage readings | Begin PWM operation at a specified frequency of 50Hz or 60Hz | Initialize Timer 2 for time-based delay functionality | Read the raw input DC voltage | Print raw input DC voltage to the serial monitor | Pass the most recent reading to the getAvgDC method to calculate the running average | Print averaged input DC voltage to the serial monitor | Wait a designated delay before printing the next reading | . Implementation: . #include \"Atinverter.h\" Atinverter atinverter; void setup() { Serial.begin(9600); Serial.println(F(\"Initialize Input DC Voltage Sensing.\")); atinverter.startPWM(60); atinverter.initTimer2Delay(); } void loop() { float raw_Vdc = atinverter.getVdc(); Serial.print(F(\"Raw Vdc : \")); Serial.print(raw_Vdc); Serial.println(F(\"V\")); float avg_Vdc = atinverter.getAvgDC(true, raw_Vdc); Serial.print(F(\"Avg Vdc : \")); Serial.print(avg_Vdc); Serial.println(F(\"V\")); Serial.println(); atinverter.delay2(500); } . ",
-    "url": "/software/modules/dc_vi_sensing_program.html#vdc_sensingino",
+    "url": "/software/modules/dc_vi_sensing_module.html#vdc_sensingino",
     
-    "relUrl": "/software/modules/dc_vi_sensing_program.html#vdc_sensingino"
+    "relUrl": "/software/modules/dc_vi_sensing_module.html#vdc_sensingino"
   },"80": {
     "doc": "DC V/I Sensing",
     "title": "Idc_Sensing.ino",
     "content": "Pseudocode: . | Include the Atinverter library | Create a new Atinverter instance set to 50Hz or 60Hz mode | Initialize the serial monitor for displaying DC current readings | Begin PWM operation at a specified frequency of 50Hz or 60Hz | Initialize Timer 2 for time-based delay functionality | Read the raw input DC current | Print raw input DC current to the serial monitor | Pass the most recent reading to the getAvgDC method to calculate the running average | Print averaged input DC current to the serial monitor | Wait a designated delay before printing the next reading | . Implementation: . #include \"Atinverter.h\" Atinverter atinverter; void setup() { Serial.begin(9600); Serial.println(F(\"Initialize Input DC Current Sensing.\")); atinverter.startPWM(60); atinverter.initTimer2Delay(); } void loop() { float raw_Idc = atinverter.getIdc(); Serial.print(F(\"Raw Idc : \")); Serial.print(raw_Idc); Serial.println(F(\"A\")); float avg_Idc = atinverter.getAvgDC(false, raw_Idc); Serial.print(F(\"Avg Idc : \")); Serial.print(avg_Idc); Serial.println(F(\"A\")); Serial.println(); atinverter.delay2(500); } . ",
-    "url": "/software/modules/dc_vi_sensing_program.html#idc_sensingino",
+    "url": "/software/modules/dc_vi_sensing_module.html#idc_sensingino",
     
-    "relUrl": "/software/modules/dc_vi_sensing_program.html#idc_sensingino"
+    "relUrl": "/software/modules/dc_vi_sensing_module.html#idc_sensingino"
   },"81": {
     "doc": "DC V/I Sensing",
     "title": "DC V/I Sensing",
     "content": " ",
-    "url": "/software/modules/dc_vi_sensing_program.html",
+    "url": "/software/modules/dc_vi_sensing_module.html",
     
-    "relUrl": "/software/modules/dc_vi_sensing_program.html"
+    "relUrl": "/software/modules/dc_vi_sensing_module.html"
   },"82": {
     "doc": "DC Voltage Sensing",
     "title": "DC Voltage Sensing Hardware",
@@ -624,7 +624,7 @@
   },"89": {
     "doc": "Experimentation",
     "title": "Sensing Networks",
-    "content": "This portion of the report addresses and experiments with the four sensing operations for the power inverter using the software modules Vdc_Sensing.ino, Idc_Sensing.ino, Vac_Sensing.ino, and Iac_Sensing.ino. Although this section does not make the distinction between the 50Hz or 60Hz fundamental frequency testing, this is intentional as the sensed values are not expected to vary significantly with frequency. Testing was performed for the DC input voltage of 12V - 48V with representative results for both 12V and 48V documented in this section. Figure X. 12V DC Input Multimeter Measurement . Figure X. 48V DC Input Multimeter Measurement . DC Voltage Sensing . Figure X. Start-Up DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 12V$ . Figure X. Steady-State DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 12V$ . Figure X. Start-Up DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 48V$ . Figure X. Steady-State DC voltage readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 48V$ . | Execution of the Vdc_Sensing.ino program at both 12V and 48V DC levels produces results that are quite favorable. Start up conditions were in accordance with expected operation as the running average logic tells us that the DC voltage value improves in accuracy once it completely fills its buffer. Additionally, under steady-state conditions the sensed voltage closely matched the measured value, with deviations limited to a few tens of millivolts—well within the acceptable range for this design. | . DC Current Sensing . Figure X. Arduino IDE Serial Monitor DC Current Readouts for $24.5\\Omega$ Load . Figure X. Arduino IDE Serial Monitor DC Current Readouts for $18\\Omega$ Load . Table X. DC Current Sensing Load Tests at 12V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.172A | 71.422Ω | 0.168A |   | . | 34.8Ω | 0.333A | 36.003Ω | 0.333A |   | . | 23.2Ω | 0.517A | 24.278Ω | 0.494A |   | . | 17.4Ω | 0.689A | 18.087Ω | 0.663A |   | . Table X. DC Current Sensing Load Tests at 48V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.689A | 71.422Ω | 0.689A |   | . | 34.8Ω | 1.378A | 36.003Ω | 1.333A |   | . | 23.2Ω | 2.068A | 24.278Ω | 1.977A |   | . | 17.4Ω | 2.758A | 18.087Ω | 2.653A |   | . | A series of four load tests were conducted to validate the performance of the DC current sensing program. The selected load resistances span a range that covers the full output current capability of the Atinverter V2 (rated up to 2.8 A), including operation at the highest DC input level of 48V. | . AC Voltage Sensing . Figure X. Arduino IDE Serial Monitor AC Voltage Sensing with $V_{DC_{in}} = 12V$ . Figure X. Arduino IDE Serial Monitor AC Voltage Sensing with $V_{DC_{in}} = 48V$ . | The Vac_Sensing.ino program was evaluated at both 12V and 48V DC input levels which correspond to expected RMS output voltages of $\\frac{12V}{\\sqrt{2}} \\approx 8.49V$ and $\\frac{48V}{\\sqrt{2}} \\approx 33.94V$. Unlike the DC sensing routine, the AC voltage sensing program does not differentiate between startup and steady-state conditions, as it employs a fixed time-based sampling window instead of a running average. | The AC voltage RMS sensing was found to be fairly accurate for 12V DC input level, with only millivolt deviations. However, for 48V DC input, data readouts were quite erroneous, with a discrepancy of about 8V. It turns out that the sampling resistor, $R_{samp}$, was selected at a value of $100\\Omega$ prior to the simulated value of $6.8\\Omega$, which produces a larger sampling voltage. Due to the excessive initial magnitude, the op-amp output saturated, leading to inaccurate RMS measurements. | . AC Current Sensing . Table X. AC Current Sensing Load Tests at 12V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.172A | 71.422Ω | 0.168A |   | . | 34.8Ω | 0.333A | 36.003Ω | 0.333A |   | . | 23.2Ω | 0.517A | 24.278Ω | 0.494A |   | . | 17.4Ω | 0.689A | 18.087Ω | 0.663A |   | . Table X. AC Current Sensing Load Tests at 48V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.689A | 71.422Ω | 0.689A |   | . | 34.8Ω | 1.378A | 36.003Ω | 1.333A |   | . | 23.2Ω | 2.068A | 24.278Ω | 1.977A |   | . | 17.4Ω | 2.758A | 18.087Ω | 2.653A |   | . The AC load current sensing ca . ",
+    "content": "This portion of the report addresses and experiments with the four sensing operations for the power inverter using the software modules Vdc_Sensing.ino, Idc_Sensing.ino, Vac_Sensing.ino, and Iac_Sensing.ino. Although this section does not make the distinction between the 50Hz or 60Hz fundamental frequency testing, this is intentional as the sensed values are not expected to vary significantly with frequency. Testing was performed for the DC input voltage of 12V - 48V with representative results for both 12V and 48V documented in this section. Figure X. 12V DC Input Multimeter Measurement . Figure X. 48V DC Input Multimeter Measurement . DC Voltage Sensing . Figure X. Start-Up DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 12V$ . Figure X. Steady-State DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 12V$ . Figure X. Start-Up DC Voltage Readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 48V$ . Figure X. Steady-State DC voltage readings from the Arduino IDE Serial Monitor at $V_{DC_{in}} = 48V$ . | Execution of the Vdc_Sensing.ino program at both 12V and 48V DC levels produces results that are quite favorable. Start up conditions were in accordance with expected operation as the running average logic tells us that the DC voltage value improves in accuracy once it completely fills its buffer. Additionally, under steady-state conditions the sensed voltage closely matched the measured value, with deviations limited to a few tens of millivolts—well within the acceptable range for this design. | . DC Current Sensing . Figure X. Arduino IDE Serial Monitor DC Current Readouts for $24.5\\Omega$ Load . Figure X. Arduino IDE Serial Monitor DC Current Readouts for $24.5\\Omega$ Load . Figure X. Arduino IDE Serial Monitor DC Current Readouts for $18\\Omega$ Load . Table X. DC Current Sensing Load Tests at 12V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.172A | 71.422Ω | 0.168A |   | . | 34.8Ω | 0.333A | 36.003Ω | 0.333A |   | . | 23.2Ω | 0.517A | 24.278Ω | 0.494A |   | . | 17.4Ω | 0.689A | 18.087Ω | 0.663A |   | . Table X. DC Current Sensing Load Tests at 48V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.689A | 71.422Ω | 0.689A |   | . | 34.8Ω | 1.378A | 36.003Ω | 1.333A |   | . | 23.2Ω | 2.068A | 24.278Ω | 1.977A |   | . | 17.4Ω | 2.758A | 18.087Ω | 2.653A |   | . | A series of four load tests were conducted to validate the performance of the DC current sensing program. The selected load resistances span a range that covers the full output current capability of the Atinverter V2 (rated up to 2.8A), including operation at the highest DC input level of 48V. | . AC Voltage Sensing . Figure X. Arduino IDE Serial Monitor AC Voltage Sensing with $V_{DC_{in}} = 12V$ . Figure X. Arduino IDE Serial Monitor AC Voltage Sensing with $V_{DC_{in}} = 48V$ . | The Vac_Sensing.ino program was evaluated at both 12V and 48V DC input levels which correspond to expected RMS output voltages of $\\frac{12V}{\\sqrt{2}} \\approx 8.49V$ and $\\frac{48V}{\\sqrt{2}} \\approx 33.94V$. Unlike the DC sensing routine, the AC voltage sensing program does not differentiate between startup and steady-state conditions, as it employs a fixed time-based sampling window instead of a running average. | The AC voltage RMS sensing was found to be fairly accurate for 12V DC input level, with only millivolt deviations. However, for 48V DC input, data readouts were quite erroneous, with a discrepancy of about 8V. It turns out that the sampling resistor, $R_{samp}$, was selected at a value of $100\\Omega$ prior to the simulated value of $6.8\\Omega$, which produces a larger sampling voltage. Due to the excessive initial magnitude, the op-amp output saturated, leading to inaccurate RMS measurements. | . AC Current Sensing . Table X. AC Current Sensing Load Tests at 12V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.172A | 71.422Ω | 0.168A |   | . | 34.8Ω | 0.333A | 36.003Ω | 0.333A |   | . | 23.2Ω | 0.517A | 24.278Ω | 0.494A |   | . | 17.4Ω | 0.689A | 18.087Ω | 0.663A |   | . Table X. AC Current Sensing Load Tests at 48V DC Input . | Nominal Load Resistance | Nominal Load Current | Measured Load Resistance | Calculated Load Current | Sensed Load Current | . | 69.6Ω | 0.689A | 71.422Ω | 0.689A |   | . | 34.8Ω | 1.378A | 36.003Ω | 1.333A |   | . | 23.2Ω | 2.068A | 24.278Ω | 1.977A |   | . | 17.4Ω | 2.758A | 18.087Ω | 2.653A |   | . The AC load current sensing ca . ",
     "url": "/hardware/atinverter_v2/experimentation.html#sensing-networks",
     
     "relUrl": "/hardware/atinverter_v2/experimentation.html#sensing-networks"
@@ -645,7 +645,7 @@
   },"92": {
     "doc": "Home",
     "title": "Atinverter Documentation",
-    "content": "Explore the documentation to learn more about this open source power converter! . Vision Hardware Software . ",
+    "content": "Explore the documentation to learn more about this open source power inverter! . Vision Hardware Software . ",
     "url": "/#atinverter-documentation",
     
     "relUrl": "/#atinverter-documentation"
@@ -763,18 +763,18 @@
     "relUrl": "/software/library/library_uml.html"
   },"109": {
     "doc": "Main",
-    "title": "Main Module Program",
+    "title": "Main Program Module",
     "content": ". | To be documented in the future | . ",
-    "url": "/software/modules/main_program.html#main-module-program",
+    "url": "/software/modules/main_module.html#main-program-module",
     
-    "relUrl": "/software/modules/main_program.html#main-module-program"
+    "relUrl": "/software/modules/main_module.html#main-program-module"
   },"110": {
     "doc": "Main",
     "title": "Main",
     "content": " ",
-    "url": "/software/modules/main_program.html",
+    "url": "/software/modules/main_module.html",
     
-    "relUrl": "/software/modules/main_program.html"
+    "relUrl": "/software/modules/main_module.html"
   },"111": {
     "doc": "Modules",
     "title": "Atinverter V2 Library",
@@ -875,15 +875,15 @@
     "relUrl": "/hardware/power_rating.html"
   },"125": {
     "doc": "PWM Inversion",
-    "title": "50Hz/60Hz PWM Inversion Library Feature",
+    "title": "50/60Hz PWM Inversion Library Feature",
     "content": ". ",
-    "url": "/software/library/features/pwm_inversion_feature.html#50hz60hz-pwm-inversion-library-feature",
+    "url": "/software/library/features/pwm_inversion_feature.html#5060hz-pwm-inversion-library-feature",
     
-    "relUrl": "/software/library/features/pwm_inversion_feature.html#50hz60hz-pwm-inversion-library-feature"
+    "relUrl": "/software/library/features/pwm_inversion_feature.html#5060hz-pwm-inversion-library-feature"
   },"126": {
     "doc": "PWM Inversion",
     "title": "📋 Overview",
-    "content": "This section aims to document the functionality of the Atinverter library’s PWM generation feature, used to synthesize a sinusoidal waveform using a timer-driven software control scheme. The PWM waveform is composed of high-frequency switching pulses generated by Timer1 interrupts, which step through a precomputed sine lookup table at a rate of 31,372 kHz. Simultaneously, Timer0 is configured to Phase Correct PWM mode and alternates the output between two hardware PWM pins to approximate a 50 Hz or 60 Hz AC signal. The software manages duty cycle updates and pin toggling using ISR logic, ultimately enabling fully software-defined sinusoidal PWM output from the ATMEGA328P. ",
+    "content": "This section aims to document the functionality of the Atinverter library’s PWM generation feature, used to synthesize a sinusoidal waveform using a timer-driven software control scheme. The PWM waveform is composed of high-frequency switching pulses generated by Timer1 interrupts, which step through a precomputed sine lookup table at a rate of 31,372 kHz. Simultaneously, Timer0 is configured to Phase Correct PWM mode and alternates the output between two hardware PWM pins to approximate a 50Hz or 60Hz AC signal. The software manages duty cycle updates and pin toggling using ISR logic, ultimately enabling fully software-defined sinusoidal PWM output from the ATMEGA328P. ",
     "url": "/software/library/features/pwm_inversion_feature.html#-overview",
     
     "relUrl": "/software/library/features/pwm_inversion_feature.html#-overview"
@@ -896,11 +896,11 @@
     "relUrl": "/software/library/features/pwm_inversion_feature.html#-pin-assignments"
   },"128": {
     "doc": "PWM Inversion",
-    "title": "📂 Library Structure",
-    "content": "Implementation in Atinverter.h: . // AC RMS Sampling Period #define MS_PER_SECOND 1000 // PWM Pin Definitions const int PWM_A_PIN = 5; const int PWM_B_PIN = 6; const int GATESD_PIN = 8; const int PRORESET_PIN = 9; // Parameters for PWM static bool is50Hz; static int sin_i; static int pwm_i; static int OK; static const int sin50HzPWM[312]; static const int sin60HzPWM[261]; // Methods void startPWM(uint16_t frequency); static void pwmISR(); void enablePWM(); void disablePWM(); . ",
-    "url": "/software/library/features/pwm_inversion_feature.html#-library-structure",
+    "title": "📂 Header File Definitions",
+    "content": "Implementation in Atinverter.h: . // AC RMS Sampling Period #define MS_PER_SECOND 1000 // PWM Inversion Parameters #define SIN_50HZ_PWM_SIZE 313 #define SIN_60HZ_PWM_SIZE 260 // PWM Pin Definitions const int PWM_A_PIN = 5; const int PWM_B_PIN = 6; const int GATESD_PIN = 8; const int PRORESET_PIN = 9; // Parameters for PWM static bool is50Hz; static int sin_i; static int pwm_i; static int OK; static const int sin50HzPWM[312]; static const int sin60HzPWM[261]; // Methods void startPWM(uint16_t frequency); static void pwmISR(); void enablePWM(); void disablePWM(); . ",
+    "url": "/software/library/features/pwm_inversion_feature.html#-header-file-definitions",
     
-    "relUrl": "/software/library/features/pwm_inversion_feature.html#-library-structure"
+    "relUrl": "/software/library/features/pwm_inversion_feature.html#-header-file-definitions"
   },"129": {
     "doc": "PWM Inversion",
     "title": "🧮 50Hz and 60Hz Sinusoid Lookup Table",
@@ -918,28 +918,28 @@
   },"131": {
     "doc": "PWM Inversion",
     "title": "void startPWM(uint16_t frequency)",
-    "content": "Purpose: Begins PWM and initializes all required timers and registers for 50Hz or 60Hz PWM generation. Pseudocode: . | Disable global interrupts | if the frequency input is not 50Hz or 60Hz . | Set a default frequency of 50Hz | . | Set global frequency mode flag used by pwmISR based on frequency input for sample array selection | Compute the sampling time window used in getRmsAC() and getZeroPoint() | Configure PWM pins as outputs | Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on | Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers | Reset Timer0 control register A, B, and the counter | Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler | Reset Timer1 control register B and the counter | Set compare match value depending on frequency mode flag | Set up Timer1 for CTC mode to trigger the waveform stepping ISR | Enable Timer1 Compare A interrupt | Re-enable global interrupts | . Implementation in Atinverter.cpp: . void Atinverter::startPWM(uint16_t frequency) { cli(); if (frequency != 50 &amp;&amp; frequency != 60) { frequency = 50; } is50Hz = (frequency == 50); period = MS_PER_SECOND / frequency; pinMode(PWM_A_PIN, OUTPUT); pinMode(PWM_B_PIN, OUTPUT); pinMode(PRORESET_PIN, OUTPUT); digitalWrite(PRORESET_PIN, LOW); pinMode(GATESD_PIN, INPUT); TCCR0A = 0; TCCR0B = 0; TCNT0 = 0; TCCR0A = 0b10100001; TCCR0B = 0b00000001; TCCR1A = is50Hz ? 0b1000010 : 0; TCCR1B = 0; TCNT1 = 0; OCR1A = is50Hz ? 624 : 509; TCCR1B = 0b00001001; TIMSK1 |= (1 &lt;&lt; OCIE1A); sei(); } . ",
+    "content": "Purpose: Begins PWM and initializes all required timers and registers for 50Hz or 60Hz PWM generation. Pseudocode: . | Disable global interrupts | If the frequency input is not 50Hz or 60Hz . | Set a default frequency of 50Hz | . | Set global frequency mode flag used by pwmISR based on frequency input for sample array selection | Compute the sampling time window used in getRmsAC() and getZeroPoint() | Configure PWM pins as outputs | Set reset logic pin (PRORESET) as output and drive LOW to ensure gate driver is on | Set gate shutdown pin (GATESD) as input to allow logic protection circuitry to control gate drivers | Reset Timer0 control register A, B, and the counter | Set up Timer0 for Phase Correct PWM (8-bit) with no prescaler | Reset Timer1 control register B and the counter | Set compare match value depending on frequency mode flag | Set up Timer1 for CTC mode to trigger the waveform stepping ISR | Enable Timer1 Compare A interrupt | Re-enable global interrupts | . Implementation in Atinverter.cpp: . void Atinverter::startPWM(uint16_t frequency) { cli(); if (frequency != 50 &amp;&amp; frequency != 60) { frequency = 50; } is50Hz = (frequency == 50); period = MS_PER_SECOND / frequency; pinMode(PWM_A_PIN, OUTPUT); pinMode(PWM_B_PIN, OUTPUT); pinMode(PRORESET_PIN, OUTPUT); digitalWrite(PRORESET_PIN, LOW); pinMode(GATESD_PIN, INPUT); TCCR0A = 0; TCCR0B = 0; TCNT0 = 0; TCCR0A = 0b10100001; TCCR0B = 0b00000001; TCCR1A = is50Hz ? 0b1000010 : 0; TCCR1B = 0; TCNT1 = 0; OCR1A = is50Hz ? 624 : 509; TCCR1B = 0b00001001; TIMSK1 |= (1 &lt;&lt; OCIE1A); sei(); } . ",
     "url": "/software/library/features/pwm_inversion_feature.html#void-startpwmuint16_t-frequency",
     
     "relUrl": "/software/library/features/pwm_inversion_feature.html#void-startpwmuint16_t-frequency"
   },"132": {
     "doc": "PWM Inversion",
     "title": "static void pwmISR()",
-    "content": "Purpose: . Pseudocode: . | Select sinusoid lookup table based on frequency mode flag is50Hz | Determine the max index for lookup table based on the frequency mode flag | If the end of the lookup table has been reached and the digital pin flag OK is set LOW (indicates that digital pin 6 is currently active except for first pwmISR() iteration): . | Reset lookup table index and toggle the digital pin flag to activate pin 5 and deactivate pin 6 in the same cycle | . | If the end of the lookup table has been reached and the digital pin flag OK is set HIGH (indicates that digital pin 5 is currently active except for first pwmISR() iteration): . | Reset lookup table index and toggle to digital pin flag to activate pin 6 and deactivate pin 5 in the same cycle | . | Load PWM pulse value from lookup table | Increment the lookup table index sin_i to move to the next sample | If OK flag is off: . | Set digital pin 5 (OCR0B) off | Set digital pin 6 (OCR0A) to output current PWM pulse | . | If OK flag is on: . | Set digital pin 6 (OCR0A) off | Set digital pin 5 (OCR0B) to output current PWM pulse | . | . Implementation in Atinverter.cpp: . void Atinverter::pwmISR() { const int* sinPWM = is50Hz ? sin50HzPWM : sin60HzPWM; int maxIndex = is50Hz ? 313 : 260; if (sin_i &gt; maxIndex &amp;&amp; OK == 0) { sin_i = 0; OK = 1; } else if (sin_i &gt; maxIndex &amp;&amp; OK == 1) { sin_i = 0; OK = 0; } pwm_i = sinPWM[sin_i]; sin_i++; if (OK == 0) { OCR0B = 0; OCR0A = pwm_i; } else { OCR0A = 0; OCR0B = pwm_i; } } . ",
+    "content": "Purpose: To generate the alternating sinusoidal PWM signals on the digital pins 5 and 6 by iterating through a lookup table of precomputed PWM values. Pseudocode: . | Select sinusoid lookup table based on frequency mode flag is50Hz | Determine the max index for lookup table based on the frequency mode flag | If the end of the lookup table has been reached and the digital pin flag OK is set LOW (indicates that digital pin 6 is currently active except for first pwmISR() iteration): . | Reset lookup table index and toggle the digital pin flag to activate pin 5 and deactivate pin 6 in the same cycle | . | If the end of the lookup table has been reached and the digital pin flag OK is set HIGH (indicates that digital pin 5 is currently active except for first pwmISR() iteration): . | Reset lookup table index and toggle to digital pin flag to activate pin 6 and deactivate pin 5 in the same cycle | . | Load PWM pulse value from lookup table | Increment the lookup table index sin_i to move to the next sample | If OK flag is off: . | Set digital pin 5 (OCR0B) off | Set digital pin 6 (OCR0A) to output current PWM pulse | . | If OK flag is on: . | Set digital pin 6 (OCR0A) off | Set digital pin 5 (OCR0B) to output current PWM pulse | . | . Implementation in Atinverter.cpp: . void Atinverter::pwmISR() { const int* sinPWM = is50Hz ? sin50HzPWM : sin60HzPWM; int maxIndex = is50Hz ? SIN_50HZ_PWM_SIZE : SIN_60HZ_PWM_SIZE; if (sin_i &gt; maxIndex &amp;&amp; OK == 0) { sin_i = 0; OK = 1; } else if (sin_i &gt; maxIndex &amp;&amp; OK == 1) { sin_i = 0; OK = 0; } pwm_i = sinPWM[sin_i]; sin_i++; if (OK == 0) { OCR0B = 0; OCR0A = pwm_i; } else { OCR0A = 0; OCR0B = pwm_i; } } . ",
     "url": "/software/library/features/pwm_inversion_feature.html#static-void-pwmisr",
     
     "relUrl": "/software/library/features/pwm_inversion_feature.html#static-void-pwmisr"
   },"133": {
     "doc": "PWM Inversion",
     "title": "void enablePWM()",
-    "content": "Purpose: Enables the Timer1 interrupts so that PWM generation resumes. Pseudocode: . | Disable global interrupts | Enable the Timer1 Compare Match A interrupt (OCIE1A) | Re-enable global interrupts | . Implementation in Atinverter.cpp: . cli(); TIMSK1 |= (1 &lt;&lt; OCIE1A); sei(); . ",
+    "content": "Purpose: Enables the Timer1 interrupts so that PWM generation resumes. Pseudocode: . | Disable global interrupts | Enable the Timer1 Compare Match A interrupt (OCIE1A) | Re-enable global interrupts | . Implementation in Atinverter.cpp: . void Atinverter::enablePWM() { cli(); TIMSK1 |= (1 &lt;&lt; OCIE1A); sei(); } . ",
     "url": "/software/library/features/pwm_inversion_feature.html#void-enablepwm",
     
     "relUrl": "/software/library/features/pwm_inversion_feature.html#void-enablepwm"
   },"134": {
     "doc": "PWM Inversion",
     "title": "void disablePWM()",
-    "content": "Purpose: Disables the Timer1 interrupts to stop PWM generation without affecting other global interrupts. Pseudocode: . | Disable global interrupts | Disable the Timer1 Compare Match A interrupt interrupts (OCIE1A) | Re-enable global interrupts | . Implementation in Atinverter.cpp: . cli(); // Avoid ISR firing during mask change TIMSK1 &amp;= ~(1 &lt;&lt; OCIE1A); // Disable only the Timer1 Compare A interrupt sei(); // Resume normal operation . ",
+    "content": "Purpose: Disables the Timer1 interrupts to stop PWM generation without affecting other global interrupts. Pseudocode: . | Disable global interrupts | Disable the Timer1 Compare Match A interrupt interrupts (OCIE1A) | Re-enable global interrupts | . Implementation in Atinverter.cpp: . void Atinverter::disablePWM() { cli(); TIMSK1 &amp;= ~(1 &lt;&lt; OCIE1A); sei(); } . ",
     "url": "/software/library/features/pwm_inversion_feature.html#void-disablepwm",
     
     "relUrl": "/software/library/features/pwm_inversion_feature.html#void-disablepwm"
@@ -966,32 +966,32 @@
     "relUrl": "/software/library/features/pwm_inversion_feature.html"
   },"138": {
     "doc": "PWM Inversion",
-    "title": "50Hz/60Hz PWM Inversion Module Programs",
+    "title": "50/60Hz PWM Inversion Program Modules",
     "content": ". Purpose: These two standalone programs (50Hz_PWM_Inverter.ino and 60Hz_PWM_Inverter.ino) exhibits how to utilize the Atinverter library’s PWM generation functionality for the PWM inverter. Each file initializes the PWM for at a switching frequency of 31,372kHz and fundamental frequency of 50Hz or 60Hz, which are required for AC waveform generation. ",
-    "url": "/software/modules/pwm_inversion_program.html#50hz60hz-pwm-inversion-module-programs",
+    "url": "/software/modules/pwm_inversion_module.html#5060hz-pwm-inversion-program-modules",
     
-    "relUrl": "/software/modules/pwm_inversion_program.html#50hz60hz-pwm-inversion-module-programs"
+    "relUrl": "/software/modules/pwm_inversion_module.html#5060hz-pwm-inversion-program-modules"
   },"139": {
     "doc": "PWM Inversion",
     "title": "50Hz_PWM_Inverter.ino",
     "content": "Pseudocode: . | Include the Atinverter library | Create an Atinverter instance | Begin PWM operation at the specified frequency of 50Hz | . Implementation: . #include \"Atinverter.h\" Atinverter atinverter; void setup(){ atinverter.startPWM(50); } void loop(){ } . ",
-    "url": "/software/modules/pwm_inversion_program.html#50hz_pwm_inverterino",
+    "url": "/software/modules/pwm_inversion_module.html#50hz_pwm_inverterino",
     
-    "relUrl": "/software/modules/pwm_inversion_program.html#50hz_pwm_inverterino"
+    "relUrl": "/software/modules/pwm_inversion_module.html#50hz_pwm_inverterino"
   },"140": {
     "doc": "PWM Inversion",
     "title": "60Hz_PWM_Inverter.ino",
     "content": "Psuedocode: . | Include the Atinverter library | Create an Atinverter instance | Begin PWM operation at the specified frequency of 60Hz | . Implementation: . #include \"Atinverter.h\" Atinverter atinverter; void setup() { atinverter.startPWM(60); } void loop() { } . ",
-    "url": "/software/modules/pwm_inversion_program.html#60hz_pwm_inverterino",
+    "url": "/software/modules/pwm_inversion_module.html#60hz_pwm_inverterino",
     
-    "relUrl": "/software/modules/pwm_inversion_program.html#60hz_pwm_inverterino"
+    "relUrl": "/software/modules/pwm_inversion_module.html#60hz_pwm_inverterino"
   },"141": {
     "doc": "PWM Inversion",
     "title": "PWM Inversion",
     "content": " ",
-    "url": "/software/modules/pwm_inversion_program.html",
+    "url": "/software/modules/pwm_inversion_module.html",
     
-    "relUrl": "/software/modules/pwm_inversion_program.html"
+    "relUrl": "/software/modules/pwm_inversion_module.html"
   },"142": {
     "doc": "Scratchpad",
     "title": "Testing",
@@ -1127,11 +1127,11 @@
     "relUrl": "/software/library/features/timer2_delay_feature.html#️-understanding-the-timers-on-the-atmega328p"
   },"161": {
     "doc": "Timer 2 Delay",
-    "title": "📂 Library Structure",
-    "content": "Implementation in Atinverter.h: . // Timer 2 Increment static volatile unsigned long timer2Millis; // Methods void initTimer2Delay(); void delay2(unsigned long ms); unsigned long millis2(); . ",
-    "url": "/software/library/features/timer2_delay_feature.html#-library-structure",
+    "title": "📂 Header File Definitions",
+    "content": "Implementation in Atinverter.h: . // Timer2 Increment static volatile unsigned long timer2Millis; // Methods void initTimer2Delay(); void delay2(unsigned long ms); unsigned long millis2(); . ",
+    "url": "/software/library/features/timer2_delay_feature.html#-header-file-definitions",
     
-    "relUrl": "/software/library/features/timer2_delay_feature.html#-library-structure"
+    "relUrl": "/software/library/features/timer2_delay_feature.html#-header-file-definitions"
   },"162": {
     "doc": "Timer 2 Delay",
     "title": "📝 Method Descriptions",

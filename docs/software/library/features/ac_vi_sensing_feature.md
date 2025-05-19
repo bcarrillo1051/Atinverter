@@ -63,7 +63,12 @@ Once the 12-bit conversion data is received by the ATMEGA328P, the CS line is en
 
 The timing diagram of the ADC122S021 provides an insightful visual representation of the SPI communication and reflects the information covered.
 
-![ADC122S021 Operational Timing Diagram](../../../images/ADC122S021_timing_diagram.png)
+<p align="center">
+<img src="../../../images/ADC122S021_timing_diagram.png" alt="ADC122S021 Operational Timing Diagram" width="800"/>
+</p>
+<div style="text-align: center;">
+    <h7><b>Figure X.</b> ADC122S021 Operational Timing Diagram </h7>
+</div>
 
 <br>
 
@@ -120,9 +125,9 @@ The **Nyquist Sampling Theorem** states that to minimally reconstruct an analog 
 
 $$f_{s} \geq 2 \times f_{max}$$
 
-Aliasing represents an adverse effect where the sampled waveform loses its charateristic shape and appears as a different frequency.
+Aliasing represents an adverse effect where the sampled waveform loses its characteristic shape and appears as a different frequency.
 
-While just marginally satisfying the Nyquist Rate condition may be appropriate in some applications, this does not always guarentee proper resolution and amplitude accuracy of the signal.
+While just marginally satisfying the Nyquist Rate condition may be appropriate in some applications, this does not always guarantee proper resolution and amplitude accuracy of the signal.
 
 In practical applications such as sampling sinusoidal signals, it is recommended that $f_{s}$ is at least 5 to 10 times the sinusoidal signal $f_{sinusoid}$. 
 
@@ -138,7 +143,7 @@ $$f_{s} = \frac{1 \times 10^6Hz}{16} = 62.5kHz$$
 
 $$\frac{f_{s}}{f_{max}} = \frac{62.5 \times 10^3Hz}{60Hz} ≈ 1042$$
 
-The sampling frequeny is substantially larger than the recommended amount so a high fidelity signal is to be expected.
+The sampling frequency is substantially larger than the recommended amount so a high fidelity signal is to be expected.
 
 Translating this concept into software, the command below:
 
@@ -172,7 +177,7 @@ Configuring all SPI pins on the ATMEGA328P can be performed by using `SPI.begin(
 
 ---
 
-## 📂 Library Structure
+## 📂 Header File Definitions
 
 **Implementation in `Atinverter.h`:**
 
@@ -181,7 +186,7 @@ Configuring all SPI pins on the ATMEGA328P can be performed by using `SPI.begin(
 
 // TMCS1108 Current Sensor Parameters
 #define SENSOR_GAIN_MV_PER_A 400.0f
-#define MV_TO_V 1000.0f
+#define MV_TO_V 0.001f
 #define VOUT_0A 2.5f
 
 // ADC Parameters
@@ -194,7 +199,7 @@ Configuring all SPI pins on the ATMEGA328P can be performed by using `SPI.begin(
 // --- AC RMS Parameters ---
 #define MS_PER_SECOND 1000
 #define DEFAULT_SENSITIVITY 500.0f
-#define SENSITIVITY 37.81f
+#define SENSITIVITY 38.12f
 
 // Parameters AC Sensing
 uint32_t period;
@@ -247,8 +252,7 @@ void Atinverter::setUpSPI() {
   - Read the ADC value from the specified control_byte channel
   - Accumulate the ADC value
   - Increment the measurement count
-3. Return
-  - Compute and return the average (sum divided by the count)
+3. Compute and return the average (sum divided by the count)
 
 **Implementation in `Atinverter.cpp`:**
 ```cpp
@@ -338,8 +342,7 @@ int Atinverter::getADC(uint8_t control_byte) {
 
 **Pseudocode:**
 1. Determine the ADC channel based on `isVac`
-  - `true` to use voltage channel
-  - `false`to use current channel
+  - `true` to use voltage channel, `false` to use current channel
 2. Iterate `loopCount` times:
   - Compute DC offset using `getZeroPoint()`
   - Initialize accumulators and timing

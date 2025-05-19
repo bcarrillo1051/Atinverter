@@ -7,14 +7,14 @@
  ******************************************************************************/
 #include "Atinverter.h"
 
-#define LOOP_RUNS 20
+#define LOOP_COUNT 20
 
 Atinverter atinverter; // Atinverter class instance
 
 void setup() {
   // Initialize Serial Monitor
   Serial.begin(9600);
-  Serial.println(F("Initialize Output AC Voltage Sensing."));
+  Serial.println(F("Initialize Output AC Current Sensing."));
 
   atinverter.setSensitivity(SENSITIVITY); // Scale RMS ADC values to real-world signal amplitude
   atinverter.setUpSPI(); // Set up SPI interface and associated pins
@@ -26,8 +26,8 @@ void setup() {
 
 void loop() {
   // Sample AC RMS readings continuously with delay
-  float Iac_RMS = atinverter.getRmsAC(false, LOOP_RUNS); // true = Vac, false = Iac, 20 periods
-  Serial.print(F("Iac(RMS): ")); Serial.print(Iac_RMS); Serial.println("A");
-  atinverter.delay2(2000);
+  float Iac_RMS = atinverter.getRmsAC(false, LOOP_COUNT); // true = Vac, false = Iac, 20 periods
+  Serial.print(F("Iac(RMS): ")); Serial.print(Iac_RMS, 3); Serial.println("A\n");
+  atinverter.delay2(500);
 }
 

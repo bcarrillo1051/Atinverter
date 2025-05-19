@@ -345,6 +345,15 @@ This portion of the report addresses and experiments with the four sensing opera
 
 <br>
 <p align="center">
+<img src="../../images/experimentation/dc_current_sensing/24.5_ohm_load_Idc_readings.png" alt="24.5 Ohm Load Idc Readings" width="180"/>
+</p>
+<div style="text-align: center;">
+    <h7><b>Figure X.</b> Arduino IDE Serial Monitor DC Current Readouts for $24.5\Omega$ Load </h7>
+</div>
+<br>
+
+<br>
+<p align="center">
 <img src="../../images/experimentation/dc_current_sensing/18_ohm_load_Idc_readings.png" alt="18 Ohm Load Idc Readings" width="180"/>
 </p>
 <div style="text-align: center;">
@@ -376,7 +385,7 @@ This portion of the report addresses and experiments with the four sensing opera
 | 23.2Ω                         | 2.068A                      | 24.278Ω                         | 1.977A                       |                          |
 | 17.4Ω                         | 2.758A                      | 18.087Ω                         | 2.653A                       |                          |
 
-- A series of four load tests were conducted to validate the performance of the DC current sensing program. The selected load resistances span a range that covers the full output current capability of the Atinverter V2 (rated up to 2.8 A), including operation at the highest DC input level of 48V.
+- A series of four load tests were conducted to validate the performance of the DC current sensing program. The selected load resistances span a range that covers the full output current capability of the Atinverter V2 (rated up to 2.8A), including operation at the highest DC input level of 48V.
 
 ### AC Voltage Sensing
 

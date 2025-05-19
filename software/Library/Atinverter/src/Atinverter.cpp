@@ -198,57 +198,61 @@ int Atinverter::getADC(uint8_t control_byte) {
  * @return Averaged ADC reading over the sampling period (zero-point).
  */
 int Atinverter::getZeroPoint(uint8_t control_byte) {
-	uint32_t Vsum = 0;
-	uint32_t measurements_count = 0;
-	uint32_t t_start = this->millis2();
+	uint32_t ADCsum = 0; // Accumulates ADC sample values
+	uint32_t measureCount = 0;
+	uint32_t t_start = this->millis2(); // Record start time for sampling
 
-	while (this->millis2() - t_start < period)
+	while (this->millis2() - t_start < period) // Sample ADC values in one period
 	{
-    Vsum += this->getADC(control_byte);
-		measurements_count++;
+    ADCsum += this->getADC(control_byte); // Sample ADC and add to sum
+		measureCount++;
 	}
 
-	return Vsum / measurements_count;
+	return ADCsum / measureCount; // Return average (DC offset)
 }
 
 /**
  * @brief Calculates the root mean square (RMS) of AC voltage or current
- * @param loopCount how many periods to calculate rms reading
  * @param isVac chooses which reading to perform, true = voltage, false = current
+ * @param loopCount how many periods to calculate rms reading
  * @return root mean square (RMS) of AC voltage or current
  */
-float Atinverter::getRmsAC(uint8_t loopCount, bool isVac) {
+float Atinverter::getRmsAC(bool isVac, uint8_t loopCount) {
 
-  uint8_t control_byte; // Sets control byte based on bool
-  if (isVac){
-    control_byte = VAC_ADC_CHANNEL; // Channel 1: voltage reading
-  }
-  else{
-    control_byte = IAC_ADC_CHANNEL; // Channel 2: current reading
-  }
-
+  uint8_t control_byte = isVac ? VAC_ADC_CHANNEL : IAC_ADC_CHANNEL; // Sets control byte based on isVac bool
 	double readingVoltage = 0.0f;
 
-	for (uint8_t i = 0; i < loopCount; i++)
-	{
-		int zeroPoint = this->getZeroPoint(control_byte);
+	for (uint8_t i = 0; i < loopCount; i++) {
+		int ADCzeroPoint = this->getZeroPoint(control_byte);
+		int32_t ADCnow = 0;
+		uint32_t ADCsum = 0;
+		uint32_t measureCount = 0;
 
-		int32_t Vnow = 0;
-		uint32_t Vsum = 0;
-		uint32_t measurements_count = 0;
 		uint32_t t_start = this->millis2();
-
-		while (this->millis2() - t_start < period)
-		{
-			Vnow = this->getADC(control_byte) - zeroPoint;
-			Vsum += (Vnow * Vnow);
-			measurements_count++;
+		while (this->millis2() - t_start < period) {
+			ADCnow = this->getADC(control_byte) - ADCzeroPoint;
+			ADCsum += (ADCnow * ADCnow);
+			measureCount++;
 		}
 
-		readingVoltage += sqrt(Vsum / measurements_count) / ADC_122S021_MAX_VALUE * VREF * sensitivity;
+    if (isVac) {
+		  readingVoltage += sqrt(ADCsum / measureCount) / ADC_122S021_MAX_VALUE * VREF * sensitivity;
+    }
+    else {
+		  readingVoltage += (sqrt((double)ADCsum / measureCount) / ADC_122S021_MAX_VALUE * VREF);
+    }
+
 	}
 
-	return readingVoltage / loopCount;
+  if (isVac) {
+	  return readingVoltage / loopCount;
+  }
+  else {
+    float Iac_RMS = (readingVoltage / loopCount) / (SENSOR_GAIN_MV_PER_A * MV_TO_V);
+    float Iac_corrected = 1.75 * Iac_RMS - 0.0524; // linear regression based on data taken
+    return Iac_corrected; // Compute and return current reading
+  }
+
 }
 
 // --- PWM 50Hz/60Hz Inversion ---

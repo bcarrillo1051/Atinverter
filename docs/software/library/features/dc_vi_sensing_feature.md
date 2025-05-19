@@ -58,13 +58,13 @@ The DC Voltage and Current Sensing feature provides an interface for monitoring 
 
 ---
 
-## 📂 Library Structure
+## 📂 Header File Definitions
 
 **Implementation in `Atinverter.h`:**
 ```cpp
 // TMCS1108 Current Sensor Parameters
 #define SENSOR_GAIN_MV_PER_A 400.0f
-#define MV_TO_V 1000.0f
+#define MV_TO_V 0.001f
 #define VOUT_0A 2.5f
 
 // ADC Parameters

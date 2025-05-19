@@ -40,7 +40,6 @@ The current at the input of the power inverter is measured using a Hall-effect c
 <p align="center">
 <img src="../../images/DC_current_sensing_block_diagram.png" alt="AC Current Sensing Block Diagram" width="800"/>
 </p>
-
 <div style="text-align: center;">
     <h7><b>Figure X.</b> DC Current Sensing Block Diagram </h7>
 </div>
