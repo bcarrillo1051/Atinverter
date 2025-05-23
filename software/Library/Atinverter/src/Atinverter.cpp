@@ -94,7 +94,7 @@ float Atinverter::getVdc() {
 float Atinverter::getIdc() {
   int digital_val = analogRead(I_DC_PIN); // Read raw ADC value
   float Vout = (VREF * digital_val) / (ADC_ATMEGA328P_MAX_VALUE); // Convert to analog voltage
-  float Idc = (Vout - VOUT_0A) / SENSOR_GAIN_MV_PER_A * MV_TO_V; // Use transfer function to compute Idc
+  float Idc = (Vout - VOUT_0A) / (SENSOR_GAIN_MV_PER_A * MV_TO_V); // Use transfer function to compute Idc
   return Idc;
 }
 
@@ -249,8 +249,8 @@ float Atinverter::getRmsAC(bool isVac, uint8_t loopCount) {
   }
   else {
     float Iac_RMS = (readingVoltage / loopCount) / (SENSOR_GAIN_MV_PER_A * MV_TO_V);
-    float Iac_corrected = 1.75 * Iac_RMS - 0.0524; // linear regression based on data taken
-    return Iac_corrected; // Compute and return current reading
+    float Iac_corrected = 1.75 * Iac_RMS - 0.0524; // Linear regression based on data taken
+    return Iac_corrected;
   }
 
 }
