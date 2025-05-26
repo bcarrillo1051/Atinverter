@@ -5,7 +5,7 @@ parent: Modules
 nav_order: 1
 ---
 
-# **Blink Module Program**
+# **Blink Program Module**
 ---
 
 **Purpose:** This program demonstrates how to utilize the Atinverter library's LED control features in a standalone application. This module is useful for confirming the operational state of the microcontroller, hardware connections, and library integration.

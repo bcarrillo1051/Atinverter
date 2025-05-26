@@ -41,7 +41,7 @@ nav_order: 3
 
     <!-- Atinverter V2 Image and Button -->
     <div class="image_button_container">
-      <img src="../images/a_v2_front_view.png" alt="Atinverter V2">
+      <img src="../images/AtinverterV2_top_view_raw.jpg " alt="Atinverter V2">
       <br>
       <span class="fs-6">
       <a href="a_v2_sw" class="btn btn-green">Atinverter V2</a>

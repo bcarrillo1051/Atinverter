@@ -43,7 +43,11 @@ The DC Voltage and Current Sensing feature provides an interface for monitoring 
 
 ## 📌 Pin Assignments
 
-This table expresses the dedicated analog pins used for the design and their respective state.
+<br>
+
+<div style="text-align: left;">
+    <h7><b>Table X.</b> ATMEGA328P Pin Configuration for DC Sensing </h7>
+</div>
 
 | Pin Description    | Pin Name (Code) | Pin Number | Pin State |
 |:------------------:|:---------------:|:----------:|:---------:|
@@ -54,13 +58,13 @@ This table expresses the dedicated analog pins used for the design and their res
 
 ---
 
-## 📂 Library Structure
+## 📂 Header File Definitions
 
 **Implementation in `Atinverter.h`:**
 ```cpp
 // TMCS1108 Current Sensor Parameters
 #define SENSOR_GAIN_MV_PER_A 400.0f
-#define MV_TO_V 1000.0f
+#define MV_TO_V 0.001f
 #define VOUT_0A 2.5f
 
 // ADC Parameters

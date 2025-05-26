@@ -6,7 +6,7 @@ nav_order: 4
 mathjax: true
 ---
 
-# **DC V/I Sensing Module Programs**
+# **DC V/I Sensing Program Modules**
 ---
 
 **Purpose:** These two standalone programs (`Vdc_Sensing.ino` and `Idc_Sensing.ino`) showcase how to use the Atinverter library’s DC sensing features to monitor the input DC voltage and current of the PWM inverter. Both modules verify hardware connections, retrieve both raw and averaged sensor values, and employ the Timer 2 based delaying feature.

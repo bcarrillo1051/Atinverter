@@ -12,7 +12,7 @@
 
 // --- TMCS1108 Current Sensor Parameters ---
 #define SENSOR_GAIN_MV_PER_A 400.0f // Sensitivity for A4 variant (400 mV per A)
-#define MV_TO_V 1000.0f // Scaling factor from mV to V
+#define MV_TO_V 0.001f // Scaling factor from mV to V
 #define VOUT_0A 2.5f // Zero current output voltage
 
 // --- ADC Parameters ---
@@ -26,10 +26,14 @@
 // --- AC RMS Parameters ---
 #define MS_PER_SECOND 1000 // For computing the sampling period in ms
 #define DEFAULT_SENSITIVITY 500.0f // When no sensitivity is specified for AC RMS calculation
-#define SENSITIVITY 37.81f // Tuned value after testing, adjust as needed
+#define SENSITIVITY 38.12f // Tuned value after testing, adjust as needed
 
 // --- Moving Average Parameter ---
 #define MA_SAMPLES 10 // Default moving average sample count, adjust as needed
+
+// --- PWM Inversion Parameters ---
+#define SIN_50HZ_PWM_SIZE 313
+#define SIN_60HZ_PWM_SIZE 260
 
 // --- Safety Parameters ---
 #define MAX_DC_CURRENT 2.5
@@ -74,7 +78,7 @@ class Atinverter {
 	void setUpSPI();
 	void setSensitivity(float value);
 	int getADC(uint8_t control_byte);
-	float getRmsAC(uint8_t loopCount, bool isVac);
+	float getRmsAC(bool isVac, uint8_t loopCount);
 
 	// --- PWM 50Hz/60Hz Inversion ---
 	void startPWM(uint16_t frequency);
@@ -104,7 +108,7 @@ class Atinverter {
 	static const int LED2G_PIN = 7; // Green LED 2 pin | PD7
 
 	// --- Timer 2 Delay ---
-	static volatile unsigned long timer2Millis; // Timer 2 Increment
+	static volatile unsigned long timer2Millis; // Timer2 Increment
 
   private:
 

@@ -6,7 +6,7 @@ nav_order: 5
 mathjax: true
 ---
 
-# **AC V/I Sensing Module Program**
+# **AC V/I Sensing Program Modules**
 ---
 
 **Purpose:**

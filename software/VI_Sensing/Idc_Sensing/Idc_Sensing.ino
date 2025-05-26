@@ -34,5 +34,5 @@ void loop() {
   Serial.print(F("Avg Idc : ")); Serial.print(avg_Idc); Serial.println(F("A")); // Print averaged Idc
   
   Serial.println();
-  atinverter.delay2(500); // Print rate in ms
+  atinverter.delay2(1000); // Print rate in ms
 }

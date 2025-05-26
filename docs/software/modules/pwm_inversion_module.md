@@ -6,7 +6,7 @@ nav_order: 3
 mathjax: true
 ---
 
-# **50Hz/60Hz PWM Inversion Module Programs**
+# **50/60Hz PWM Inversion Program Modules**
 ---
 
 **Purpose:** These two standalone programs (`50Hz_PWM_Inverter.ino` and `60Hz_PWM_Inverter.ino`) exhibits how to utilize the Atinverter library’s PWM generation functionality for the PWM inverter. Each file initializes the PWM for at a switching frequency of 31,372kHz and fundamental frequency of 50Hz or 60Hz, which are required for AC waveform generation.

@@ -86,12 +86,12 @@ A higher bit-width means higher resolution is possible — but for a simple 1ms 
 
 ---
 
-## 📂 Library Structure
+## 📂 Header File Definitions
 
 **Implementation in `Atinverter.h`:**
 
 ```cpp
-// Timer 2 Increment
+// Timer2 Increment
 static volatile unsigned long timer2Millis;
 
 // Methods

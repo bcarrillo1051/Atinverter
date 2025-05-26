@@ -294,3 +294,13 @@ where:
 - f SW is switching frequency 
 - VOUT is output voltage 
 - VIN is input voltage
+
+```mermaid
+flowchart LR
+    A[Transformer Stage<br>• Input filtering<br>• Isolation<br>• Secondary voltage tapping]
+    B[1st Op Amp Stage<br>• AC coupling<br>• Gain & filter network<br>• Differential input]
+    C[Potentiometer Gain Control<br>• Adjustable resistor<br>• Sets signal amplitude]
+    D[2nd Op Amp Stage<br>• Final gain<br>• Output conditioning]
+
+    A --> B --> C --> D
+```
