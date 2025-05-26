@@ -9,12 +9,12 @@
 
 #define LOOP_RUNS 20
 
-// Atinverter initialization 60 and 50 Hz
-Atinverter atinverter60(60);
-Atinverter atinverter50(50);
+// Atinverter object initialization
+Atinverter Atinverter;
 
 // Variable initialization 
-int state = 0;
+int state = 5;
+int prev_state;
 bool sixty_once = false;
 bool fifty_once = false;
 bool power_cycle_once = false;
@@ -29,31 +29,27 @@ float AC_amp = 0;
 void setup() {
 
   // Initializes I2C communication
-  Wire.begin(0x8);
+  Wire.begin(0x08);
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
-  //Serial.begin(9600);
+  Serial.begin(9600);
 
   // Initializes pins
-  atinverter60.setUpLEDs();
-  atinverter60.initTimer2Delay();
+  Atinverter.setUpLEDs();
+  Atinverter.initTimer2Delay();
 
   // Initializes SPI ADC sensitivity and communication (ADC122S021CIMM/NOPB)
-  atinverter60.setSensitivity(SENSITIVITY);
-  atinverter50.setSensitivity(SENSITIVITY);
-  atinverter60.setUpSPI();
+  Atinverter.setSensitivity(SENSITIVITY);
+  Atinverter.setUpSPI();
 
-  // Begins PWM at 60 Hz
-  atinverter60.startPWM();
-  //Serial.println("Setup Done");
 }
 
 // The function that completes when I2C communication 
 // data is given to this device
 void receiveEvent(int howMany) {
   while(Wire.available()) {
+    prev_state = state;
     state = Wire.read();
-    //Serial.println(state);
   }
 }
 
@@ -67,35 +63,38 @@ void requestEvent() {
 }
 
 void loop() {
+  if (state == 0) {
+    state = prev_state;
+  }
 
   // Read all DC voltages and currents, averages of 10 samples
-  DC_volt_avg = atinverter60.getAvgDC(true, atinverter60.getVdc());
-  DC_amp_avg = atinverter60.getAvgDC(false, atinverter60.getIdc());
+  DC_volt_avg = Atinverter.getAvgDC(true, Atinverter.getVdc());
+  DC_amp_avg = Atinverter.getAvgDC(false, Atinverter.getIdc());
 
   if (isFiftyHz) {
     // Get the converted average value of AC voltage and current 
     // when the set frquency is 50 Hz
-    AC_volt = atinverter50.getRmsAC(LOOP_RUNS, true);
-    AC_amp = atinverter50.getRmsAC(LOOP_RUNS, false);
+    AC_volt = Atinverter.getRmsAC(LOOP_RUNS, true);
+    AC_amp = Atinverter.getRmsAC(LOOP_RUNS, false);
   }
   if (isFiftyHz == false){
     // Get the converted average value of AC voltage and current
     // when the set frquency is 60 Hz
-    AC_volt = atinverter60.getRmsAC(LOOP_RUNS, true);
-    AC_amp = atinverter60.getRmsAC(LOOP_RUNS, false);
+    AC_volt = Atinverter.getRmsAC(LOOP_RUNS, true);
+    AC_amp = Atinverter.getRmsAC(LOOP_RUNS, false);
   }
 
   // Turns gate driver Off
-  if (state == 0) {
-    atinverter60.shutdownGates(MANUAL);
-    atinverter60.set1LED(2, HIGH);
+  if (state == 5) {
+    Atinverter.shutdownGates(MANUAL);
+    Atinverter.set1LED(2, HIGH);
     fifty_once = false;
     sixty_once = false;
     power_cycle_once = false;
   }
   // Disables PWM
   else if (state == 1) {
-    atinverter60.disablePWM();
+    Atinverter.disablePWM();
     fifty_once = false;
     sixty_once = false;
     power_cycle_once = false;
@@ -103,7 +102,7 @@ void loop() {
   // Cycles proreset which power cycles gate driver
   else if (state == 2) {
     if (power_cycle_once == false) {
-      atinverter60.powerCycleGates();
+      Atinverter.powerCycleGates();
       power_cycle_once = true;
     }
     fifty_once = false;
@@ -113,10 +112,10 @@ void loop() {
   else if (state == 3) {
     isFiftyHz = true;
     if (fifty_once == false) {
-      atinverter50.enablePWM(); // Enables PWM if it is off
-      atinverter50.startPWM(); // Begins 50 Hz PWM signal
-      atinverter50.turnOnGates(); // Confirms gate driver is on
-      atinverter60.set1LED(2, LOW); // Sets LED low to match GateShutdown signal
+      Atinverter.enablePWM(); // Enables PWM if it is off
+      Atinverter.startPWM(50); // Begins 50 Hz PWM signal
+      Atinverter.turnOnGates(); // Confirms gate driver is on
+      Atinverter.set1LED(2, LOW); // Sets LED low to match GateShutdown signal
       fifty_once = true;
     }
     sixty_once = false;
@@ -126,10 +125,10 @@ void loop() {
   else if (state == 4) {
     isFiftyHz = false;
     if (sixty_once == false) {
-      atinverter60.enablePWM(); // Enables PWM if it is off
-      atinverter60.startPWM(); // Begins 60 Hz PWM signal
-      atinverter60.turnOnGates(); // Confirms gate driver is on
-      atinverter60.set1LED(2, LOW); // Sets LED low to match GateShutdown signal
+      Atinverter.enablePWM(); // Enables PWM if it is off
+      Atinverter.startPWM(60); // Begins 60 Hz PWM signal
+      Atinverter.turnOnGates(); // Confirms gate driver is on
+      Atinverter.set1LED(2, LOW); // Sets LED low to match GateShutdown signal
       sixty_once = true;
     }
     fifty_once = false;
@@ -147,6 +146,6 @@ void loop() {
   // Serial.print(F("AC Voltage: ")); Serial.print(AC_volt);
   // Serial.print(F(" AC Current: ")); Serial.println(AC_amp);
   // Serial.println();
-  //atinverter60.delay2(1000);
+  //Atinverter.delay2(1000);
 }
 
