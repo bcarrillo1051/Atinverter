@@ -252,7 +252,7 @@ def check_time_elapsed():
         except Exception as e:
             print(f"Error during timed save: {e}")
     
-    # Repeat the check every 1000 milliseconds (1 second)
+    # Repeat the check every 1 second
     root.after(1000, check_time_elapsed)
 
 # Main GUI window
@@ -260,6 +260,7 @@ root = tk.Tk()
 root.title("Microgrid Status")
 root.geometry("400x400")
 
+# Allow for multiple tabs
 notebook = ttk.Notebook(root)
 notebook.pack(fill='both', expand=True)
 
@@ -270,24 +271,30 @@ notebook.add(dc_frame, text="DC to DC Atverter")
 dc_inner = tk.Frame(dc_frame)
 dc_inner.pack(expand=True)
 
+# State Drop down menu
 tk.Label(dc_inner, text="DC Converter State:").pack(pady=5)
 selected_dc_state = tk.StringVar(root, value="IDLE")
 tk.OptionMenu(dc_inner, selected_dc_state, "IDLE", "BUCK", "BOOST", "CURRENT").pack(pady=5)
 
+# initilaize Setpoint entry box
 tk.Label(dc_inner, text="Setpoint (Vout):").pack(pady=5)
 entry = tk.Entry(dc_inner)
 entry.pack(pady=5)
 
+# initialize Setpoint label
 setpoint_label = tk.Label(dc_inner, text="Setpoint:")
 setpoint_label.pack(pady=5)
 
-dc_state_label = tk.Label(dc_inner, text="DC State: 0")
+# initialize DC state label
+dc_state_label = tk.Label(dc_inner, text="IDLE")
 dc_state_label.pack(pady=5)
 
+# Buttons for shutoffs and updates
 tk.Button(dc_inner, text="Request Info", command=RequestAtverter).pack(fill='x', padx=20, pady=5)
 tk.Button(dc_inner, text="Shutoff Atverter", command=PowerDownAtverter).pack(fill='x', padx=20, pady=5)
 tk.Button(dc_inner, text="Apply", command=UpdateAtverter).pack(fill='x', padx=20, pady=5)
 
+# DC voltage and current label
 dc_info_label = tk.Label(dc_inner, text="None")
 dc_info_label.pack(pady=5)
 
@@ -298,21 +305,26 @@ notebook.add(ac_frame, text="DC to AC Atinverter")
 ac_inner = tk.Frame(ac_frame)
 ac_inner.pack(expand=True)
 
+# Frequency drop down tab
 tk.Label(ac_inner, text="AC Frequency:").pack(pady=5)
 selected_frequency = tk.StringVar(root, value="60 Hz")
 tk.OptionMenu(ac_inner, selected_frequency, "No PWM", "50 Hz", "60 Hz").pack(pady=5)
 
+# initalize frequency labrl
 freq_label = tk.Label(ac_inner, text="Frequency: 60 Hz")
 freq_label.pack(pady=5)
 
+# initialize AC state label
 ac_state_label = tk.Label(ac_inner, text="AC State: 0")
 ac_state_label.pack(pady=5)
 
+# Buttons for shutdowns and update
 tk.Button(ac_inner, text="Request Info", command=RequestAtinverter).pack(fill='x', padx=20, pady=5)
 tk.Button(ac_inner, text="Power Cycle AC Gate Driver", command=PowerCycle).pack(fill='x', padx=20, pady=5)
 tk.Button(ac_inner, text="Shutoff Atinverter", command=PowerDownAtinverter).pack(fill='x', padx=20, pady=5)
 tk.Button(ac_inner, text="Apply", command=UpdateAtinverter).pack(fill='x', padx=20, pady=5)
 
+# AC voltage and current info label
 ac_info_label = tk.Label(ac_inner, text="None")
 ac_info_label.pack(pady=5)
 
