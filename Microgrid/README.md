@@ -1,20 +1,9 @@
-Microgrid Connection
-
-Description: 
-This folder contains the necessary programs and
-instructions to connect a Raspberry Pi as the 
-overhead controller to interface with the 
-Atverter and Atinverter. The steps on how to setup
-the whole system is shown below.
-
-
 Full Setup Instructions
-
+Setup Instructions
 These instructions will allow you to set up a Raspberry Pi-controlled Microgrid with a blank Atmega328P to be programmable via the USB TTL FTDI 5V cable from the Arduino environment.
 
 Flash Pi with Raspberry Pi OS
-Download the Raspberry Pi Imager and OS from:
-https://www.raspberrypi.com/software/
+Download the Raspberry Pi Imager and OS from: https://www.raspberrypi.com/software/
 
 Insert the microSD card into your computer using an SD card adapter or built-in slot.
 
@@ -34,9 +23,9 @@ The following steps will allow you to control the Raspberry Pi from another comp
 Enable Display of Pi GUI Programs on a PC
 Download and install:
 
-PuTTY: https://www.putty.org/
+PuTTY
 
-VcXsrv: https://vcxsrv.com/
+VcXsrv
 
 Run XLaunch and use these settings:
 
@@ -61,14 +50,13 @@ Click Open
 Enter the password when prompted. You now have a terminal linked to the Raspberry Pi.
 
 Download the Code Base
-In the SSH terminal or directly on the Pi, run:
+In the SSH terminal or directly on the Pi:
 
 cd Documents
 sudo apt update
 sudo apt upgrade -y
 sudo apt install -y git
 git clone https://github.com/bcarrillo1051/Atinverter.git
-
 Install the Arduino IDE
 Run the following in the Pi terminal:
 
@@ -76,9 +64,9 @@ sudo apt install arduino -y
 To open it later:
 
 arduino
-
 Burn the Bootloader to the ATmega328P
 If using a new or blank chip, the Arduino bootloader must be installed.
+
 Follow this tutorial:
 https://www.instructables.com/How-to-Burn-the-Arduino-BootLoader-on-to-a-AtMega3/
 
@@ -93,8 +81,18 @@ Connect the Raspberry Pi to the Atverter via USB-to-FTDI cable.
 
 Click the upload button in the Arduino IDE and wait for confirmation.
 
+To operate, merely leave the USB-to-FTDI cable attached to the Atverter to communicate using UART commands.
+
 Program the Chip on the Atinverter
-Repeat the same steps as for the Atverter, but for the Atinverter’s codebase and header.
+Navigate to the GitHub repository folder.
+
+Copy the relevant library folder to the Arduino directory in Documents.
+
+Open the main.ino file in the Arduino IDE.
+
+Connect the Raspberry Pi to the Atinverter via USB-to-FTDI cable.
+
+Click the upload button in the Arduino IDE and wait for confirmation.
 
 Hardware Connection Instructions
 Atinverter: Directly plug the Raspberry Pi into the bottom header on the PCB of the Atinverter.
@@ -102,13 +100,13 @@ Atinverter: Directly plug the Raspberry Pi into the bottom header on the PCB of 
 Atverter: Plug the USB side of the USB-to-Serial cable into the Pi, and connect the 6-pin FTDI header to the Atverter.
 
 Run the Raspberry Pi Control Program
-Make sure Python is installed. If not, run:
+Make sure Python is installed. If not:
 
 sudo apt install python3 python3-pip
+If using the Atinverter, confirm that I2C communication is enabled on the Pi in the config settings.
 
 Navigate to the program folder and run the main file:
 
 cd Documents/Atinverter/Microgrid/Raspi_Files
 python3 main.py
-
 A GUI window should appear, allowing control of the microgrid.

@@ -1,7 +1,29 @@
 /*
-  Main.ino - Main code running on Atmega chip
-  Created by Zach Kwast, 3/4/25
-  Released into the public domain.
+  ============================================================================
+  File        : Main.ino
+  Project     : Atinverter Control Firmware
+  Target MCU  : ATmega328P
+  Author      : Zach Kwast
+  Created     : March 4, 2025
+  License     : Public Domain
+
+  Description : 
+    Main firmware for the Atinverter system running on the ATmega328P.
+    This code handles I2C communication with a master controller (e.g. 
+    Raspberry Pi), monitors DC and AC electrical parameters via SPI ADC, 
+    and controls the output waveform frequency and inverter states.
+    
+    Key Features:
+      - I2C slave communication (receive & request handlers)
+      - AC/DC voltage and current measurement
+      - Inverter gate driver and PWM signal control
+      - Support for 50Hz and 60Hz output sine waves
+
+  Dependencies:
+    - Atinverter.h : Handles inverter control logic and hardware abstraction
+    - Wire.h       : I2C library for communication
+
+  ============================================================================
 */
 
 #include "Atinverter.h"

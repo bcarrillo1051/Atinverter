@@ -1,14 +1,50 @@
-# =============================================================
-# File: main.py
-# Description: Raspberry Pi Master script 
-#              This script uses Serial and I2C communication
-#              to connect and control the Atverter and Atinverter 
-#              converters and create a user interface to allow
-#              for someone to change settings of the system in
-#              real time
-# Author: [Zach Kwast]
-# Created: [2025-01-15]
-# =============================================================
+# =============================================================================
+# File:        main.py
+# Author:      Zach Kwast
+# Created:     2025-01-15
+# Platform:    Raspberry Pi 3 Model B
+# Python:      3.x
+#
+# Description:
+# This script serves as the master controller for a Raspberry Pi-based
+# microgrid interface. It facilitates real-time monitoring and control of two
+# custom-designed power converters:
+#
+#   1. **Atverter (DC-DC Converter)** – Communicated over UART (Serial)
+#   2. **Atinverter (DC-AC Inverter)** – Communicated over I2C
+#
+# The script provides the following key functionalities:
+#   - Communication with both converters to monitor voltages and currents
+#   - Real-time control of converter states and setpoints via a Tkinter GUI
+#   - Logging of sensor data into an Excel file for later analysis
+#   - Periodic data polling and saving every 5 minutes
+#
+# GUI Interface:
+#   - Built using Tkinter with tabbed panels for DC and AC converters
+#   - Allows users to:
+#       - Select converter modes (IDLE, BUCK, BOOST, CURRENT)
+#       - Enter and apply output voltage/current setpoints
+#       - Monitor live sensor readings
+#       - Power cycle or shut down converters
+#
+# File Management:
+#   - Data is logged to an Excel spreadsheet ("Sensor_Logbook.xlsx")
+#     located at /home/Ras/Documents/Atinverter/Microgrid/Raspi_Files/
+#   - Data includes timestamps, voltage/current measurements, and states
+#
+# Dependencies:
+#   - smbus2        (I2C communication)
+#   - struct        (byte unpacking of float data)
+#   - openpyxl      (Excel file creation and modification)
+#   - tkinter       (GUI development)
+#   - re            (regex parsing of numeric serial data)
+#   - serial        (pySerial for UART communication)
+#
+# Notes:
+#   - Ensure proper permissions for accessing serial and I2C interfaces.
+#   - Serial device name (/dev/ttyUSB0) may need adjustment based on your setup.
+#   - Atverter and Atinverter firmware must support command protocols used here.
+# =============================================================================
 
 from smbus2 import SMBus
 import struct
@@ -50,6 +86,7 @@ else:
     ws.title = "Sensor Logbook"
     print("File is here")
 
+# Function for reading the info from the Atinverter over i2c
 def readData(addr):
     data = bus.read_i2c_block_data(addr, 0, 16) # 16 bytes of data
     # Separate into 4 byte chunks
@@ -60,6 +97,7 @@ def readData(addr):
     info = ["", round(Volt1,3), round(Amp1,3), round(Volt2,3), round(Amp2,3)]
     return info
 
+# Function for reading the info from the Atverter over UART
 def sortData():
     # Read the serial data 7 times and organize it
     VL = dc_conv.readline().decode('utf-8', errors='ignore').strip()
